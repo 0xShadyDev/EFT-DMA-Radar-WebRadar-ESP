@@ -3,3 +3,5 @@ eft-dma-radar.csproj.user
 /obj
 /.vs
 /bin
+nmap.txt
+/Configuration/Settings.json

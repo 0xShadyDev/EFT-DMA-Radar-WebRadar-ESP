@@ -32,8 +32,8 @@ namespace eft_dma_radar
         private CameraManager _cameraManager { get => Memory.CameraManager; }
         private ReadOnlyDictionary<string, Player> AllPlayers { get => Memory.Players; }    
         private bool InGame { get => Memory.InGame; }
-        private static PlayerManager playamanaga { get => Memory.PlayerManager; }
-        private Player LocalPlayer { get => Memory.LocalPlayer; }
+        private static PlayerManager playerManager { get => Memory.PlayerManager; }
+        private Player localPlayer { get => Memory.LocalPlayer; }
         public ulong MovementContext { get; set; }
         private bool boneCache = false;
         public Dictionary<PlayerBones, Transform> boneTransforms = new Dictionary<PlayerBones, Transform>();
@@ -43,7 +43,6 @@ namespace eft_dma_radar
         public List<ulong> BonePointers { get; } = new List<ulong>();        
         private DateTime lastBoneReadTime = DateTime.MinValue;
         private Player TargetPlayer;
-        private readonly Stopwatch executionTimer = new Stopwatch();   
         private readonly Vector2 screenCenter = new Vector2(1920 / 2f, 1080 / 2f);     
         public Aimbot()
         {            
@@ -61,7 +60,6 @@ namespace eft_dma_radar
             aimbotRightLeg = _config.AimbotRightLeg;
             aimbotLeftLeg = _config.AimbotLeftLeg;
             aimbotKey = _config.AimbotKeybind;
-            //aimbotKeyTest = _config.AimbotKeybindTest;
             saAimbotKey = _config.SASilentAimKey;
             aimbotEnabled = _config.EnableAimbot;
             saimbotEnabled = _config.SAEnableAimbot;
@@ -70,41 +68,24 @@ namespace eft_dma_radar
         }      
         public void Execute()
         {
-            if (!aimbotEnabled && !saimbotEnabled || !InGame || LocalPlayer == null || !LocalPlayer.IsAlive)
+            if (!aimbotEnabled && !saimbotEnabled)
             {
                 return;
             }
-
-            if (executionTimer.IsRunning && executionTimer.ElapsedMilliseconds < 16)
-                return;
-
-            executionTimer.Restart();
-
-            if (aimbotEnabled || saimbotEnabled)
-            {
-                ExecuteAimbot();
-            }
-        }
-        public void ExecuteAimbot()
-        {
-            bool aimbotHeld = InputManager.IsKeyDown((Keys)aimbotKey);
-            //bool aimbotHeldTest = InputManager.IsKeyDown((Keys)0x17);
-            bool saAimbotHeld = InputManager.IsKeyDown((Keys)saAimbotKey);
-
-            // Ensure the player is in-game and alive
-            if (!InGame || LocalPlayer == null || !LocalPlayer.IsAlive)
-            {
-                Program.Log("Player is not in-game or invalid.");
-                return;
-            }
-
-            var now = DateTime.Now;
 
             // Ensure a minimum delay between executions (16ms for ~60Hz refresh)
-            if ((now - lastBoneReadTime).TotalMilliseconds < 16)
+            if ((DateTime.Now - lastBoneReadTime).TotalMilliseconds < 16)
             {
                 return;
             }
+
+            if (!InGame || localPlayer == null || !localPlayer.IsAlive)
+            {
+                return;
+            }
+
+            bool aimbotHeld = InputManager.IsKeyDown((Keys)aimbotKey);
+            bool saAimbotHeld = InputManager.IsKeyDown((Keys)saAimbotKey);
 
             if (aimbotHeld || saAimbotHeld)
             {
@@ -120,7 +101,7 @@ namespace eft_dma_radar
 
                 // Read positions and velocities
                 var targetBonePosition = ReadAllBonePositions(TargetPlayer);
-                var FirePos = LocalPlayer.fireportPosition;
+                var FirePos = localPlayer.fireportPosition;
 
                 // Validate positions
                 if (FirePos == Vector3.Zero || targetBonePosition == Vector3.Zero)
@@ -128,29 +109,32 @@ namespace eft_dma_radar
                     //Program.Log("Failed to retrieve valid positions for target.");
                     return;
                 }
-                var Velocity = TargetPlayer.Velocity;
-                Vector3 predictedPosition2 = AimbotPrediction.PredictPosition(FirePos, targetBonePosition, Velocity, LocalPlayer.bullet_speed, LocalPlayer.bullet_mass, LocalPlayer.bullet_diam, LocalPlayer.ballistic_coeff);
-                //Program.Log($"Velocity: {Velocity}, Predicted Position: {predictedPosition2}, TargetBonePosition: {targetBonePosition}");
-                // Execute normal aimbot logic
-                var TargetPosition = enableAimPrediction? predictedPosition2 : targetBonePosition;
 
-                if(aimbotEnabled)
+                Vector3 targetPosition;
+                if (enableAimPrediction)
+                {
+                    targetPosition = AimbotPrediction.PredictPosition(FirePos, targetBonePosition, TargetPlayer.Velocity, localPlayer.bullet_speed, localPlayer.bullet_mass, localPlayer.bullet_diam, localPlayer.ballistic_coeff);
+                }
+                else
+                {
+                    targetPosition = targetBonePosition;
+                }
+
+                Vector2 aimAngle = CalcAngle(FirePos, targetPosition);
+
+                if (aimbotEnabled)
                 {
                     if (aimbotHeld)
                     {
-                        Vector2 aimAngle = CalcAngle(FirePos, TargetPosition);
                         NormalizeAngle(ref aimAngle);
-                        LocalPlayer.SetRotationFr(aimAngle);
-                        //Program.Log($"Aimbot: Predicted Position {predictedPosition}, AimAngle {aimAngle}");
+                        localPlayer.SetRotationFr(aimAngle);
                     }                 
                 }
                 if(saimbotEnabled)
                 {
-                    // Execute silent aim logic
                     if (saAimbotHeld)
                     {
-                        SilentAim.ApplySilentAim(FirePos, TargetPosition);
-                        //Program.Log($"SilentAim: Predicted Position {predictedPosition}");
+                        ApplySilentAim(aimAngle);
                     }
                 }
 
@@ -172,14 +156,14 @@ namespace eft_dma_radar
                 return null;  // Prevent execution unless key is pressed
             }
 
-            var localPosition = LocalPlayer.Position;
+            var localPosition = localPlayer.Position;
             var screenCenter = new Vector2(1920 / 2f, 1080 / 2f);
             var players = this.AllPlayers?.Select(x => x.Value)
-                        .Where(x => x.IsActive && x.IsAlive && Vector3.Distance(x.Position, LocalPlayer.Position) < aimbotMaxDistance)
+                        .Where(x => x.IsActive && x.IsAlive && Vector3.Distance(x.Position, localPlayer.Position) < aimbotMaxDistance)
                         .ToList();
                         
             var validPlayers = this.AllPlayers?.Select(x => x.Value)
-                        .Where(x => x.IsActive && x.IsAlive && Vector3.Distance(x.Position, LocalPlayer.Position) < aimbotMaxDistance)
+                        .Where(x => x.IsActive && x.IsAlive && Vector3.Distance(x.Position, localPlayer.Position) < aimbotMaxDistance)
                         .Select(p =>
                 {
                     if (Extensions.WorldToScreen(p.Position, 1920, 1080, out Vector2 screenPos))
@@ -198,96 +182,57 @@ namespace eft_dma_radar
         }
         private static void NormalizeAngle(ref Vector2 angle)
         {
-            var newX = angle.X switch
-            {
-                <= -180f => angle.X + 360f,
-                > 180f => angle.X - 360f,
-                _ => angle.X
-            };
+            NormalizeAngle(ref angle.X);
+            NormalizeAngle(ref angle.Y);
 
-            var newY = angle.Y switch
-            {
-                > 90f => angle.Y - 180f,
-                <= -90f => angle.Y + 180f,
-                _ => angle.Y
-            };
-
-            angle = new Vector2(newX, newY);
-        }  
-        public static Vector2 CalcAngle(Vector3 source, Vector3 destination)
-        {
-            Vector3 difference = source - destination;
-            float length = difference.Length();
-            Vector2 ret = new Vector2();
-
-            ret.Y = (float)Math.Asin(difference.Y / length);
-            ret.X = -(float)Math.Atan2(difference.X, -difference.Z);
-            ret = new Vector2(ret.X * 57.29578f, ret.Y * 57.29578f);
-
-            return ret;
         }
-        public class SilentAim
+
+        private static void NormalizeAngle(ref float angle)
         {
-            private const float Pi = 3.14159265358979323846f;
+            while (angle > 180.0f) angle -= 360.0f;
+            while (angle < -180.0f) angle += 360.0f;
+        }
+        public static Vector2 CalcAngle(Vector3 from, Vector3 to)
+        {
+            Vector3 delta = from - to;
+            float length = delta.Length();
 
-            private static float DegToRad(float degrees)
-            {
-                return degrees * (Pi / 180.0f);
-            }
+            return new Vector2(
+                RadToDeg((float)-Math.Atan2(delta.X, -delta.Z)),
+                RadToDeg((float)Math.Asin(delta.Y / length))
+            );
+        }
 
-            private static float RadToDeg(float radians)
-            {
-                return radians * (180.0f / Pi);
-            }
+        private static float DegToRad(float degrees)
+        {
+            return degrees * ((float)Math.PI / 180.0f);
+        }
 
-            public static Vector2 CalculateAngle(Vector3 from, Vector3 to)
-            {
-                Vector3 delta = from - to;
-                float length = delta.Length();
+        private static float RadToDeg(float radians)
+        {
+            return radians * (180.0f / (float)Math.PI);
+        }
 
-                return new Vector2(
-                    RadToDeg((float)-Math.Atan2(delta.X, -delta.Z)),
-                    RadToDeg((float)Math.Asin(delta.Y / length))
-                );
-            }
+        private static void ApplySilentAim(Vector2 aimAngle)
+        {
+            // Read current view angles
+            Vector2 viewAngles = Memory.ReadValue<Vector2>(playerManager._movementContext + 0x27C);
 
-            public static void ApplySilentAim(Vector3 fireportPos, Vector3 aimPos)
-            {
-                // Read current view angles
-                Vector2 viewAngles = Memory.ReadValue<Vector2>(playamanaga._movementContext + 0x27C);
+            // Normalize delta
+            Vector2 delta = aimAngle - viewAngles;
+            NormalizeAngle(ref delta);
 
-                // Calculate desired angle
-                Vector2 angle = CalculateAngle(fireportPos, aimPos);
+            // Compute gun angle
+            Vector3 gunAngle = new Vector3(
+                DegToRad(delta.X) / 1.5f,
+                0.0f,
+                DegToRad(delta.Y) / 1.5f
+            );
 
-                // Normalize delta
-                Vector2 delta = angle - viewAngles;
-                delta = NormalizeAngle(delta);
+            // Write the new gun angles to memory
+            Memory.WriteValue(playerManager._proceduralWeaponAnimation + 0x22C, new Vector3(gunAngle.X, -1.0f, gunAngle.Z * -1.0f));
+        }
 
-                // Compute gun angle
-                Vector3 gunAngle = new Vector3(
-                    DegToRad(delta.X) / 1.5f,
-                    0.0f,
-                    DegToRad(delta.Y) / 1.5f
-                );
-
-                // Write the new gun angles to memory
-                Memory.WriteValue(playamanaga._proceduralWeaponAnimation + 0x22C, new Vector3(gunAngle.X, -1.0f, gunAngle.Z * -1.0f));
-            }
-
-            private static Vector2 NormalizeAngle(Vector2 angle)
-            {
-                angle.X = NormalizeSingleAngle(angle.X);
-                angle.Y = NormalizeSingleAngle(angle.Y);
-                return angle;
-            }
-
-            private static float NormalizeSingleAngle(float angle)
-            {
-                while (angle > 180.0f) angle -= 360.0f;
-                while (angle < -180.0f) angle += 360.0f;
-                return angle;
-            }
-        }                        
         private List<PlayerBones> bones;
         public void InitializeBonesFromConfig()
         {
