@@ -36,7 +36,7 @@ namespace eft_dma_radar.Controllers
                     player.IsLocalPlayer,
                     player.IsAlive,
                     player.IsActive,
-                    player.Lvl,
+                    player.Level,
                     player.KDA,
                     player.ProfileID,
                     player.AccountID,

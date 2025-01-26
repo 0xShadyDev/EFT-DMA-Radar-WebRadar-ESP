@@ -1002,7 +1002,8 @@ namespace eft_dma_radar
         {
             if (this.InGame)
             {
-                this.BeginInvoke(new Action(() => {
+                this.BeginInvoke(new Action(() =>
+                {
                     this.UpdateWatchlistPlayers();
                 }));
             }
@@ -2077,6 +2078,18 @@ namespace eft_dma_radar
 
                 if (playerSettings.Gear && player.HasRequiredGear)
                     rightLines.Add("GEAR");
+
+                if (player.IsHuman)
+                {
+                    if (playerSettings.Level && player.Level > 0)
+                        rightLines.Add($"L: {player.Level}");
+
+                    if (playerSettings.KDR && player.KDA > 0)
+                        rightLines.Add($"KD: {player.KDA}");
+
+                    if (playerSettings.Hours && player.Hours > 0)
+                        rightLines.Add($"HR: {player.Hours}");
+                }
 
                 if (playerSettings.Value)
                     rightLines.Add($"${TarkovDevManager.FormatNumber(player.Value)}");
@@ -3826,6 +3839,9 @@ namespace eft_dma_radar
             swPlayerInfoValue.Checked = playerInfoSettings.Value;
             swPlayerInfoHealth.Checked = playerInfoSettings.Health;
             swPlayerInfoTag.Checked = playerInfoSettings.Tag;
+            swPlayerInfoLevel.Checked = playerInfoSettings.Level;
+            swPlayerInfoKD.Checked = playerInfoSettings.KDR;
+            swPlayerInfoHours.Checked = playerInfoSettings.Hours;
 
             swPlayerInfoActiveWeapon.Enabled = flagsChecked;
             swPlayerInfoThermal.Enabled = flagsChecked;
@@ -3836,6 +3852,9 @@ namespace eft_dma_radar
             swPlayerInfoValue.Enabled = flagsChecked;
             swPlayerInfoHealth.Enabled = flagsChecked;
             swPlayerInfoTag.Enabled = flagsChecked;
+            swPlayerInfoLevel.Enabled = flagsChecked;
+            swPlayerInfoKD.Enabled = flagsChecked;
+            swPlayerInfoHours.Enabled = flagsChecked;
 
             cboPlayerInfoFlagsFont.SelectedIndex = playerInfoSettings.FlagsFont;
             sldrPlayerInfoFlagsFontSize.Value = playerInfoSettings.FlagsFontSize;
@@ -4168,6 +4187,9 @@ namespace eft_dma_radar
             swPlayerInfoValue.Enabled = flagsChecked;
             swPlayerInfoHealth.Enabled = flagsChecked;
             swPlayerInfoTag.Enabled = flagsChecked;
+            swPlayerInfoLevel.Enabled = flagsChecked;
+            swPlayerInfoKD.Enabled = flagsChecked;
+            swPlayerInfoHours.Enabled = flagsChecked;
 
             cboPlayerInfoFlagsFont.Enabled = flagsChecked;
             sldrPlayerInfoFlagsFontSize.Enabled = flagsChecked;
@@ -4244,7 +4266,29 @@ namespace eft_dma_radar
 
             playerInfoSettings.Tag = swPlayerInfoTag.Checked;
         }
+        private void swPlayerInfoLevel_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!this.TryGetPlayerInfoSettings(out var playerInfoSettings))
+                return;
 
+            playerInfoSettings.Level = swPlayerInfoLevel.Checked;
+        }
+
+        private void swPlayerInfoKD_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!this.TryGetPlayerInfoSettings(out var playerInfoSettings))
+                return;
+
+            playerInfoSettings.KDR = swPlayerInfoKD.Checked;
+        }
+
+        private void swPlayerInfoHours_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!this.TryGetPlayerInfoSettings(out var playerInfoSettings))
+                return;
+
+            playerInfoSettings.Hours = swPlayerInfoHours.Checked;
+        }
         private void cboPlayerInfoFlagsFont_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!this.TryGetPlayerInfoSettings(out var playerInfoSettings))
