@@ -63,6 +63,7 @@
             btnToggleLootItemViewer = new MaterialSkin.Controls.MaterialButton();
             swAimClosest = new MaterialSkin.Controls.MaterialSwitch();
             msSAEnableSilentAim = new MaterialSkin.Controls.MaterialSwitch();
+            swAimEnablePred = new MaterialSkin.Controls.MaterialSwitch();
             sldrAimDistance = new MaterialSkin.Controls.MaterialSlider();
             swAimLLeg = new MaterialSkin.Controls.MaterialSwitch();
             swEnableAimBot = new MaterialSkin.Controls.MaterialSwitch();
@@ -268,6 +269,9 @@
             swAVTripwireDistance = new MaterialSkin.Controls.MaterialSwitch();
             sldrAVContainerPaintDistance = new MaterialSkin.Controls.MaterialSlider();
             sldrAVTripwirePaintDistance = new MaterialSkin.Controls.MaterialSlider();
+            swPlayerInfoLevel = new MaterialSkin.Controls.MaterialSwitch();
+            swPlayerInfoKD = new MaterialSkin.Controls.MaterialSwitch();
+            swPlayerInfoHours = new MaterialSkin.Controls.MaterialSwitch();
             tabMambo = new MaterialSkin.Controls.MaterialTabControl();
             tabRadar = new TabPage();
             mcRadarLootItemViewer = new MaterialSkin.Controls.MaterialCard();
@@ -515,13 +519,17 @@
             lstLootFilterEntries = new MaterialSkin.Controls.MaterialListView();
             colLootFilterItemName = new ColumnHeader();
             colLootFilterItemValue = new ColumnHeader();
-            swPlayerInfoLevel = new MaterialSkin.Controls.MaterialSwitch();
-            swPlayerInfoKD = new MaterialSkin.Controls.MaterialSwitch();
-            swPlayerInfoHours = new MaterialSkin.Controls.MaterialSwitch();
             Mambo = new TabPage();
             materialCard3 = new MaterialSkin.Controls.MaterialCard();
             lblWebRadar = new MaterialSkin.Controls.MaterialLabel();
             materialCard2 = new MaterialSkin.Controls.MaterialCard();
+            lblHeight = new Label();
+            lblWidth = new Label();
+            nmbrScreenHeight = new NumericUpDown();
+            nmbrScreenWidth = new NumericUpDown();
+            lblScreen = new MaterialSkin.Controls.MaterialLabel();
+            sldrAimRecoilSpeed = new MaterialSkin.Controls.MaterialSlider();
+            swAimbotRecoil = new MaterialSkin.Controls.MaterialSwitch();
             txtBonesInfo = new MaterialSkin.Controls.MaterialMaskedTextBox();
             lblAimPrediction = new MaterialSkin.Controls.MaterialLabel();
             lblSAKeyBind = new MaterialSkin.Controls.MaterialLabel();
@@ -531,7 +539,6 @@
             lblAimbotGlobal = new MaterialSkin.Controls.MaterialLabel();
             lblKeybind = new MaterialSkin.Controls.MaterialLabel();
             iconList = new ImageList(components);
-            swAimEnablePred = new MaterialSkin.Controls.MaterialSwitch();
             tabMambo.SuspendLayout();
             tabRadar.SuspendLayout();
             mcRadarLootItemViewer.SuspendLayout();
@@ -626,6 +633,8 @@
             Mambo.SuspendLayout();
             materialCard3.SuspendLayout();
             materialCard2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nmbrScreenHeight).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)nmbrScreenWidth).BeginInit();
             SuspendLayout();
             // 
             // WebRadar
@@ -1381,14 +1390,14 @@
             swAimEnablePred.TabIndex = 62;
             swAimEnablePred.Text = "Enable Prediction";
             toolTip.SetToolTip(swAimEnablePred, "Enables Aimbot and SilentAim Prediction");
-            swAimEnablePred.UseVisualStyleBackColor = true;  
-            swAimEnablePred.CheckedChanged += swAimEnablePred_CheckedChanged;          
+            swAimEnablePred.UseVisualStyleBackColor = true;
+            swAimEnablePred.CheckedChanged += swAimEnablePred_CheckedChanged;
             // 
             // sldrAimDistance
             // 
             sldrAimDistance.Depth = 0;
             sldrAimDistance.ForeColor = Color.Black;
-            sldrAimDistance.Location = new Point(16, 293);
+            sldrAimDistance.Location = new Point(17, 277);
             sldrAimDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAimDistance.Name = "sldrAimDistance";
             sldrAimDistance.RangeMax = 1000;
@@ -5143,6 +5152,57 @@
             sldrAVTripwirePaintDistance.ValueSuffix = "m";
             sldrAVTripwirePaintDistance.onValueChanged += sldrAVTripwirePaintDistance_onValueChanged;
             // 
+            // swPlayerInfoLevel
+            // 
+            swPlayerInfoLevel.Depth = 0;
+            swPlayerInfoLevel.Font = new Font("Segoe UI", 9F);
+            swPlayerInfoLevel.Location = new Point(17, 327);
+            swPlayerInfoLevel.Margin = new Padding(0);
+            swPlayerInfoLevel.MouseLocation = new Point(-1, -1);
+            swPlayerInfoLevel.MouseState = MaterialSkin.MouseState.HOVER;
+            swPlayerInfoLevel.Name = "swPlayerInfoLevel";
+            swPlayerInfoLevel.Ripple = true;
+            swPlayerInfoLevel.Size = new Size(110, 28);
+            swPlayerInfoLevel.TabIndex = 64;
+            swPlayerInfoLevel.Text = "Level";
+            toolTip.SetToolTip(swPlayerInfoLevel, "Shows the players level");
+            swPlayerInfoLevel.UseVisualStyleBackColor = true;
+            swPlayerInfoLevel.CheckedChanged += swPlayerInfoLevel_CheckedChanged;
+            // 
+            // swPlayerInfoKD
+            // 
+            swPlayerInfoKD.Depth = 0;
+            swPlayerInfoKD.Font = new Font("Segoe UI", 9F);
+            swPlayerInfoKD.Location = new Point(169, 327);
+            swPlayerInfoKD.Margin = new Padding(0);
+            swPlayerInfoKD.MouseLocation = new Point(-1, -1);
+            swPlayerInfoKD.MouseState = MaterialSkin.MouseState.HOVER;
+            swPlayerInfoKD.Name = "swPlayerInfoKD";
+            swPlayerInfoKD.Ripple = true;
+            swPlayerInfoKD.Size = new Size(119, 28);
+            swPlayerInfoKD.TabIndex = 63;
+            swPlayerInfoKD.Text = "KDR";
+            toolTip.SetToolTip(swPlayerInfoKD, "Shows the players KD");
+            swPlayerInfoKD.UseVisualStyleBackColor = true;
+            swPlayerInfoKD.CheckedChanged += swPlayerInfoKD_CheckedChanged;
+            // 
+            // swPlayerInfoHours
+            // 
+            swPlayerInfoHours.Depth = 0;
+            swPlayerInfoHours.Font = new Font("Segoe UI", 9F);
+            swPlayerInfoHours.Location = new Point(291, 327);
+            swPlayerInfoHours.Margin = new Padding(0);
+            swPlayerInfoHours.MouseLocation = new Point(-1, -1);
+            swPlayerInfoHours.MouseState = MaterialSkin.MouseState.HOVER;
+            swPlayerInfoHours.Name = "swPlayerInfoHours";
+            swPlayerInfoHours.Ripple = true;
+            swPlayerInfoHours.Size = new Size(118, 28);
+            swPlayerInfoHours.TabIndex = 62;
+            swPlayerInfoHours.Text = "Hours";
+            toolTip.SetToolTip(swPlayerInfoHours, "Shows the players hours");
+            swPlayerInfoHours.UseVisualStyleBackColor = true;
+            swPlayerInfoHours.CheckedChanged += swPlayerInfoHours_CheckedChanged;
+            // 
             // tabMambo
             // 
             tabMambo.Controls.Add(tabRadar);
@@ -8783,6 +8843,13 @@
             // materialCard2
             // 
             materialCard2.BackColor = Color.FromArgb(255, 255, 255);
+            materialCard2.Controls.Add(lblHeight);
+            materialCard2.Controls.Add(lblWidth);
+            materialCard2.Controls.Add(nmbrScreenHeight);
+            materialCard2.Controls.Add(nmbrScreenWidth);
+            materialCard2.Controls.Add(lblScreen);
+            materialCard2.Controls.Add(sldrAimRecoilSpeed);
+            materialCard2.Controls.Add(swAimbotRecoil);
             materialCard2.Controls.Add(swAimEnablePred);
             materialCard2.Controls.Add(txtBonesInfo);
             materialCard2.Controls.Add(lblAimPrediction);
@@ -8810,8 +8877,90 @@
             materialCard2.MouseState = MaterialSkin.MouseState.HOVER;
             materialCard2.Name = "materialCard2";
             materialCard2.Padding = new Padding(14);
-            materialCard2.Size = new Size(708, 612);
+            materialCard2.Size = new Size(708, 672);
             materialCard2.TabIndex = 40;
+            // 
+            // lblHeight
+            // 
+            lblHeight.AutoSize = true;
+            lblHeight.Location = new Point(436, 635);
+            lblHeight.Name = "lblHeight";
+            lblHeight.Size = new Size(43, 15);
+            lblHeight.TabIndex = 69;
+            lblHeight.Text = "Height";
+            // 
+            // lblWidth
+            // 
+            lblWidth.AutoSize = true;
+            lblWidth.Location = new Point(436, 584);
+            lblWidth.Name = "lblWidth";
+            lblWidth.Size = new Size(39, 15);
+            lblWidth.TabIndex = 68;
+            lblWidth.Text = "Width";
+            // 
+            // nmbrScreenHeight
+            // 
+            nmbrScreenHeight.Location = new Point(485, 632);
+            nmbrScreenHeight.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
+            nmbrScreenHeight.Name = "nmbrScreenHeight";
+            nmbrScreenHeight.Size = new Size(67, 23);
+            nmbrScreenHeight.TabIndex = 67;
+            nmbrScreenHeight.ValueChanged += nmbrScreenHeight_ValueChanged;
+            // 
+            // nmbrScreenWidth
+            // 
+            nmbrScreenWidth.Location = new Point(485, 581);
+            nmbrScreenWidth.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
+            nmbrScreenWidth.Name = "nmbrScreenWidth";
+            nmbrScreenWidth.Size = new Size(67, 23);
+            nmbrScreenWidth.TabIndex = 66;
+            nmbrScreenWidth.ValueChanged += nmbrScreenWidth_ValueChanged;
+            // 
+            // lblScreen
+            // 
+            lblScreen.AutoSize = true;
+            lblScreen.Depth = 0;
+            lblScreen.Font = new Font("Roboto Medium", 20F, FontStyle.Bold, GraphicsUnit.Pixel);
+            lblScreen.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            lblScreen.HighEmphasis = true;
+            lblScreen.Location = new Point(410, 538);
+            lblScreen.MouseState = MaterialSkin.MouseState.HOVER;
+            lblScreen.Name = "lblScreen";
+            lblScreen.Size = new Size(142, 24);
+            lblScreen.TabIndex = 65;
+            lblScreen.Text = "Screen Settings";
+            lblScreen.UseAccent = true;
+            // 
+            // sldrAimRecoilSpeed
+            // 
+            sldrAimRecoilSpeed.Depth = 0;
+            sldrAimRecoilSpeed.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAimRecoilSpeed.Location = new Point(17, 323);
+            sldrAimRecoilSpeed.MouseState = MaterialSkin.MouseState.HOVER;
+            sldrAimRecoilSpeed.Name = "sldrAimRecoilSpeed";
+            sldrAimRecoilSpeed.RangeMax = 500;
+            sldrAimRecoilSpeed.RangeMin = 1;
+            sldrAimRecoilSpeed.Size = new Size(330, 40);
+            sldrAimRecoilSpeed.TabIndex = 64;
+            sldrAimRecoilSpeed.Text = "TargetSwitch Speed";
+            sldrAimRecoilSpeed.UseAccentColor = true;
+            sldrAimRecoilSpeed.Click += sldrAimRecoilSpeed_onValueChanged;
+            // 
+            // swAimbotRecoil
+            // 
+            swAimbotRecoil.AutoSize = true;
+            swAimbotRecoil.Depth = 0;
+            swAimbotRecoil.Location = new Point(5, 143);
+            swAimbotRecoil.Margin = new Padding(0);
+            swAimbotRecoil.MouseLocation = new Point(-1, -1);
+            swAimbotRecoil.MouseState = MaterialSkin.MouseState.HOVER;
+            swAimbotRecoil.Name = "swAimbotRecoil";
+            swAimbotRecoil.Ripple = true;
+            swAimbotRecoil.Size = new Size(154, 37);
+            swAimbotRecoil.TabIndex = 63;
+            swAimbotRecoil.Text = "Imitate Recoil";
+            swAimbotRecoil.UseVisualStyleBackColor = true;
+            swAimbotRecoil.CheckedChanged += swAimbotRecoil_CheckedChanged;
             // 
             // txtBonesInfo
             // 
@@ -8976,57 +9125,6 @@
             iconList.Images.SetKeyName(4, "loot.png");
             iconList.Images.SetKeyName(5, "mambo-icon.png");
             // 
-            // swPlayerInfoLevel
-            // 
-            swPlayerInfoLevel.Depth = 0;
-            swPlayerInfoLevel.Font = new Font("Segoe UI", 9F);
-            swPlayerInfoLevel.Location = new Point(17, 327);
-            swPlayerInfoLevel.Margin = new Padding(0);
-            swPlayerInfoLevel.MouseLocation = new Point(-1, -1);
-            swPlayerInfoLevel.MouseState = MaterialSkin.MouseState.HOVER;
-            swPlayerInfoLevel.Name = "swPlayerInfoLevel";
-            swPlayerInfoLevel.Ripple = true;
-            swPlayerInfoLevel.Size = new Size(110, 28);
-            swPlayerInfoLevel.TabIndex = 64;
-            swPlayerInfoLevel.Text = "Level";
-            toolTip.SetToolTip(swPlayerInfoLevel, "Shows the players level");
-            swPlayerInfoLevel.UseVisualStyleBackColor = true;
-            swPlayerInfoLevel.CheckedChanged += swPlayerInfoLevel_CheckedChanged;
-            // 
-            // swPlayerInfoKD
-            // 
-            swPlayerInfoKD.Depth = 0;
-            swPlayerInfoKD.Font = new Font("Segoe UI", 9F);
-            swPlayerInfoKD.Location = new Point(169, 327);
-            swPlayerInfoKD.Margin = new Padding(0);
-            swPlayerInfoKD.MouseLocation = new Point(-1, -1);
-            swPlayerInfoKD.MouseState = MaterialSkin.MouseState.HOVER;
-            swPlayerInfoKD.Name = "swPlayerInfoKD";
-            swPlayerInfoKD.Ripple = true;
-            swPlayerInfoKD.Size = new Size(119, 28);
-            swPlayerInfoKD.TabIndex = 63;
-            swPlayerInfoKD.Text = "KDR";
-            toolTip.SetToolTip(swPlayerInfoKD, "Shows the players KD");
-            swPlayerInfoKD.UseVisualStyleBackColor = true;
-            swPlayerInfoKD.CheckedChanged += swPlayerInfoKD_CheckedChanged;
-            // 
-            // swPlayerInfoHours
-            // 
-            swPlayerInfoHours.Depth = 0;
-            swPlayerInfoHours.Font = new Font("Segoe UI", 9F);
-            swPlayerInfoHours.Location = new Point(291, 327);
-            swPlayerInfoHours.Margin = new Padding(0);
-            swPlayerInfoHours.MouseLocation = new Point(-1, -1);
-            swPlayerInfoHours.MouseState = MaterialSkin.MouseState.HOVER;
-            swPlayerInfoHours.Name = "swPlayerInfoHours";
-            swPlayerInfoHours.Ripple = true;
-            swPlayerInfoHours.Size = new Size(118, 28);
-            swPlayerInfoHours.TabIndex = 62;
-            swPlayerInfoHours.Text = "Hours";
-            toolTip.SetToolTip(swPlayerInfoHours, "Shows the players hours");
-            swPlayerInfoHours.UseVisualStyleBackColor = true;
-            swPlayerInfoHours.CheckedChanged += swPlayerInfoHours_CheckedChanged;            
-            // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -9173,6 +9271,8 @@
             materialCard3.PerformLayout();
             materialCard2.ResumeLayout(false);
             materialCard2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)nmbrScreenHeight).EndInit();
+            ((System.ComponentModel.ISupportInitialize)nmbrScreenWidth).EndInit();
             ResumeLayout(false);
         }
 
@@ -9681,7 +9781,14 @@
         //WebRadar       
         private MaterialSkin.Controls.MaterialSwitch swPlayerInfoLevel;
         private MaterialSkin.Controls.MaterialSwitch swPlayerInfoKD;
-        private MaterialSkin.Controls.MaterialSwitch swPlayerInfoHours;      
+        private MaterialSkin.Controls.MaterialSwitch swPlayerInfoHours;
+        private MaterialSkin.Controls.MaterialSlider sldrAimRecoilSpeed;
+        private MaterialSkin.Controls.MaterialSwitch swAimbotRecoil;
+        private Label lblWidth;
+        private NumericUpDown nmbrScreenHeight;
+        private NumericUpDown nmbrScreenWidth;
+        private MaterialSkin.Controls.MaterialLabel lblScreen;
+        private Label lblHeight;
     }
 }
 

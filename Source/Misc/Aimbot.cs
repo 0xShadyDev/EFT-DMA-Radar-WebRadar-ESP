@@ -28,6 +28,7 @@ namespace eft_dma_radar
         private int         saAimbotKey;
         private bool        aimbotEnabled;
         private bool        saimbotEnabled;
+        private int         recoilSpeed;
         private bool enableAimPrediction;
         private CameraManager _cameraManager { get => Memory.CameraManager; }
         private ReadOnlyDictionary<string, Player> AllPlayers { get => Memory.Players; }    
@@ -43,7 +44,9 @@ namespace eft_dma_radar
         public List<ulong> BonePointers { get; } = new List<ulong>();        
         private DateTime lastBoneReadTime = DateTime.MinValue;
         private Player TargetPlayer;
-        private readonly Vector2 screenCenter = new Vector2(1920 / 2f, 1080 / 2f);     
+        //private readonly Vector2 screenCenter = new Vector2(1920 / 2f, 1080 / 2f);
+        private int screenWidth;
+        private int screenHeight;     
         public Aimbot()
         {            
             _config = Program.Config;
@@ -64,6 +67,9 @@ namespace eft_dma_radar
             aimbotEnabled = _config.EnableAimbot;
             saimbotEnabled = _config.SAEnableAimbot;
             enableAimPrediction = _config.AimbotPrediction;
+            recoilSpeed = _config.AimbotRecoilSpeed;
+            screenHeight = _config.ScreenHeight;
+            screenWidth = _config.ScreenWidth;
             Execute();
         }      
         public void Execute()
@@ -126,6 +132,7 @@ namespace eft_dma_radar
                 {
                     if (aimbotHeld)
                     {
+                        //Memory.Chams.SetPlayerBodyChams(TargetPlayer, 4293997696);
                         NormalizeAngle(ref aimAngle);
                         localPlayer.SetRotationFr(aimAngle);
                     }                 
@@ -157,7 +164,7 @@ namespace eft_dma_radar
             }
 
             var localPosition = localPlayer.Position;
-            var screenCenter = new Vector2(1920 / 2f, 1080 / 2f);
+            var screenCenter = new Vector2(screenWidth / 2f, screenHeight / 2f);
             var players = this.AllPlayers?.Select(x => x.Value)
                         .Where(x => x.IsActive && x.IsAlive && Vector3.Distance(x.Position, localPlayer.Position) < aimbotMaxDistance)
                         .ToList();
@@ -166,7 +173,7 @@ namespace eft_dma_radar
                         .Where(x => x.IsActive && x.IsAlive && Vector3.Distance(x.Position, localPlayer.Position) < aimbotMaxDistance)
                         .Select(p =>
                 {
-                    if (Extensions.WorldToScreen(p.Position, 1920, 1080, out Vector2 screenPos))
+                    if (Extensions.WorldToScreen(p.Position, screenWidth, screenHeight, out Vector2 screenPos))
                     {
                         float screenDistance = Vector2.Distance(screenPos, screenCenter);
                         float worldDistance = Vector3.Distance(localPosition, p.Position);
@@ -251,35 +258,54 @@ namespace eft_dma_radar
             if (aimbotLeftLeg)
                 bones.Add(PlayerBones.HumanLCalf);
         }               
+        private int currentBoneIndex = 0;
+        private DateTime lastBoneSwitchTime = DateTime.MinValue;
+
         public Vector3 ReadAllBonePositions(Player player)
         {
             if (player == null || player.Name == "???" || !player.IsAlive)
             {
-                //Program.Log("Skipping invalid or dead player. Clearing target.");
                 TargetPlayer = null; // Clear the target
-                return (Vector3.Zero);
+                return Vector3.Zero;
             }
-            InitializeBonesFromConfig();
-            // Reset bone cache
-            boneCache = false;
+        
+            InitializeBonesFromConfig(); // Get enabled bones from config
+        
+            if (bones.Count == 0) return Vector3.Zero; // No bones enabled
+        
+            // **Calculate interval dynamically using recoilSpeed**
+            TimeSpan dynamicBoneSwitchInterval = TimeSpan.FromMilliseconds(recoilSpeed);
+        
+            // **Cycle bones if recoil imitation is enabled**
+            if (_config.AimbotRecoImitation && (DateTime.Now - lastBoneSwitchTime) > dynamicBoneSwitchInterval)
+            {
+                currentBoneIndex = (currentBoneIndex + 1) % bones.Count; // Switch to next enabled bone
+                lastBoneSwitchTime = DateTime.Now;
+            }
+        
+            // Select the current bone (switches if AimbotRecoImitation is enabled)
+            PlayerBones selectedBone = bones[currentBoneIndex];
 
+            // **Perform scatter read and caching**
+            boneCache = false;
             if (!boneCache)
             {
                 boneCache = true;
-                boneCounter = bones.Count + 3; // Include Fireport position and both velocities
+                boneCounter = bones.Count + 3;
                 boneScatterMap = new ScatterReadMap(boneCounter);
 
                 var baseReadRound = boneScatterMap.AddRound();
                 var derefReadRound = boneScatterMap.AddRound();
-                // Add scatter read for bones
+
                 for (int i = 0; i < bones.Count; i++)
                 {
                     var boneMatrix = Memory.ReadPtrChain(player.PlayerBody, new uint[] { 0x30, 0x30, 0x10 });
                     var basePtr = baseReadRound.AddEntry<MemPointer>(i, 0, boneMatrix, null, 0x20 + ((uint)bones[i] * 0x8));
                     derefReadRound.AddEntry<MemPointer>(i, 1, basePtr, null, 0x10);
                 }
+
                 boneScatterMap.Execute();
-                // Populate bone transforms
+
                 for (int i = 0; i < bones.Count; i++)
                 {
                     if (boneScatterMap.Results[i][1].TryGetResult<MemPointer>(out var bonePointer))
@@ -292,39 +318,17 @@ namespace eft_dma_radar
                     }
                 }
             }
-            // Retrieve the target bone position (using the first bone in the list as an example)
-            Vector3 targetBonePosition = Vector3.Zero;
-            if (bones.Count > 0 && boneTransforms.ContainsKey(bones[0]))
-            {
-                Vector3 rawBonePosition = boneTransforms[bones[0]].GetPosition();
-                targetBonePosition = rawBonePosition;
-            }
-            // Find the closest bone to the center of the screen
-            Vector2 screenCenter = new Vector2(1920 / 2f, 1080 / 2f);
-            Vector3 closestBonePosition = Vector3.Zero;
-            float closestDistance = float.MaxValue;            
-            foreach (var bone in bones)
-            {
-                if (boneScatterMap.Results[bones.IndexOf(bone)][1].TryGetResult<MemPointer>(out var bonePointer))
-                {
-                    Transform boneTransform = new Transform(bonePointer);
-                    Vector3 bonePosition = boneTransform.GetPosition();
 
-                    if (Extensions.WorldToScreen(bonePosition, 1920, 1080, out Vector2 screenPos))
-                    {
-                        float distanceToCenter = Vector2.Distance(screenPos, screenCenter);
-
-                        if (distanceToCenter < closestDistance)
-                        {
-                            closestDistance = distanceToCenter;
-                            closestBonePosition = bonePosition;
-                        }
-                    }
-                }
+            // **Retrieve the current selected bone position**
+            if (boneTransforms.ContainsKey(selectedBone))
+            {
+                return boneTransforms[selectedBone].GetPosition();
             }
-            return (closestBonePosition);
+
+            return Vector3.Zero; // Default fallback if no valid position is found
         }
-    }    
+    }
+
     public class AimbotPrediction
     {
         public struct DragElement

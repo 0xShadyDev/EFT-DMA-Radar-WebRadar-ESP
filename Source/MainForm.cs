@@ -323,13 +323,13 @@ namespace eft_dma_radar
                 this.inputCheckTimer.Elapsed += this.InputCheckTimer_Tick;
                 this.inputCheckTimer.Start();
             }
-}
+        }
 
         private void InitializePlayerlistTimer()
         {
             this.playerlistUpdateTimer = new System.Timers.Timer(5000);
             this.playerlistUpdateTimer.Elapsed += this.PlayerListUpdateTimer_Tick;
-            this.playerlistUpdateTimer.Start();        
+            this.playerlistUpdateTimer.Start();
         }
 
         private void InitializeDoubleBuffering()
@@ -882,10 +882,10 @@ namespace eft_dma_radar
             swHoverArmor.Checked = this.config.HoverArmor;
             txtTeammateID.Text = this.config.PrimaryTeammateId;
             sldrZoomSensitivity.Value = this.config.ZoomSensitivity;
-            lblKeybind.Text = ((Keys)this.config.AimbotKeybind).ToString();
             sldrUIScale.Value = this.config.UIScale;
             cboGlobalFont.SelectedIndex = this.config.GlobalFont;
             sldrFontSize.Value = this.config.GlobalFontSize;
+            lblKeybind.Text = ((Keys)this.config.AimbotKeybind).ToString();
             swAimClosest.Checked = this.config.AimbotClosest;
             swEnableAimBot.Checked = this.config.EnableAimbot;
             swHeadAim.Checked = this.config.AimbotHead;
@@ -896,6 +896,12 @@ namespace eft_dma_radar
             swAimLLeg.Checked = this.config.AimbotLeftLeg;
             sldrAimbotFOV.Value = (int)this.config.AimbotFOV;
             sldrAimDistance.Value = (int)this.config.AimbotMaxDistance;
+            swAimbotRecoil.Checked = this.config.AimbotRecoImitation;
+            sldrAimRecoilSpeed.Value = (int)this.config.AimbotRecoilSpeed;
+            nmbrScreenWidth.Value = (int)this.config.ScreenWidth;
+            nmbrScreenHeight.Value = (int)this.config.ScreenHeight;
+            swAimEnablePred.Checked = this.config.AimbotPrediction;
+            msSAEnableSilentAim.Checked = this.config.SAEnableAimbot;          
             msSAKeyBind.Text = ((Keys)this.config.SASilentAimKey).ToString();
 
 
@@ -1124,7 +1130,7 @@ namespace eft_dma_radar
             Program.Log("Hostname set to: " + config.Hostname); // Debug line
 
             // Save the Config object to the configuration file
-            
+
         }
 
         private string ExtractPublicHostname(string sshOutput)
@@ -1241,7 +1247,7 @@ namespace eft_dma_radar
             Program.Log("Hostname set to: " + config.Hostname); // Debug line
 
             // Save the Config object to the configuration file
-            
+
 
             // Provide feedback to the user
             Program.Log("Hostname saved successfully!");
@@ -1258,18 +1264,18 @@ namespace eft_dma_radar
                 Program.Log("Hostname set to: " + config.Hostname); // Debug line
 
                 // Save the Config object to the configuration file
-                
+
 
                 // Provide feedback to the user
                 Program.Log("Hostname saved successfully!");
-            Config.SaveConfig(this.config);
+                Config.SaveConfig(this.config);
             }
         }
         private void msSAEnableSilentAim_CheckedChanged(object sender, EventArgs e)
         {
             this.config.SAEnableAimbot = msSAEnableSilentAim.Checked;
             Config.SaveConfig(this.config);
-            
+
 
         }
 
@@ -1277,7 +1283,7 @@ namespace eft_dma_radar
         {
             this.config.EnableAimbot = swEnableAimBot.Checked;
             Config.SaveConfig(this.config);
-            
+
 
         }
 
@@ -1285,7 +1291,7 @@ namespace eft_dma_radar
         {
             this.config.AimbotPrediction = swAimEnablePred.Checked;
             Config.SaveConfig(this.config);
-            
+
 
         }
 
@@ -1293,10 +1299,14 @@ namespace eft_dma_radar
         {
             this.config.AimbotClosest = swAimClosest.Checked;
             Config.SaveConfig(this.config);
-            
+
 
         }
-
+        private void swAimbotRecoil_CheckedChanged(object sender, EventArgs e)
+        {
+            this.config.AimbotRecoImitation = swAimbotRecoil.Checked;
+            Config.SaveConfig(this.config);
+        }
         private void msSAKeyBind_MouseClick(object sender, MouseEventArgs e)
         {
             msSAKeyBind.Text = "Press any key or mouse button...";
@@ -1319,7 +1329,7 @@ namespace eft_dma_radar
         {
             this.config.AimbotHead = swHeadAim.Checked;
             Config.SaveConfig(this.config);
-            
+
 
         }
 
@@ -1327,7 +1337,7 @@ namespace eft_dma_radar
         {
             this.config.AimbotNeck = swAimNeck.Checked;
             Config.SaveConfig(this.config);
-            
+
 
         }
 
@@ -1335,7 +1345,7 @@ namespace eft_dma_radar
         {
             this.config.AimbotChest = swAimChest.Checked;
             Config.SaveConfig(this.config);
-            
+
 
         }
 
@@ -1343,7 +1353,7 @@ namespace eft_dma_radar
         {
             this.config.AimbotPelvis = swAimPelvis.Checked;
             Config.SaveConfig(this.config);
-            
+
 
         }
 
@@ -1351,7 +1361,7 @@ namespace eft_dma_radar
         {
             this.config.AimbotRightLeg = swAimRLeg.Checked;
             Config.SaveConfig(this.config);
-            
+
 
         }
 
@@ -1359,7 +1369,7 @@ namespace eft_dma_radar
         {
             this.config.AimbotLeftLeg = swAimLLeg.Checked;
             Config.SaveConfig(this.config);
-            
+
 
         }
 
@@ -1369,13 +1379,30 @@ namespace eft_dma_radar
             Config.SaveConfig(this.config);
 
         }
+        private void sldrAimRecoilSpeed_onValueChanged(object sender, EventArgs e)
+        {
+            this.config.AimbotRecoilSpeed = sldrAimRecoilSpeed.Value;
+            Config.SaveConfig(this.config);
 
+        }
         private void sldrAimDistance_onValueChanged(object sender, int newValue)
         {
             this.config.AimbotMaxDistance = sldrAimDistance.Value;
-            Config.SaveConfig(this.config);          
+            Config.SaveConfig(this.config);
         }
-      
+        private void nmbrScreenWidth_ValueChanged(object sender, EventArgs e)
+        {
+            this.config.ScreenWidth = (int)nmbrScreenWidth.Value;
+            Config.SaveConfig(this.config);
+
+        }
+
+        private void nmbrScreenHeight_ValueChanged(object sender, EventArgs e)
+        {
+            this.config.ScreenHeight = (int)nmbrScreenHeight.Value;
+            Config.SaveConfig(this.config);
+
+        }
         private void lblKeybind_MouseClick(object sender, MouseEventArgs e)
         {
             lblKeybind.Text = "Press any key or mouse button...";

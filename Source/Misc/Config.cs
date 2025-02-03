@@ -22,6 +22,15 @@ namespace eft_dma_radar
         [JsonPropertyName("aimbotSmoothness")]
         public int AimbotSmoothness { get; set; }
 
+        [JsonPropertyName("aimbotRecoilSpeed")]
+        public int AimbotRecoilSpeed { get; set; }
+
+        [JsonPropertyName("screenHeight")]
+        public int ScreenHeight { get; set; }
+
+        [JsonPropertyName("screenWidth")]
+        public int ScreenWidth { get; set; }
+
         [JsonPropertyName("aimbotHead")]
         public bool AimbotHead { get; set; }
 
@@ -42,6 +51,9 @@ namespace eft_dma_radar
 
         [JsonPropertyName("enableAimbot")]
         public bool EnableAimbot { get; set; }
+
+        [JsonPropertyName("aimbotRecoImitation")]
+        public bool AimbotRecoImitation { get; set; }
 
         [JsonPropertyName("aimbotClosest")]
         public bool AimbotClosest { get; set; }
@@ -618,6 +630,10 @@ namespace eft_dma_radar
             AimbotLeftLeg = false; // Disable aiming at the left leg
             EnableAimbot = false; // Enable the aimbot feature
             SAEnableAimbot = false; // Enable the aimbot feature
+            AimbotRecoImitation = true;
+            AimbotRecoilSpeed = 50;
+            ScreenWidth = 1920;
+            ScreenHeight = 1080;
             AimbotPrediction = false;
             Hostname = "localhost";            
         }
