@@ -1414,34 +1414,40 @@ namespace eft_dma_radar
         private bool WorldToScreenCombined(Player player, List<Vector3> enemyPositions, List<Vector3> screenCoords)
         {
             screenCoords.Clear(); // Clear previous results
-            screenCoords.Capacity = enemyPositions.Count;
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
 
             var temp = Memory.CameraManager.ViewMatrix;
             temp = Matrix4x4.Transpose(temp);
+
             var translationVector = new Vector3(temp.M41, temp.M42, temp.M43);
             var up = new Vector3(temp.M21, temp.M22, temp.M23);
             var right = new Vector3(temp.M11, temp.M12, temp.M13);
 
-            float halfWidth = Width / 2f;
-            float halfHeight = Height / 2f;
-
             foreach (var _Enemy in enemyPositions)
             {
-                var w = Vector3.Dot(translationVector, _Enemy) + temp.M44;
+                var w = D3DXVec3Dot(translationVector, _Enemy) + temp.M44;
 
                 if (w < 0.098f)
                 {
-                    continue; // Skip points behind the camera
+                    // If the point is behind the camera, we cannot project it
+                    screenCoords.Add(new Vector3(0, 0, 0)); // Add a default value (or handle it differently if needed)
+                    continue;
                 }
 
-                var y = Vector3.Dot(up, _Enemy) + temp.M24;
-                var x = Vector3.Dot(right, _Enemy) + temp.M14;
+                var y = D3DXVec3Dot(up, _Enemy) + temp.M24;
+                var x = D3DXVec3Dot(right, _Enemy) + temp.M14;
 
-                var screenX = halfWidth * (1f + x / w);
-                var screenY = halfHeight * (1f - y / w);
+                var screenX = Width / 2 * (1f + x / w);
+                var screenY = Height / 2 * (1f - y / w);
 
+                // Add the calculated screen coordinates
                 screenCoords.Add(new Vector3(screenX, screenY, w));
             }
+
+            stopwatch.Stop();
+            Console.WriteLine($"Combined Position Draw Time: {stopwatch.ElapsedMilliseconds} ms");
 
             return true;
         }
@@ -1458,26 +1464,26 @@ namespace eft_dma_radar
 
             var temp = Memory.CameraManager.ViewMatrix;
             temp = Matrix4x4.Transpose(temp);
-            System.Numerics.Vector3 translationVector = new(temp.M41, temp.M42, temp.M43);
-            System.Numerics.Vector3 up = new(temp.M21, temp.M22, temp.M23);
-            System.Numerics.Vector3 right = new(temp.M11, temp.M12, temp.M13);
 
-            float w = Vector3.Dot(translationVector, _Item) + temp.M44;
+
+            System.Numerics.Vector3 translationVector = new System.Numerics.Vector3(temp.M41, temp.M42, temp.M43);
+            System.Numerics.Vector3 up = new System.Numerics.Vector3(temp.M21, temp.M22, temp.M23);
+            System.Numerics.Vector3 right = new System.Numerics.Vector3(temp.M11, temp.M12, temp.M13);
+
+            float w = D3DXVec3Dot(translationVector, _Item) + temp.M44;
 
             if (w < 0.098f)
                 return false;
 
-            float y = Vector3.Dot(up, _Item) + temp.M24;
-            float x = Vector3.Dot(right, _Item) + temp.M14;
+            float y = D3DXVec3Dot(up, _Item) + temp.M24;
+            float x = D3DXVec3Dot(right, _Item) + temp.M14;
 
-            float halfWidth = this.Width / 2f;
-            float halfHeight = this.Height / 2f;
-
-            _Screen.X = halfWidth * (1f + x / w);
-            _Screen.Y = halfHeight * (1f - y / w);
+            _Screen.X = (this.Width / 2) * (1f + x / w);
+            _Screen.Y = (this.Height / 2) * (1f - y / w);
             _Screen.Z = w;
 
             return true;
+
         }
 
 
