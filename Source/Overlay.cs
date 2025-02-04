@@ -955,50 +955,38 @@ namespace eft_dma_radar
 
                             // THIS LOOT FILTER IS USING AN OLD BUGGY METHOD OF SCALING. IT IS NOT 100% ACCURATE
                             #region Item ESP
-                            // Ensure prerequisites are met
-                            if (!isESPOn || !isLootOn || this.Loot is null || Loot.Filter is null)
-                                return;
-
-                            // Cache references
-                            var loot = this.Loot;
-                            var filter = Loot.Filter;
+                            var loot = this.Loot; // cache ref
                             var lootplayer = this.LocalPlayer;
-                            var localPlayerPosition = lootplayer.Position;
-
-                            // Constants (can be made configurable)
-                            const float distFactor = 0.5f;
-                            const float baseHeight = 500f;
-                            const float baseWidth = 300f;
-
-                            foreach (var item in filter)
+                            if (loot is not null)
                             {
-                                var lootPos = item.Position; // Assume already Vector3
-                                var lootdist = System.Numerics.Vector3.Distance(localPlayerPosition, lootPos);
+                                var filter = Loot.Filter; // Get ref to collection
+                                if (filter is not null) foreach (var item in filter)
+                                    {
+                                        var localPlayerPos = localPlayer.Position;
 
-                                if (lootdist > lootLimit) // Skip items out of range
-                                    continue;
+                                        var lootPos = new System.Numerics.Vector3(item.Position.X, item.Position.Y, item.Position.Z);
+                                        var lootdist = System.Numerics.Vector3.Distance(localPlayerPos, item.Position);
 
-                                float lootheight = (baseHeight / lootdist) * distFactor;
-                                float lootwidth = (baseWidth / lootdist) * distFactor;
+                                        float distfact = 0.5f; // Distance factor (How much the rectangle will grow or shrink)
+                                        float lootheight = 500; // Height of rectangle when the player is 1m away from localplayer
+                                        float lootwidth = 300; // Width of rectangle when the player is 1m away from localplayer
+                                        lootheight = lootheight / lootdist * distfact; // Height of box = pheight / distance to local player * distance factor
+                                        lootwidth = lootwidth / lootdist * distfact; // Width of box = pheight / distance to local player * distance factor                                        
 
-                                if (WorldToScreenLootTest(lootplayer, lootPos, out var lootcoords) &&
-                                    lootcoords.X > 0 && lootcoords.Y > 0 && lootcoords.Z > 0)
-                                {
-                                    // Draw ESP box and text
-                                    _device.DrawRectangle(
-                                        new RawRectangleF(
-                                            lootcoords.X - lootwidth,
-                                            lootcoords.Y + (lootheight / 4),
-                                            lootcoords.X + lootwidth,
-                                            lootcoords.Y - lootheight),
-                                        Brushes.WHITE);
-
-                                    WriteText(
-                                        $"{item.Name}{Environment.NewLine}{Math.Round(lootdist, 0)}m",
-                                        lootcoords.X + 5,
-                                        lootcoords.Y - 25,
-                                        Brushes.WHITE);
-                                }
+                                        if (isESPOn == true && isLootOn == true)
+                                        {
+                                            // Loot ESP
+                                            WorldToScreenLootTest(lootplayer, lootPos, out var lootcoords);
+                                            if (lootcoords.X > 0 || lootcoords.Y > 0 || lootcoords.Z > 0)
+                                            {
+                                                if (lootdist <= lootLimit)
+                                                {
+                                                    _device.DrawRectangle(new RawRectangleF(lootcoords.X - lootwidth, lootcoords.Y + (lootheight / 4), lootcoords.X + lootwidth, lootcoords.Y - lootheight), Brushes.WHITE);
+                                                    WriteText(item.Name + Environment.NewLine + Math.Round(lootdist, 0) + "m", lootcoords.X + 5, lootcoords.Y - 25, Brushes.WHITE);
+                                                }
+                                            }
+                                        }
+                                    }
                             }
                             #endregion
 
