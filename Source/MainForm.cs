@@ -31,6 +31,10 @@ namespace eft_dma_radar
 {
     public partial class frmMain : MaterialForm
     {
+        private Overlay overlay;
+        public static bool showOverlay = false; // This is just for development purposes
+        public static bool isOverlayShown;
+
         private readonly Config config;
         private readonly Watchlist watchlist;
         private readonly LootFilterManager lootFilterManager;
@@ -289,6 +293,7 @@ namespace eft_dma_radar
             Keys.F2 => this.ZoomOut(5),
             Keys.F4 => swAimview.Checked = !swAimview.Checked,
             Keys.F5 => this.ToggleMap(),
+            Keys.F7 => ToggleOverlay(),
             Keys.Control | Keys.N => swNightVision.Checked = !swNightVision.Checked,
             Keys.Control | Keys.T => swThermalVision.Checked = !swThermalVision.Checked,
             _ => base.ProcessCmdKey(ref msg, keyData),
@@ -1684,6 +1689,26 @@ namespace eft_dma_radar
 
                 panel.Controls.Add(playerCard);
             }
+        }
+
+        // Overlay Method
+        private bool ToggleOverlay()
+        {
+            if (!isOverlayShown)
+            {
+                if (overlay is null || overlay.IsDisposed) overlay = new Overlay();
+
+                overlay.Show();
+                isOverlayShown = true;
+            }
+            else
+            {
+                isOverlayShown = false;
+            }
+
+            return true;
+
+            return true;
         }
         #endregion
 

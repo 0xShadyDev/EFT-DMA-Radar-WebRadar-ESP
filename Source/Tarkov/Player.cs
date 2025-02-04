@@ -15,6 +15,75 @@ namespace eft_dma_radar
         private static Dictionary<string, int> _groups = new(StringComparer.OrdinalIgnoreCase);
         private GearManager _gearManager;
 
+        #region BonePosition
+        public Vector3 HeadPosition
+        {
+            get => this.Bones.TryGetValue(PlayerBones.HumanHead, out var bone)
+                   ? bone.Position
+                   : Vector3.Zero;
+        }
+        public Vector3 Spine3Position
+        {
+            get => this.Bones.TryGetValue(PlayerBones.HumanSpine3, out var bone)
+                    ? bone.Position
+                    : Vector3.Zero;
+        }
+        public Vector3 LPalmPosition
+        {
+            get => this.Bones.TryGetValue(PlayerBones.HumanLPalm, out var bone)
+                   ? bone.Position
+                   : Vector3.Zero;
+        }
+        public Vector3 RPalmPosition
+        {
+            get => this.Bones.TryGetValue(PlayerBones.HumanRPalm, out var bone)
+                    ? bone.Position
+                    : Vector3.Zero;
+        }
+        public Vector3 PelvisPosition
+        {
+            get => this.Bones.TryGetValue(PlayerBones.HumanPelvis, out var bone)
+                   ? bone.Position
+                   : Vector3.Zero;
+        }
+        public Vector3 LFootPosition
+        {
+            get => this.Bones.TryGetValue(PlayerBones.HumanLFoot, out var bone)
+                   ? bone.Position
+                   : Vector3.Zero;
+        }
+        public Vector3 RFootPosition
+        {
+            get => this.Bones.TryGetValue(PlayerBones.HumanRFoot, out var bone)
+                   ? bone.Position
+                   : Vector3.Zero;
+        }
+        public Vector3 LForearm1Position
+        {
+            get => this.Bones.TryGetValue(PlayerBones.HumanLForearm1, out var bone)
+                    ? bone.Position
+                    : Vector3.Zero;
+        }
+        public Vector3 RForearm1Position
+        {
+            get => this.Bones.TryGetValue(PlayerBones.HumanRForearm1, out var bone)
+                   ? bone.Position
+                   : Vector3.Zero;
+        }
+        public Vector3 LCalfPosition
+        {
+            get => this.Bones.TryGetValue(PlayerBones.HumanLCalf, out var bone)
+                   ? bone.Position
+                   : Vector3.Zero;
+        }
+        public Vector3 RCalfPosition
+        {
+            get => this.Bones.TryGetValue(PlayerBones.HumanRCalf, out var bone)
+                   ? bone.Position
+                   : Vector3.Zero;
+        }
+        #endregion
+
         #region PlayerProperties
         /// <summary>
         /// Player is a PMC Operator.

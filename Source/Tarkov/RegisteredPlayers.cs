@@ -410,14 +410,22 @@ namespace eft_dma_radar
         
                         if (checkAmmo && player.IsLocalPlayer)
                             player.SetAmmo();
-        
+
                         if (checkBones && player.IsActive && player.IsAlive)
-                            if (player.Bones.TryGetValue(PlayerBones.HumanHead, out var bone))
+                        {
+                            foreach (var boneType in Player.RequiredBones)
                             {
-                                if (!bone.UpdatePosition()) 
-                                    player.RefreshBoneTransforms();
+                                if (player.Bones.TryGetValue(boneType, out var bone))
+                                {
+                                    if (!bone.UpdatePosition())
+                                    {
+                                        player.RefreshBoneTransforms();
+                                        break; // Exit the loop after refreshing, as all bones are now updated
+                                    }
+                                }
                             }
-        
+                        }
+
                         if (checkVelocity && player.IsActive && player.IsAlive)
                         {
                             if (scatterMap.Results[i][1].TryGetResult<Vector3>(out var velocity))
