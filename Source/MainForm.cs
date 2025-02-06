@@ -31,8 +31,7 @@ namespace eft_dma_radar
 {
     public partial class frmMain : MaterialForm
     {
-        private Overlay overlay;
-        public static bool showOverlay = false; // This is just for development purposes
+        private Overlay overlay;       
         public static bool isOverlayShown;
 
         private readonly Config config;
@@ -1705,8 +1704,6 @@ namespace eft_dma_radar
             {
                 isOverlayShown = false;
             }
-
-            return true;
 
             return true;
         }

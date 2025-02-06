@@ -245,6 +245,7 @@
     public struct StackSlot // EFT.InventoryLogic.StackSlot : Object, IContainer
     {
         public const uint Items = 0x10; // [10] _items : System.Collections.Generic.List<Item>
+        public const uint MaxCount = 0x38; // [38] MaxCount : System.Int32
     }
 
     public struct ItemTemplate //EFT.InventoryLogic.ItemTemplate

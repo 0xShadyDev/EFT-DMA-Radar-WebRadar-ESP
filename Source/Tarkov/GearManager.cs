@@ -390,6 +390,7 @@ namespace eft_dma_radar
                 var cartridges = round3.AddEntry<ulong>(i, 2, containedItem, null, Offsets.LootItemBase.Cartridges);
 
                 var cartridgeStack = round4.AddEntry<ulong>(i, 3, cartridges, null, Offsets.StackSlot.Items);
+                var maxCount = round4.AddEntry<int>(i, 4, cartridges, null, Offsets.StackSlot.MaxCount);
 
                 var cartridgeStackList = round5.AddEntry<ulong>(i, 4, cartridgeStack, null, Offsets.UnityList.Base);
                 var cartridgeStackCount = round5.AddEntry<int>(i, 5, cartridgeStack, null, Offsets.UnityList.Count);
@@ -400,6 +401,8 @@ namespace eft_dma_radar
             for (int i = 0; i < count; i++)
             {
                 if (!scatterReadMap.Results[i][3].TryGetResult<ulong>(out var cartridgeStack))
+                    return;
+                if (!scatterReadMap.Results[i][4].TryGetResult<int>(out var maxCount))
                     return;
                 if (!scatterReadMap.Results[i][4].TryGetResult<ulong>(out var cartridgeStackList))
                     return;
@@ -456,7 +459,8 @@ namespace eft_dma_radar
                     Thermal = this.ActiveWeapon.Item.GearInfo.Thermal,
                     NightVision = this.ActiveWeapon.Item.GearInfo.NightVision,
                     AmmoType = ammoType,
-                    AmmoCount = ammoCount
+                    AmmoCount = ammoCount,
+                    MaxMagCount = maxCount
                 };
 
                 this.ActiveWeapon.Item.GearInfo = newGearInfo;
@@ -469,6 +473,7 @@ namespace eft_dma_radar
             public string NightVision;
             public string AmmoType;
             public int AmmoCount;
+            public int MaxMagCount;
         }
 
         public struct GearSlot

@@ -16,72 +16,20 @@ namespace eft_dma_radar
         private GearManager _gearManager;
 
         #region BonePosition
-        public Vector3 HeadPosition
-        {
-            get => this.Bones.TryGetValue(PlayerBones.HumanHead, out var bone)
-                   ? bone.Position
-                   : Vector3.Zero;
-        }
-        public Vector3 Spine3Position
-        {
-            get => this.Bones.TryGetValue(PlayerBones.HumanSpine3, out var bone)
-                    ? bone.Position
-                    : Vector3.Zero;
-        }
-        public Vector3 LPalmPosition
-        {
-            get => this.Bones.TryGetValue(PlayerBones.HumanLPalm, out var bone)
-                   ? bone.Position
-                   : Vector3.Zero;
-        }
-        public Vector3 RPalmPosition
-        {
-            get => this.Bones.TryGetValue(PlayerBones.HumanRPalm, out var bone)
-                    ? bone.Position
-                    : Vector3.Zero;
-        }
-        public Vector3 PelvisPosition
-        {
-            get => this.Bones.TryGetValue(PlayerBones.HumanPelvis, out var bone)
-                   ? bone.Position
-                   : Vector3.Zero;
-        }
-        public Vector3 LFootPosition
-        {
-            get => this.Bones.TryGetValue(PlayerBones.HumanLFoot, out var bone)
-                   ? bone.Position
-                   : Vector3.Zero;
-        }
-        public Vector3 RFootPosition
-        {
-            get => this.Bones.TryGetValue(PlayerBones.HumanRFoot, out var bone)
-                   ? bone.Position
-                   : Vector3.Zero;
-        }
-        public Vector3 LForearm1Position
-        {
-            get => this.Bones.TryGetValue(PlayerBones.HumanLForearm1, out var bone)
-                    ? bone.Position
-                    : Vector3.Zero;
-        }
-        public Vector3 RForearm1Position
-        {
-            get => this.Bones.TryGetValue(PlayerBones.HumanRForearm1, out var bone)
-                   ? bone.Position
-                   : Vector3.Zero;
-        }
-        public Vector3 LCalfPosition
-        {
-            get => this.Bones.TryGetValue(PlayerBones.HumanLCalf, out var bone)
-                   ? bone.Position
-                   : Vector3.Zero;
-        }
-        public Vector3 RCalfPosition
-        {
-            get => this.Bones.TryGetValue(PlayerBones.HumanRCalf, out var bone)
-                   ? bone.Position
-                   : Vector3.Zero;
-        }
+        private Vector3 GetBonePosition(PlayerBones bone) =>
+    this.Bones.TryGetValue(bone, out var boneValue) ? boneValue.Position : Vector3.Zero;
+        public Vector3 BasePosition => GetBonePosition(PlayerBones.HumanBase);
+        public Vector3 HeadPosition => GetBonePosition(PlayerBones.HumanHead);
+        public Vector3 Spine3Position => GetBonePosition(PlayerBones.HumanSpine3);
+        public Vector3 LPalmPosition => GetBonePosition(PlayerBones.HumanLPalm);
+        public Vector3 RPalmPosition => GetBonePosition(PlayerBones.HumanRPalm);
+        public Vector3 PelvisPosition => GetBonePosition(PlayerBones.HumanPelvis);
+        public Vector3 LFootPosition => GetBonePosition(PlayerBones.HumanLFoot);
+        public Vector3 RFootPosition => GetBonePosition(PlayerBones.HumanRFoot);
+        public Vector3 LForearm1Position => GetBonePosition(PlayerBones.HumanLForearm1);
+        public Vector3 RForearm1Position => GetBonePosition(PlayerBones.HumanRForearm1);
+        public Vector3 LCalfPosition => GetBonePosition(PlayerBones.HumanLCalf);
+        public Vector3 RCalfPosition => GetBonePosition(PlayerBones.HumanRCalf);
         #endregion
 
         #region PlayerProperties
@@ -450,7 +398,7 @@ namespace eft_dma_radar
             }
         }
         #endregion
-    #region Aimbot
+        #region Aimbot
     
         public bool SetAmmo()
         {
@@ -945,58 +893,58 @@ namespace eft_dma_radar
         /// <summary>
         /// Gets the pointers/transforms of the required bones
         /// </summary>
-        private void SetupBones()
+        private ulong GetBoneMatrix()
+        {
+            return Memory.ReadPtrChain(this.PlayerBody, new uint[] { 0x30, 0x30, 0x10 });
+        }
+
+        private ulong GetBonePointer(ulong boneMatrix, PlayerBones bone)
+        {
+            var boneOffset = 0x20 + ((uint)bone * 0x8);
+            return Memory.ReadPtrChain(boneMatrix, new uint[] { boneOffset, 0x10 });
+        }
+
+        private void ProcessBone(ulong boneMatrix, PlayerBones bone, bool isRefresh = false)
+        {
+            var bonePointer = GetBonePointer(boneMatrix, bone);
+            if (bonePointer == 0) return;
+
+            if (isRefresh && this._bones.TryGetValue(bone, out var boneTransform))
+            {
+                boneTransform.UpdateTransform(bonePointer);
+            }
+            else
+            {
+                this._bones.TryAdd(bone, new Bone(bonePointer));
+            }
+        }
+
+        private void ProcessBones(bool isRefresh, string operation)
         {
             try
             {
-                var boneMatrix = Memory.ReadPtrChain(this.PlayerBody, new uint[] { 0x30, 0x30, 0x10 });
-
-                if (boneMatrix == 0)
-                    return;
+                var boneMatrix = GetBoneMatrix();
+                if (boneMatrix == 0) return;
 
                 foreach (var bone in Player.RequiredBones)
                 {
-                    var boneOffset = 0x20 + ((uint)bone * 0x8);
-                    var bonePointer = Memory.ReadPtrChain(boneMatrix, new uint[] { boneOffset, 0x10 });
-
-                    if (bonePointer == 0)
-                        continue;
-
-                    this._bones.TryAdd(bone, new Bone(bonePointer));
+                    ProcessBone(boneMatrix, bone, isRefresh);
                 }
             }
             catch (Exception ex)
             {
-                Program.Log($"ERROR setting up bones for Player '{this.Name}': {ex}");
+                Program.Log($"ERROR {operation} bones for Player '{this.Name}': {ex}");
             }
+        }
+
+        private void SetupBones()
+        {
+            ProcessBones(false, "setting up");
         }
 
         public void RefreshBoneTransforms()
         {
-            try
-            {
-                var boneMatrix = Memory.ReadPtrChain(this.PlayerBody, new uint[] { 0x30, 0x30, 0x10 });
-                if (boneMatrix == 0)
-                    return;
-
-                foreach (var bone in Player.RequiredBones)
-                {
-                    var boneOffset = 0x20 + ((uint)bone * 0x8);
-                    var bonePointer = Memory.ReadPtrChain(boneMatrix, new uint[] { boneOffset, 0x10 });
-
-                    if (bonePointer == 0)
-                        continue;
-
-                    if (this._bones.TryGetValue(bone, out var boneTransform))
-                        boneTransform.UpdateTransform(bonePointer);
-                    else
-                        this._bones.TryAdd(bone, new Bone(bonePointer));
-                }
-            }
-            catch (Exception ex)
-            {
-                Program.Log($"ERROR refreshing bones for Player '{this.Name}': {ex}");
-            }
+            ProcessBones(true, "refreshing");
         }
 
         /// <summary>
