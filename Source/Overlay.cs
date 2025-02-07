@@ -146,9 +146,9 @@ namespace eft_dma_radar
             var fontDescription = new SharpDX.Direct3D9.FontDescription
             {
                 FaceName = "Tarkov-Regular", 
-                Height = 15,        
-                Weight = SharpDX.Direct3D9.FontWeight.Normal, 
-                MipLevels = 0,      
+                Height = 20,        
+                Weight = SharpDX.Direct3D9.FontWeight.Bold, 
+                MipLevels = 1,      
                 Quality = SharpDX.Direct3D9.FontQuality.ClearTypeNatural
             };
 
