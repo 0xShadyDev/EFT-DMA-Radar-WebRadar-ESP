@@ -235,24 +235,25 @@ namespace eft_dma_radar
 
         private void RenderOverlay()
         {
-            WriteTopLeftText("Tarkov Overlay", Color.White, 15, "Tarkov");
+            WriteTopLeftText("Tarkov Overlay", Color.White, 13, "Tarkov");
+            WriteTopLeftText("Mem/s: " + Memory.Ticks, Color.White, 13, "Tarkov", 10, 50);
 
             if (_localPlayer is null)
             {
-                WriteTopLeftText("NOT IN RAID", Color.Red, 15, "Tarkov", 10, 30);
+                WriteTopLeftText("NOT IN RAID", Color.Red, 13, "Tarkov", 10, 30);
                 return;
             }
 
             if (_isInGame)
             {
-                WriteTopLeftText("IN RAID", Color.Green, 15, "Tarkov", 10, 30);
+                WriteTopLeftText("IN RAID", Color.LimeGreen, 13, "Tarkov", 10, 30);
                 RenderPlayers(_localPlayer);
                 RenderLoot(_localPlayer);
                 RenderWorldObjects(_localPlayer);
             }
             else
             {
-                WriteTopLeftText("NOT IN RAID", Color.Red, 15, "Tarkov", 10, 30);
+                WriteTopLeftText("NOT IN RAID", Color.Red, 13, "Tarkov", 10, 30);
             }
         }
 
@@ -324,7 +325,7 @@ namespace eft_dma_radar
                     (int)lootCoords.X + 5,
                     (int)lootCoords.Y - 25,
                     Color.DeepSkyBlue,
-                    15,
+                    13,
                     "Tarkov-Regular"
                 );
             }
@@ -343,8 +344,8 @@ namespace eft_dma_radar
                     $"{lootContainer.Name}{Environment.NewLine}{Math.Round(lootDist, 0)}m",
                     (int)lootCoords.X + 5,
                     (int)lootCoords.Y - 25,
-                    Color.DodgerBlue,
-                    15,
+                    Color.Aqua,
+                    13,
                     "Tarkov-Regular"
                 );
             }
@@ -363,8 +364,8 @@ namespace eft_dma_radar
                     $"{lootCorpse.Name}{Environment.NewLine}{Math.Round(lootDist, 0)}m",
                     (int)lootCoords.X + 5,
                     (int)lootCoords.Y - 25,
-                    Color.Pink,
-                    15,
+                    Color.DeepPink,
+                    13,
                     "Tarkov-Regular"
                 );
             }
@@ -385,7 +386,7 @@ namespace eft_dma_radar
                     (int)questItemCoords.X + 5,
                     (int)questItemCoords.Y - 25,
                     Color.HotPink,
-                    15,
+                    13,
                     "Tarkov-Regular"
                 );
             }
@@ -442,7 +443,7 @@ namespace eft_dma_radar
                 var exfilCoords = screenCoords[index++];
                 if (exfilCoords.X > 0 || exfilCoords.Y > 0 || exfilCoords.Z > 0)
                 {
-                    WriteText(exfil.Name, (int)exfilCoords.X + 5, (int)exfilCoords.Y - 25, Color.LimeGreen, 15, "Tarkov-Regular");
+                    WriteText(exfil.Name, (int)exfilCoords.X + 5, (int)exfilCoords.Y - 25, Color.LimeGreen, 13, "Tarkov-Regular");
                 }
             }
         }
@@ -457,7 +458,7 @@ namespace eft_dma_radar
                 var grenadeCoords = screenCoords[index++];
                 if (grenadeCoords.X > 0 || grenadeCoords.Y > 0 || grenadeCoords.Z > 0)
                 {
-                    WriteText("Grenade", (int)grenadeCoords.X + 5, (int)grenadeCoords.Y - 25, Color.Red, 15, "Tarkov-Regular");
+                    WriteText("Grenade", (int)grenadeCoords.X + 5, (int)grenadeCoords.Y - 25, Color.Red, 13, "Tarkov-Regular");
                 }
             }
         }
@@ -475,7 +476,7 @@ namespace eft_dma_radar
                 if (fromCoords.X > 0 && fromCoords.Y > 0 && toCoords.X > 0 && toCoords.Y > 0)
                 {
                     DrawLine((int)fromCoords.X, (int)fromCoords.Y, (int)toCoords.X, (int)toCoords.Y, Color.Red);
-                    WriteText("Tripwire", (int)((fromCoords.X + toCoords.X) / 2), (int)((fromCoords.Y + toCoords.Y) / 2 - 25), Color.White, 15, "Tarkov-Regular");
+                    WriteText("Tripwire", (int)((fromCoords.X + toCoords.X) / 2), (int)((fromCoords.Y + toCoords.Y) / 2 - 25), Color.White, 13, "Tarkov-Regular");
                 }
             }
         }
@@ -526,7 +527,7 @@ namespace eft_dma_radar
             string distance = "ERROR";
             Color color = Color.White;
             string fontFamily = "Tarkov-Regular";
-            int fontSize = 15;
+            int fontSize = 13;
 
             switch (player.Type)
             {
@@ -583,11 +584,11 @@ namespace eft_dma_radar
                 case PlayerType.Teammate when IsTeamOn && dist <= TeamLimit:
                     if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
                     {
-                        DrawSkeletonLines(coords, Color.Green);
+                        DrawSkeletonLines(coords, Color.LimeGreen);
                     }
                     name = player.Name;
                     distance = $"[{Math.Round(dist, 0)}m]";
-                    color = Color.Green;
+                    color = Color.LimeGreen;
                     break;
 
                 case PlayerType.Cultist when IsScavOn && dist <= ScavLimit:
@@ -615,7 +616,7 @@ namespace eft_dma_radar
             WriteText(distance, (int)(baseCoords.X - (boxWidth / 2)), (int)(baseCoords.Y + boxHeight) - 20, color, fontSize, fontFamily);
         }
 
-        private void WriteText(string msg, int x, int y, System.Drawing.Color color, float fontSize = 15, string fontFamily = "Arial")
+        private void WriteText(string msg, int x, int y, System.Drawing.Color color, float fontSize = 13, string fontFamily = "Arial")
         {
             // Convert System.Drawing.Color to SharpDX.Color
             var sharpDxColor = new SharpDX.Color(color.R, color.G, color.B, color.A);
@@ -624,7 +625,7 @@ namespace eft_dma_radar
             _font.DrawText(_sprite, msg, x, y, sharpDxColor);
         }
 
-        private void WriteTopLeftText(string msg, Color color, float fontSize = 15, string fontFamily = "Arial", int xOffset = 10, int yOffset = 10)
+        private void WriteTopLeftText(string msg, Color color, float fontSize = 13, string fontFamily = "Arial", int xOffset = 10, int yOffset = 10)
         {
             WriteText(msg, xOffset, yOffset, color, fontSize, fontFamily);
         }

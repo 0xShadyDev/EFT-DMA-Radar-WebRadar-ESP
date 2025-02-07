@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;
 using System.Security.Policy;
+using System.Threading.Tasks;
 
 namespace eft_dma_radar
 {
@@ -15,7 +16,7 @@ namespace eft_dma_radar
         private readonly ulong _listBase;
         private readonly Stopwatch _regSW = new();
         private readonly Stopwatch _healthSW = new();
-        private readonly Stopwatch _AmmoSw = new();        
+        private readonly Stopwatch _AmmoSw = new();
         private readonly Stopwatch _boneSW = new();
         private readonly Stopwatch _velocitySW = new();
         private readonly Stopwatch _weaponSW = new();
@@ -28,10 +29,7 @@ namespace eft_dma_radar
         #region Getters
         public ReadOnlyDictionary<string, Player> Players { get; }
 
-        private bool IsAtHideout
-        {
-            get => Memory.InHideout;
-        }
+        private bool IsAtHideout => Memory.InHideout;
 
         public int PlayerCount
         {
@@ -67,9 +65,6 @@ namespace eft_dma_radar
         }
         #endregion
 
-        /// <summary>
-        /// RegisteredPlayers List Constructor.
-        /// </summary>
         public RegisteredPlayers(ulong baseAddr)
         {
             this._base = baseAddr;
@@ -84,9 +79,6 @@ namespace eft_dma_radar
         }
 
         #region Update List/Player Functions
-        /// <summary>
-        /// Updates the ConcurrentDictionary of 'Players'
-        /// </summary>
         public void UpdateList()
         {
             if (this._regSW.ElapsedMilliseconds < 500)
@@ -151,23 +143,23 @@ namespace eft_dma_radar
 
                 scatterMap2.Execute();
 
-                for (int i = 0; i < count; i++)
+                Parallel.For(0, count, i =>
                 {
                     if (!scatterMap.Results[i][0].TryGetResult<ulong>(out var playerBase))
-                        continue;
+                        return;
                     if (!scatterMap.Results[i][4].TryGetResult<string>(out var className))
-                        continue;
+                        return;
                     if (!scatterMap2.Results[i][1].TryGetResult<ulong>(out var profilePtr))
-                        continue;
+                        return;
                     if (!scatterMap2.Results[i][2].TryGetResult<ulong>(out var playerID))
-                        continue;
+                        return;
 
                     var profileID = Memory.ReadUnityString(playerID);
 
                     if (string.IsNullOrEmpty(profileID) || profileID.Length != 24 && profileID.Length != 36 || className.Length < 0)
                     {
                         Program.Log($"Invalid ProfileID: {profileID} - {className}");
-                        continue;
+                        return;
                     }
 
                     registered.Add(profileID);
@@ -203,7 +195,7 @@ namespace eft_dma_radar
 
                             if (newPlayer.Type == PlayerType.LocalPlayer)
                                 if (this._players.Values.Any(x => x.Type == PlayerType.LocalPlayer))
-                                    continue; // Don't allocate more than one LocalPlayer on accident
+                                    return; // Don't allocate more than one LocalPlayer on accident
 
                             if (this._players.TryAdd(profileID, newPlayer))
                                 Program.Log($"Player '{newPlayer.Name}' allocated.");
@@ -213,7 +205,7 @@ namespace eft_dma_radar
                             Program.Log($"ERROR - Failed to read player data for '{profileID}'");
                         }
                     }
-                }
+                });
 
                 foreach (var player in this._players)
                 {
@@ -269,40 +261,37 @@ namespace eft_dma_radar
             }
         }
 
-        /// <summary>
-        /// Updates all 'Player' values (Position,health,direction,etc.)
-        /// </summary>
         public void UpdateAllPlayers()
         {
             if (this.IsAtHideout)
                 return;
-        
+
             try
             {
                 var players = this._players
                     .Select(x => x.Value)
                     .Where(x => x.IsActive && x.IsAlive)
                     .ToArray();
-        
+
                 if (players.Length == 0)
                     return;
-        
+
                 if (this._localPlayerGroup == -100)
                 {
                     var localPlayer = this._players.FirstOrDefault(x => x.Value.Type is PlayerType.LocalPlayer).Value;
-        
+
                     if (localPlayer is not null)
                         this._localPlayerGroup = localPlayer.GroupID;
                 }
-        
+
                 var checkHealth = this._healthSW.ElapsedMilliseconds > 1000;
                 var checkWeaponInfo = this._weaponSW.ElapsedMilliseconds > 2000;
-                var checkAmmo = this._AmmoSw.ElapsedMilliseconds > 2500;                
-                var checkBones = this._boneSW.ElapsedMilliseconds > 16 && players.Any(x => x.IsHumanActive);
+                var checkAmmo = this._AmmoSw.ElapsedMilliseconds > 2500;
+                var checkBones = this._boneSW.ElapsedMilliseconds > 16;
                 var checkVelocity = this._velocitySW.ElapsedMilliseconds > 16 && players.Any(x => x.IsHumanActive);
                 var checkFireArmPos = this._boneSW.ElapsedMilliseconds > 16; // Add firearm position check using the bone stopwatch
                 var initialisingMono = Memory.Toolbox?.InitialisingMonoAddresses ?? false;
-        
+
                 var scatterMap = new ScatterReadMap(players.Length);
                 var round1 = scatterMap.AddRound();
                 var round2 = scatterMap.AddRound();
@@ -310,11 +299,11 @@ namespace eft_dma_radar
                 var round4 = scatterMap.AddRound();
                 var round5 = scatterMap.AddRound();
                 var round6 = scatterMap.AddRound();
-        
+
                 for (int i = 0; i < players.Length; i++)
                 {
                     var player = players[i];
-        
+
                     if (player.LastUpdate)
                     {
                         var corpse = round1.AddEntry<ulong>(i, 6, player.CorpsePtr);
@@ -327,11 +316,11 @@ namespace eft_dma_radar
                         {
                             var health = round1.AddEntry<int>(i, 6, player.HealthController, null, Offsets.HealthController.HealthStatus);
                         }
-        
+
                         if (checkWeaponInfo && !player.IsZombie)
                         {
                             ScatterReadEntry<ulong> handsController, currentItem, currentItemTemplate, currentItemID;
-        
+
                             if (player.isOfflinePlayer)
                             {
                                 handsController = round1.AddEntry<ulong>(i, 8, player.Base, null, Offsets.Player.HandsController);
@@ -343,34 +332,34 @@ namespace eft_dma_radar
                                 handsController = round2.AddEntry<ulong>(i, 8, handsController, null, Offsets.ObservedPlayerView.To_HandsController[1]);
                                 currentItem = round3.AddEntry<ulong>(i, 9, handsController, null, Offsets.ObservedHandsController.Item);
                             }
-        
+
                             currentItemTemplate = round4.AddEntry<ulong>(i, 10, currentItem, null, Offsets.LootItemBase.ItemTemplate);
                             currentItemID = round5.AddEntry<ulong>(i, 11, currentItemTemplate, null, Offsets.ItemTemplate.MongoID + Offsets.MongoID.ID);
                         }
                     }
                 }
-        
+
                 scatterMap.Execute();
-        
-                for (int i = 0; i < players.Length; i++)
+
+                Parallel.For(0, players.Length, i =>
                 {
                     var player = players[i];
-        
+
                     if (player.Type is PlayerType.Default)
-                        continue;
-        
+                        return;
+
                     if (this._localPlayerGroup != -100 && player.GroupID != -1 && player.IsHumanHostile && player.GroupID == this._localPlayerGroup)
                         player.Type = PlayerType.Teammate;
-        
+
                     if (player.LastUpdate)
                     {
                         var doChams = Program.Config.MasterSwitch && Program.Config.Chams["Enabled"];
-        
+
                         if (player.Position == DEFAULT_POSITION)
                         {
                             player.IsActive = false;
                             Program.Log($"{player.Name} exfiltrated");
-        
+
                             if (doChams)
                                 Memory.Chams.RemovePointersForPlayer(player);
                         }
@@ -391,11 +380,11 @@ namespace eft_dma_radar
                                         Memory.Chams.RestorePointersForPlayer(player);
                                 }
                             }
-        
+
                             player.IsAlive = false;
                             Program.Log($"{player.Name} died");
                         }
-        
+
                         player.LastUpdate = false;
                     }
                     else
@@ -403,11 +392,11 @@ namespace eft_dma_radar
                         var rotation = scatterMap.Results[i][0].TryGetResult<Vector2>(out var rot);
                         var p2 = player.SetRotation(rot);
                         var p3 = true;
-        
+
                         if (checkHealth && !player.IsLocalPlayer)
                             if (scatterMap.Results[i][6].TryGetResult<int>(out var hp))
                                 player.SetHealth(hp);
-        
+
                         if (checkAmmo && player.IsLocalPlayer)
                             player.SetAmmo();
 
@@ -420,7 +409,7 @@ namespace eft_dma_radar
                                     if (!bone.UpdatePosition())
                                     {
                                         player.RefreshBoneTransforms();
-                                        break; // Exit the loop after refreshing, as all bones are now updated
+                                        break;
                                     }
                                 }
                             }
@@ -431,56 +420,55 @@ namespace eft_dma_radar
                             if (scatterMap.Results[i][1].TryGetResult<Vector3>(out var velocity))
                                 player.SetVelocity(velocity);
                         }
-        
+
                         if (checkFireArmPos && player.IsLocalPlayer)
                             player.SetFireArmPos();
-        
+
                         if (checkWeaponInfo && !player.IsZombie)
                         {
                             try
                             {
                                 scatterMap.Results[i][9].TryGetResult<ulong>(out var currentItem);
                                 scatterMap.Results[i][11].TryGetResult<ulong>(out var itemIDPtr);
-        
+
                                 if (itemIDPtr != 0)
                                 {
                                     var slotsRefreshed = player.GearManager.CheckGearSlots();
                                     var itemID = Memory.ReadUnityString(itemIDPtr);
                                     var gearItem = player.GearManager.GearItems.FirstOrDefault(x => x.ID == itemID);
-        
+
                                     if (!slotsRefreshed.Any(x => x.Pointer == gearItem.Slot.Pointer))
                                         player.GearManager.RefreshActiveWeaponAmmoInfo(currentItem, itemID);
-        
+
                                     player.UpdateItemInHands();
                                 }
-        
+
                                 player.CheckForRequiredGear();
                             }
                             catch { }
                         }
-        
+
                         if (p2 && p3)
                             player.ErrorCount = 0;
                         else
                             player.ErrorCount++;
                     }
-                }
-        
+                });
+
                 if (checkHealth)
                     this._healthSW.Restart();
-        
+
                 if (checkBones)
                     this._boneSW.Restart();
-        
+
                 if (checkVelocity)
                     this._velocitySW.Restart();
-        
+
                 if (checkWeaponInfo)
                     this._weaponSW.Restart();
-        
+
                 if (checkAmmo)
-                    this._AmmoSw.Restart();                    
-        
+                    this._AmmoSw.Restart();
             }
             catch (Exception ex)
             {

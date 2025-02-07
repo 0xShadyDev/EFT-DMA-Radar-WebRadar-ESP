@@ -7,17 +7,16 @@ using eft_dma_radar.Source.Tarkov;
 
 namespace eft_dma_radar
 {
-    /// <summary>
-    /// Class containing Game Player Data.
-    /// </summary>
     public class Player
     {
-        private static Dictionary<string, int> _groups = new(StringComparer.OrdinalIgnoreCase);
+        private static readonly Dictionary<string, int> _groups = new(StringComparer.OrdinalIgnoreCase);
         private GearManager _gearManager;
+        private readonly ConcurrentDictionary<PlayerBones, Bone> _bones = new();
 
         #region BonePosition
         private Vector3 GetBonePosition(PlayerBones bone) =>
-    this.Bones.TryGetValue(bone, out var boneValue) ? boneValue.Position : Vector3.Zero;
+            this.Bones.TryGetValue(bone, out var boneValue) ? boneValue.Position : Vector3.Zero;
+
         public Vector3 BasePosition => GetBonePosition(PlayerBones.HumanBase);
         public Vector3 HeadPosition => GetBonePosition(PlayerBones.HumanHead);
         public Vector3 Spine3Position => GetBonePosition(PlayerBones.HumanSpine3);
@@ -33,132 +32,46 @@ namespace eft_dma_radar
         #endregion
 
         #region PlayerProperties
-        /// <summary>
-        /// Player is a PMC Operator.
-        /// </summary>
         public bool IsPMC { get; set; }
-        /// <summary>
-        /// Player is a Local PMC Operator.
-        /// </summary>
         public bool IsLocalPlayer { get; set; }
-        /// <summary>
-        /// Player is Alive/Not Dead.
-        /// </summary>
         public volatile bool IsAlive = true;
-        /// <summary>
-        /// Player is Active (has not exfil'd).
-        /// </summary>
         public volatile bool IsActive = true;
-        /// <summary>
-        /// Account UUID for Human Controlled Players.
-        /// </summary>
         public string AccountID { get; set; }
         public string ProfileID { get; set; }
-        /// <summary>
-        /// Player name.
-        /// </summary>
         public string Name { get; set; } = "";
-        /// <summary>
-        /// Player Level (Based on experience).
-        /// </summary>
         public int Level { get; private set; } = 0;
-        /// <summary>
-        /// Player's Kill/Death Average
-        /// </summary>
         public float KDA { get; private set; } = -1f;
-        /// <summary>
-        /// Player's total hours
-        /// </summary>
         public float Hours { get; private set; } = -1f;
-        /// <summary>
-        /// Group that the player belongs to.
-        /// </summary>
         public int GroupID { get; set; } = -1;
-        /// <summary>
-        /// Type of player unit.
-        /// </summary>
         public PlayerType Type { get; set; }
-        /// <summary>
-        /// Player's Bullet Information.
-        /// </summary>
         public float bullet_speed { get; set; }
         public float ballistic_coeff { get; set; }
         public float bullet_mass { get; set; }
         public float bullet_diam { get; set; }
-        public float bullet_velocity { get; set; }        
+        public float bullet_velocity { get; set; }
         public ulong CharacterController { get; set; }
         public ulong FireportPtr { get; set; }
         public Vector3 fireportPosition { get; set; }
-        /// <summary>
-        /// Player's current health (sum of all 7 body parts).
-        /// </summary>
         public int Health { get; private set; } = -1;
-
         public ulong HealthController { get; set; }
-
         public ulong InventoryController { get; set; }
-
         public ulong InventorySlots { get; set; }
-
         public ulong PlayerBody { get; set; }
 
-        /// <summary>
-        /// Player's Unity Position in Local Game World.
-        /// </summary>
-        public Vector3 Position
-        {
-            get => this.Bones.TryGetValue(PlayerBones.HumanHead, out var bone)
-                   ? bone.Position
-                   : Vector3.Zero;
-        }
-        /// <summary>
-        /// Cached 'Zoomed Position' on the Radar GUI. Used for mouseover events.
-        /// </summary>
+        public Vector3 Position => this.Bones.TryGetValue(PlayerBones.HumanHead, out var bone) ? bone.Position : Vector3.Zero;
         public Vector2 ZoomedPosition { get; set; } = new();
-        /// <summary>
-        /// Player's Rotation (direction/pitch) in Local Game World.
-        /// 90 degree offset ~already~ applied to account for 2D-Map orientation.
-        /// </summary>
-        public Vector2 Rotation { get; private set; } = new Vector2(0, 0); // 64 bits will be atomic
-        /// <summary>
-        /// Key = Slot Name, Value = Item 'Long Name' in Slot
-        /// </summary>
-        public List<GearManager.Gear> Gear
-        {
-            get => this._gearManager is not null ? this._gearManager.GearItems : null;
-            set
-            {
-                this._gearManager.GearItems = value;
-            }
-        }
-
+        public Vector2 Rotation { get; private set; } = new Vector2(0, 0);
+        public List<GearManager.Gear> Gear => this._gearManager?.GearItems;
         public GearManager GearManager => this._gearManager;
-        /// <summary>
-        /// If 'true', Player object is no longer in the RegisteredPlayers list.
-        /// Will be checked if dead/exfil'd on next loop.
-        /// </summary>
         public bool LastUpdate { get; set; } = false;
-        /// <summary>
-        /// Consecutive number of errors that this Player object has 'errored out' while updating.
-        /// </summary>
         public int ErrorCount { get; set; } = 0;
         public bool isOfflinePlayer { get; set; } = false;
         public int PlayerSide { get; set; }
         public int PlayerRole { get; set; }
         public bool HasRequiredGear { get; set; } = false;
-        /// <summary>
-        /// Player's Velocity in the game world.
-        /// </summary>
         public Vector3 Velocity { get; private set; } = Vector3.Zero;
-        private readonly ConcurrentDictionary<PlayerBones, Bone> _bones = new();
+        public ConcurrentDictionary<PlayerBones, Bone> Bones => this._bones;
 
-        public ConcurrentDictionary<PlayerBones, Bone> Bones
-        {
-            get => this._bones;
-        }
-        #endregion
-
-        #region Getters
         public static List<PlayerBones> RequiredBones { get; } = new List<PlayerBones>
         {
             PlayerBones.HumanHead,
@@ -175,175 +88,26 @@ namespace eft_dma_radar
             PlayerBones.HumanRCalf
         };
 
-        /// <summary>
-        /// Contains 'Acct UUIDs' of tracked players for the Key, and the 'Reason' for the Value.
-        /// </summary>
-        private static Watchlist _watchlistManager
-        {
-            get => Program.Config.Watchlist;
-        }
-        /// <summary>
-        /// Player is human-controlled.
-        /// </summary>
-        public bool IsHuman
-        {
-            get => (
-                this.Type is PlayerType.LocalPlayer ||
-                this.Type is PlayerType.Teammate ||
-                this.Type is PlayerType.PMC ||
-                this.Type is PlayerType.Special ||
-                this.Type is PlayerType.PlayerScav ||
-                this.Type is PlayerType.BEAR ||
-                this.Type is PlayerType.USEC);
-        }
-        /// <summary>
-        /// Player is human-controlled and Active/Alive.
-        /// </summary>
-        public bool IsHumanActive
-        {
-            get => (
-                this.Type is PlayerType.LocalPlayer ||
-                this.Type is PlayerType.Teammate ||
-                this.Type is PlayerType.PMC ||
-                this.Type is PlayerType.Special ||
-                this.Type is PlayerType.PlayerScav ||
-                this.Type is PlayerType.BEAR ||
-                this.Type is PlayerType.USEC) && IsActive && IsAlive;
-        }
-        /// <summary>
-        /// Player is human-controlled & Hostile.
-        /// </summary>
-        public bool IsHumanHostile
-        {
-            get => (
-                this.Type is PlayerType.PMC ||
-                this.Type is PlayerType.Special ||
-                this.Type is PlayerType.PlayerScav ||
-                this.Type is PlayerType.BEAR ||
-                this.Type is PlayerType.USEC);
-        }
-        /// <summary>
-        /// Player is human-controlled, hostile, and Active/Alive.
-        /// </summary>
-        public bool IsHumanHostileActive
-        {
-            get => (
-                this.Type is PlayerType.BEAR ||
-                this.Type is PlayerType.USEC ||
-                this.Type is PlayerType.Special ||
-                this.Type is PlayerType.PlayerScav) && this.IsActive && this.IsAlive;
-        }
-        /// <summary>
-        /// Player is AI & boss, rogue, raider etc.
-        /// </summary>
-        public bool IsBossRaider
-        {
-            get => (
-                this.Type is PlayerType.Raider ||
-                this.Type is PlayerType.BossFollower ||
-                this.Type is PlayerType.BossGuard ||
-                this.Type is PlayerType.Rogue ||
-                this.Type is PlayerType.Cultist ||
-                this.Type is PlayerType.Boss);
-        }
+        private static Watchlist _watchlistManager => Program.Config.Watchlist;
 
-        /// <summary>
-        /// Player is rogue, raider etc.
-        /// </summary>
-        public bool IsRogueRaider
-        {
-            get => (
-                this.Type is PlayerType.Raider ||
-                this.Type is PlayerType.BossFollower ||
-                this.Type is PlayerType.BossGuard ||
-                this.Type is PlayerType.Rogue ||
-                this.Type is PlayerType.Cultist);
-        }
-
-        /// <summary>
-        /// Player is rogue, raider etc.
-        /// </summary>
-        public bool IsEventAI
-        {
-            get => (
-                this.Type is PlayerType.FollowerOfMorana ||
-                this.Type is PlayerType.Zombie);
-        }
-
-        /// <summary>
-        /// Player is AI/human-controlled and Active/Alive.
-        /// </summary>
-        public bool IsHostileActive
-        {
-            get => (
-                this.Type is PlayerType.PMC ||
-                this.Type is PlayerType.BEAR ||
-                this.Type is PlayerType.USEC ||
-                this.Type is PlayerType.Special ||
-                this.Type is PlayerType.PlayerScav ||
-                this.Type is PlayerType.Scav ||
-                this.Type is PlayerType.Raider ||
-                this.Type is PlayerType.BossFollower ||
-                this.Type is PlayerType.BossGuard ||
-                this.Type is PlayerType.Rogue ||
-                this.Type is PlayerType.OfflineScav ||
-                this.Type is PlayerType.Cultist ||
-                this.Type is PlayerType.Zombie ||
-                this.Type is PlayerType.Boss) && this.IsActive && this.IsAlive;
-        }
-        /// <summary>
-        /// Player is friendly to LocalPlayer (including LocalPlayer) and Active/Alive.
-        /// </summary>
-        public bool IsFriendlyActive
-        {
-            get => ((
-                this.Type is PlayerType.LocalPlayer ||
-                this.Type is PlayerType.Teammate) && this.IsActive && this.IsAlive);
-        }
-
-        public bool IsZombie
-        {
-            get => this.Type is PlayerType.Zombie;
-        }
-
-        /// <summary>
-        /// Player has exfil'd/left the raid.
-        /// </summary>
-        public bool HasExfild
-        {
-            get => !this.IsActive && this.IsAlive;
-        }
-        /// <summary>
-        /// Gets value of player.
-        /// </summary>
-        /// 
-        public int Value
-        {
-            get => this._gearManager is not null ? this._gearManager.Value : 0;
-        }
-        /// <summary>
-        /// EFT.Player Address
-        /// </summary>
+        public bool IsHuman => this.Type is PlayerType.LocalPlayer or PlayerType.Teammate or PlayerType.PMC or PlayerType.Special or PlayerType.PlayerScav or PlayerType.BEAR or PlayerType.USEC;
+        public bool IsHumanActive => this.IsHuman && IsActive && IsAlive;
+        public bool IsHumanHostile => this.Type is PlayerType.PMC or PlayerType.Special or PlayerType.PlayerScav or PlayerType.BEAR or PlayerType.USEC;
+        public bool IsHumanHostileActive => this.Type is PlayerType.BEAR or PlayerType.USEC or PlayerType.Special or PlayerType.PlayerScav && this.IsActive && this.IsAlive;
+        public bool IsBossRaider => this.Type is PlayerType.Raider or PlayerType.BossFollower or PlayerType.BossGuard or PlayerType.Rogue or PlayerType.Cultist or PlayerType.Boss;
+        public bool IsRogueRaider => this.Type is PlayerType.Raider or PlayerType.BossFollower or PlayerType.BossGuard or PlayerType.Rogue or PlayerType.Cultist;
+        public bool IsEventAI => this.Type is PlayerType.FollowerOfMorana or PlayerType.Zombie;
+        public bool IsHostileActive => this.Type is PlayerType.PMC or PlayerType.BEAR or PlayerType.USEC or PlayerType.Special or PlayerType.PlayerScav or PlayerType.Scav or PlayerType.Raider or PlayerType.BossFollower or PlayerType.BossGuard or PlayerType.Rogue or PlayerType.OfflineScav or PlayerType.Cultist or PlayerType.Zombie or PlayerType.Boss && this.IsActive && this.IsAlive;
+        public bool IsFriendlyActive => (this.Type is PlayerType.LocalPlayer or PlayerType.Teammate) && this.IsActive && this.IsAlive;
+        public bool IsZombie => this.Type is PlayerType.Zombie;
+        public bool HasExfild => !this.IsActive && this.IsAlive;
+        public int Value => this._gearManager?.Value ?? 0;
         public ulong Base { get; }
-        /// <summary>
-        /// EFT.Profile Address
-        /// </summary>
         public ulong Profile { get; }
-        /// <summary>
-        /// PlayerInfo Address (GClass1044)
-        /// </summary>
         public ulong Info { get; set; }
-
-        /// <summary>
-        /// Health Entries for each Body Part.
-        /// </summary>
         public ulong[] HealthEntries { get; set; }
         public ulong MovementContext { get; set; }
-        public ulong CorpsePtr
-        {
-            get => this.Base + Offsets.Player.Corpse;
-        }
-
+        public ulong CorpsePtr => this.Base + Offsets.Player.Corpse;
         public int MarkedDeadCount { get; set; } = 0;
         public string Tag { get; set; } = string.Empty;
 
@@ -363,9 +127,6 @@ namespace eft_dma_radar
         #endregion
 
         #region Constructor
-        /// <summary>
-        /// Player Constructor.
-        /// </summary>
         public Player(ulong playerBase, ulong playerProfile, string profileID, Vector3? pos = null, string baseClassName = null)
         {
             if (string.IsNullOrEmpty(baseClassName))
@@ -398,33 +159,28 @@ namespace eft_dma_radar
             }
         }
         #endregion
+
         #region Aimbot
-    
         public bool SetAmmo()
         {
             try
             {
                 if (!this.IsLocalPlayer || !this.IsAlive)
-                {
                     return false;
-                }
-                //var ammo_template = Memory.ReadPtrChain(this.Base, [Offsets.HandsController.Item, 0x40, 0x198]); //[190] _defAmmoTemplate : EFT.InventoryLogic.AmmoTemplate
-                var ammo_template = Memory.ReadPtrChain(this.Base, [Offsets.Player.HandsController, 0x68, 0x40, 0x198]);//[190] _defAmmoTemplate : EFT.InventoryLogic.AmmoTemplate
+
+                var ammo_template = Memory.ReadPtrChain(this.Base, [Offsets.Player.HandsController, 0x68, 0x40, 0x198]);
                 if (ammo_template != 0)
                 {
-                    this.bullet_speed = Memory.ReadValue<float>(ammo_template + 0x1BC);//EFT.InventoryLogic.AmmoTemplate->InitialSpeed : Single
-                    this.ballistic_coeff = Memory.ReadValue<float>(ammo_template + 0x1D0);//EFT.InventoryLogic.AmmoTemplate->BallisticCoeficient : Single
-                    this.bullet_mass = Memory.ReadValue<float>(ammo_template + 0x258);//EFT.InventoryLogic.AmmoTemplate->BulletMassGram : Single
-                    this.bullet_diam = Memory.ReadValue<float>(ammo_template + 0x25C);//EFT.InventoryLogic.AmmoTemplate->BulletDiameterMilimeters : Single
-                    this.bullet_velocity = Memory.ReadValue<float>(ammo_template + 0x1BC);//EFT.InventoryLogic.AmmoTemplate->[1BC] InitialSpeed : Single
-                    
+                    this.bullet_speed = Memory.ReadValue<float>(ammo_template + 0x1BC);
+                    this.ballistic_coeff = Memory.ReadValue<float>(ammo_template + 0x1D0);
+                    this.bullet_mass = Memory.ReadValue<float>(ammo_template + 0x258);
+                    this.bullet_diam = Memory.ReadValue<float>(ammo_template + 0x25C);
+                    this.bullet_velocity = Memory.ReadValue<float>(ammo_template + 0x1BC);
                 }
-                //Program.Log($"Got Ammo Info '{bullet_speed}' '{ballistic_coeff}' '{bullet_mass}' '{bullet_diam}'");
                 return true;
             }
             catch (Exception ex)
             {
-                //Program.Log($"ERROR getting Player '{this.Name}' Ammo: {ex}");
                 return false;
             }
         }
@@ -432,29 +188,21 @@ namespace eft_dma_radar
         public void SetRotationFr(Vector2 brainrot)
         {
             if (!this.IsLocalPlayer || !this.IsAlive || this.MovementContext == 0)
-            {
                 return;
 
-            }
             Memory.WriteValue<Vector2>(this.MovementContext + Offsets.MovementContext._Rotation, brainrot);
         }
 
         public Vector2 GetRotationFr()
         {
             if (!this.IsLocalPlayer || !this.IsAlive || this.MovementContext == 0)
-            {
                 return new Vector2();
-            }
 
             return Memory.ReadValue<Vector2>(this.isOfflinePlayer ? this.MovementContext + Offsets.MovementContext.Rotation : this.MovementContext + Offsets.ObservedPlayerMovementContext.Rotation);
         }
+        #endregion
 
-    #endregion
         #region Setters
-        
-        /// <summary>
-        /// Set player health.
-        /// </summary>
         public bool SetHealth(int eTagStatus)
         {
             try
@@ -476,9 +224,6 @@ namespace eft_dma_radar
             }
         }
 
-        /// <summary>
-        /// Set player rotation (Direction/Pitch)
-        /// </summary>
         public bool SetRotation(object obj)
         {
             try
@@ -515,6 +260,7 @@ namespace eft_dma_radar
                 return false;
             }
         }
+
         public bool SetFireArmPos()
         {
             try
@@ -524,25 +270,20 @@ namespace eft_dma_radar
                     Program.Log($"Skipping firearm position update for non-local player '{this.Name}'");
                     return false;
                 }
-        
+
                 if (this.FireportPtr == 0)
-                {
                     throw new InvalidOperationException($"FireportPosition is invalid for Player '{this.Name}'.");
-                }
-        
-                // Extract the position using Transform class
+
                 ulong handsContainer = Memory.ReadPtrChain(FireportPtr, new uint[] { Fireport.To_TransfromInternal[0], Fireport.To_TransfromInternal[1] });
                 Transform fireportTransform = new Transform(handsContainer);
                 fireportPosition = fireportTransform.GetPosition();
-        
+
                 if (fireportPosition == Vector3.Zero)
                 {
                     Program.Log($"ERROR: Fireport position is zero for Player '{this.Name}'");
                     return false;
                 }
-        
-                //Program.Log($"Set Firearm Position for '{this.Name}' to X:{fireportPosition.X}, Y:{fireportPosition.Y}, Z:{fireportPosition.Z}");
-        
+
                 return true;
             }
             catch (Exception ex)
@@ -552,7 +293,6 @@ namespace eft_dma_radar
             }
         }
 
-            
         public void UpdateItemInHands()
         {
             this.ItemInHands = this.GearManager.ActiveWeapon;
@@ -574,7 +314,8 @@ namespace eft_dma_radar
                 if (requiredQuestItems.Contains(parentItem) ||
                     gearItem.Item.Loot.Any(x => requiredQuestItems.Contains(x.ID)) ||
                     (loot is not null && loot.RequiredFilterItems is not null && (loot.RequiredFilterItems.ContainsKey(parentItem) ||
-                                      gearItem.Item.Loot.Any(x => loot.RequiredFilterItems.ContainsKey(x.ID)))))
+                                      gearItem.Item.Loot.Any(x => loot.RequiredFilterItems.ContainsKey(x.ID))))
+                )
                 {
                     found = true;
                     break;
@@ -586,9 +327,6 @@ namespace eft_dma_radar
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Returns PlayerType based on isAI & playuerSide
-        /// </summary>
         private PlayerType GetOnlinePlayerType()
         {
             var isAI = this.AccountID == "0";
@@ -711,9 +449,9 @@ namespace eft_dma_radar
             if (!scatterReadMap.Results[0][11].TryGetResult<int>(out var role))
                 return;
             if (!scatterReadMap.Results[0][12].TryGetResult<ulong>(out var inventorySlots))
-                return;            
+                return;
             if (!scatterReadMap.Results[0][13].TryGetResult<ulong>(out var characterController))
-                return;    
+                return;
             if (!scatterReadMap.Results[0][16].TryGetResult<ulong>(out var firePortptr))
                 return;
 
@@ -731,7 +469,7 @@ namespace eft_dma_radar
             {
                 this.Velocity = Vector3.Zero;
                 Program.Log($"Couldn't get Velocity Info '0' '0' '0'");
-            }            
+            }
             this.InitializePlayerProperties(movementContext, inventoryController, inventorySlots, playerBody, name, groupID);
 
             if (scatterReadMap.Results[0][7].TryGetResult<int>(out var registrationDate))
@@ -855,7 +593,7 @@ namespace eft_dma_radar
                 {
                     this.Name = "AI";
                 }
-                
+
                 this.FinishAlloc();
             }
         }
@@ -890,9 +628,6 @@ namespace eft_dma_radar
             this.SetupBones();
         }
 
-        /// <summary>
-        /// Gets the pointers/transforms of the required bones
-        /// </summary>
         private ulong GetBoneMatrix()
         {
             return Memory.ReadPtrChain(this.PlayerBody, new uint[] { 0x30, 0x30, 0x10 });
@@ -947,9 +682,6 @@ namespace eft_dma_radar
             ProcessBones(true, "refreshing");
         }
 
-        /// <summary>
-        /// Allocation wrap-up.
-        /// </summary>
         private void FinishAlloc()
         {
             if (this.IsHumanHostile)
@@ -994,9 +726,6 @@ namespace eft_dma_radar
             }
         }
 
-        /// <summary>
-        /// Resets/Updates 'static' assets in preparation for a new game/raid instance.
-        /// </summary>
         public static void Reset()
         {
             _groups.Clear();
@@ -1032,4 +761,3 @@ namespace eft_dma_radar
         #endregion
     }
 }
-

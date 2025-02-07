@@ -601,21 +601,22 @@ namespace eft_dma_radar
             {
                 const byte running = 0x5;
                 const byte fallDown = 0x7;
-                var movementState = this._baseMovementState;
-                var currentState = this._animationState;
-                if (this._animationState == running)
+                var movementState = Memory.ReadPtr(this._movementContext + Offsets.MovementContext.BaseMovementState);
+                var currentState = Memory.ReadValue<byte>(movementState + Offsets.BaseMovementState.Name);
+                
+                if (currentState == running)
                 {
-                    entries.Add(new ScatterWriteDataEntry<byte>(this._animationState, fallDown));
+                    entries.Add(new ScatterWriteDataEntry<byte>(movementState + Offsets.BaseMovementState.Name, fallDown));
                     Debug.WriteLine($"InfStamina -> movement state:{currentState}->{fallDown}");
                 }
 
                 const float maxStam = 100f;
-                const float maxOxy = 100f;
-                var phys = this._physical;
-                var stamObj = this._stamina;
+                const float maxOxy = 350f;
+                var phys = Memory.ReadPtr(this._playerBase + Offsets.Player.Physical);
+                var stamObj = Memory.ReadPtr(phys + Offsets.Physical.Stamina);
                 var currentStam = Memory.ReadValue<float>(stamObj + Offsets.Stamina.Current);
                 if (currentStam < 0f || currentStam > 500f) throw new Exception("Invalid Stam value! Possible bad read");
-                var oxyObj = this._oxygen;
+                var oxyObj = Memory.ReadPtr(phys + Offsets.Physical.Oxygen);
                 var currentOxy = Memory.ReadValue<float>(oxyObj + Offsets.Stamina.Current);
                 if (currentOxy < 0f || currentOxy > 1000f) throw new Exception("Invalid Oxy value! Possible bad read");
                 if (currentStam < maxStam / 3) // Refill when below 33%
