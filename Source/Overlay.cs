@@ -18,7 +18,7 @@ namespace eft_dma_radar
     public partial class Overlay : Form
     {
         // Constants
-        private const int TargetFrameRate = 144;
+        private const int TargetFrameRate = 60;
         private const int TargetFrameTime = 1000 / TargetFrameRate;
 
         // D3D9 Objects
@@ -149,7 +149,7 @@ namespace eft_dma_radar
                 Height = 15,        
                 Weight = SharpDX.Direct3D9.FontWeight.Normal, 
                 MipLevels = 0,      
-                Quality = SharpDX.Direct3D9.FontQuality.Default 
+                Quality = SharpDX.Direct3D9.FontQuality.ClearTypeNatural
             };
 
             // Create the font using the font description
@@ -442,7 +442,7 @@ namespace eft_dma_radar
                 var exfilCoords = screenCoords[index++];
                 if (exfilCoords.X > 0 || exfilCoords.Y > 0 || exfilCoords.Z > 0)
                 {
-                    WriteText(exfil.Name, (int)exfilCoords.X + 5, (int)exfilCoords.Y - 25, Color.Green, 15, "Tarkov-Regular");
+                    WriteText(exfil.Name, (int)exfilCoords.X + 5, (int)exfilCoords.Y - 25, Color.LimeGreen, 15, "Tarkov-Regular");
                 }
             }
         }

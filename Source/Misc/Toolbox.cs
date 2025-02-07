@@ -384,7 +384,7 @@ namespace eft_dma_radar
                     if (this._config.InfiniteStamina != this.infiniteStamina)
                     {
                         this.infiniteStamina = this._config.InfiniteStamina;
-                        this._playerManager.SetInfiniteStamina(this._config.InfiniteStamina, ref entries);
+                        this._playerManager.SetInfiniteStamina(ref entries);
                     }
                 }
 

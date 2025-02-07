@@ -595,7 +595,7 @@ namespace eft_dma_radar
                 this.OriginalValues["weaponLn"] = this._weaponLn;
         }
 
-        public void SetInfiniteStamina(bool on, ref List<IScatterWriteEntry> entries)
+        public void SetInfiniteStamina(ref List<IScatterWriteEntry> entries)
         {
             try
             {
