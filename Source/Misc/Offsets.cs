@@ -501,8 +501,9 @@
 
     public struct Physical
     {
-        public const uint Stamina = 0x38; // [38] Stamina : -.GClass07E5
-        public const uint HandsStamina = 0x40; // [40] HandsStamina : -.GClass07E5
+        public const uint Stamina = 0x38; // [38] Stamina : -.GClass07F8
+        public const uint HandsStamina = 0x40; // [40] HandsStamina : -.GClass07F8
+        public const uint Oxygen = 0x48; // [48] Oxygen : -.GClass07F8
         public const uint StaminaCapacity = 0xC0; // [C0] StaminaCapacity : Single
         public const uint HandsCapacity = 0xC8; // [C8] HandsCapacity : Single
         public const uint Overweight = 0x8C; // [8C] Overweight : Single

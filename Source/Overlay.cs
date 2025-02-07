@@ -8,20 +8,9 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using Microsoft.AspNetCore.Http;
 using SharpDX;
-using SharpDX.Direct2D1;
-using SharpDX.DirectWrite;
-using SharpDX.DXGI;
-using SharpDX.Mathematics.Interop;
-using AlphaMode = SharpDX.Direct2D1.AlphaMode;
+using SharpDX.Direct3D9;
 using Color = System.Drawing.Color;
-using Factory = SharpDX.Direct2D1.Factory;
-using Font = System.Drawing.Font;
-using FontFactory = SharpDX.DirectWrite.Factory;
-using Point = System.Drawing.Point;
-using TextAntialiasMode = SharpDX.Direct2D1.TextAntialiasMode;
-using TextRenderer = System.Windows.Forms.TextRenderer;
 using Vector3 = System.Numerics.Vector3;
 
 namespace eft_dma_radar
@@ -32,16 +21,13 @@ namespace eft_dma_radar
         private const int TargetFrameRate = 144;
         private const int TargetFrameTime = 1000 / TargetFrameRate;
 
-        // Configuration
-        private Config _config;
-        private BrushManager _brushManager;
-        private WindowRenderTarget _device;
-        private HwndRenderTargetProperties _renderProperties;
-        private readonly FontFactory _fontFactory = new();
+        // D3D9 Objects
+        private Device _device;
+        private Sprite _sprite;
+        private SharpDX.Direct3D9.Font _font;
         private Thread _directXThread;
         private CancellationTokenSource _cancellationTokenSource;
         private CancellationToken _cancellationToken;
-        private Factory _factory;
         private bool _isRunning;
 
         // Game State
@@ -75,6 +61,15 @@ namespace eft_dma_radar
         private float _lootCorpseLimit = 80f;
         private bool _isQuestItemOn = true;
         private float _questItemLimit = 150f;
+
+        public struct Vertex
+        {
+            public SharpDX.Vector3 Position;
+            public SharpDX.ColorBGRA Color;
+
+            public static readonly VertexFormat Format = VertexFormat.Position | VertexFormat.Diffuse;
+            public static readonly int Stride = Utilities.SizeOf<Vertex>();
+        }
 
         public Overlay()
         {
@@ -124,35 +119,41 @@ namespace eft_dma_radar
             }
 
             _device?.Dispose();
-            _factory?.Dispose();
-            _brushManager?.Dispose();
+            _sprite?.Dispose();
+            _font?.Dispose();
 
-            _brushManager = null;
             _device = null;
-            _factory = null;
+            _sprite = null;
+            _font = null;
             _cancellationTokenSource = null;
             _directXThread = null;
         }
 
         private void InitializeDirectXResources()
         {
-            _factory = new Factory();
-            _renderProperties = new HwndRenderTargetProperties
+            PresentParameters presentParams = new PresentParameters
             {
-                Hwnd = Handle,
-                PixelSize = new Size2(Width, Height),
-                PresentOptions = PresentOptions.None
+                Windowed = true,
+                SwapEffect = SwapEffect.Discard,
+                DeviceWindowHandle = Handle,
+                PresentationInterval = PresentInterval.Immediate
             };
 
-            _device = new WindowRenderTarget(
-                _factory,
-                new RenderTargetProperties(
-                    new PixelFormat(Format.B8G8R8A8_UNorm, AlphaMode.Premultiplied)
-                ),
-                _renderProperties
-            );
+            _device = new Device(new Direct3D(), 0, DeviceType.Hardware, Handle, CreateFlags.HardwareVertexProcessing, presentParams);
+            _sprite = new Sprite(_device);
 
-            _brushManager = new BrushManager(_device);
+            // Create font description
+            var fontDescription = new SharpDX.Direct3D9.FontDescription
+            {
+                FaceName = "Tarkov-Regular", 
+                Height = 15,        
+                Weight = SharpDX.Direct3D9.FontWeight.Normal, 
+                MipLevels = 0,      
+                Quality = SharpDX.Direct3D9.FontQuality.Default 
+            };
+
+            // Create the font using the font description
+            _font = new SharpDX.Direct3D9.Font(_device, fontDescription);
         }
 
         private void DirectXThread()
@@ -166,15 +167,17 @@ namespace eft_dma_radar
                 {
                     stopwatch.Restart();
 
-                    _device.BeginDraw();
-                    _device.Clear(SharpDX.Color.Transparent);
-                    _device.TextAntialiasMode = TextAntialiasMode.Aliased;
+                    _device.Clear(ClearFlags.Target, new SharpDX.Color(0, 0, 0, 0), 1.0f, 0);
+                    _device.BeginScene();
+
+                    _sprite.Begin(SpriteFlags.AlphaBlend);
 
                     UpdateGameState();
                     RenderOverlay();
 
-                    _device.Flush();
-                    _device.EndDraw();
+                    _sprite.End();
+                    _device.EndScene();
+                    _device.Present();
 
                     var frameTime = stopwatch.ElapsedMilliseconds;
                     var sleepTime = TargetFrameTime - frameTime;
@@ -232,25 +235,24 @@ namespace eft_dma_radar
 
         private void RenderOverlay()
         {
-            WriteTopLeftText("Tarkov Overlay", "WHITE", 13, "Tarkov");
-            WriteTopRightText("Mem/s: " + Memory.Ticks, "WHITE", 13, "Tarkov");
+            WriteTopLeftText("Tarkov Overlay", Color.White, 15, "Tarkov");
 
             if (_localPlayer is null)
             {
-                WriteTopLeftText("NOT IN RAID", "RED", 13, "Tarkov-Regular", 10, 30);
+                WriteTopLeftText("NOT IN RAID", Color.Red, 15, "Tarkov", 10, 30);
                 return;
             }
 
             if (_isInGame)
             {
-                WriteTopLeftText("IN RAID", "GREEN", 13, "Tarkov-Regular", 10, 30);
+                WriteTopLeftText("IN RAID", Color.Green, 15, "Tarkov", 10, 30);
                 RenderPlayers(_localPlayer);
                 RenderLoot(_localPlayer);
                 RenderWorldObjects(_localPlayer);
             }
             else
             {
-                WriteTopLeftText("NOT IN RAID", "RED", 13, "Tarkov-Regular", 10, 30);
+                WriteTopLeftText("NOT IN RAID", Color.Red, 15, "Tarkov", 10, 30);
             }
         }
 
@@ -317,11 +319,13 @@ namespace eft_dma_radar
 
             if (WorldToScreenLootTest(localPlayer, lootItem.Position, out var lootCoords))
             {
-                WriteText( 
+                WriteText(
                     $"{lootItem.GetFormattedValueShortName()}{Environment.NewLine}{Math.Round(lootDist, 0)}m",
-                    lootCoords.X + 5,
-                    lootCoords.Y - 25,
-                    "LOOSE_LOOT"
+                    (int)lootCoords.X + 5,
+                    (int)lootCoords.Y - 25,
+                    Color.DeepSkyBlue,
+                    15,
+                    "Tarkov-Regular"
                 );
             }
         }
@@ -335,11 +339,13 @@ namespace eft_dma_radar
 
             if (WorldToScreenLootTest(localPlayer, lootContainer.Position, out var lootCoords))
             {
-                WriteText( 
+                WriteText(
                     $"{lootContainer.Name}{Environment.NewLine}{Math.Round(lootDist, 0)}m",
-                    lootCoords.X + 5,
-                    lootCoords.Y - 25,
-                    "CONTAINER_LOOT"
+                    (int)lootCoords.X + 5,
+                    (int)lootCoords.Y - 25,
+                    Color.DodgerBlue,
+                    15,
+                    "Tarkov-Regular"
                 );
             }
         }
@@ -355,9 +361,12 @@ namespace eft_dma_radar
             {
                 WriteText(
                     $"{lootCorpse.Name}{Environment.NewLine}{Math.Round(lootDist, 0)}m",
-                    lootCoords.X + 5,
-                    lootCoords.Y - 25,
-                    "CORPSE");
+                    (int)lootCoords.X + 5,
+                    (int)lootCoords.Y - 25,
+                    Color.Pink,
+                    15,
+                    "Tarkov-Regular"
+                );
             }
         }
 
@@ -373,9 +382,12 @@ namespace eft_dma_radar
             {
                 WriteText(
                     $"{questItem.Name}{Environment.NewLine}{Math.Round(questDist, 0)}m",
-                    questItemCoords.X + 5,
-                    questItemCoords.Y - 25,
-                    "QUEST");
+                    (int)questItemCoords.X + 5,
+                    (int)questItemCoords.Y - 25,
+                    Color.HotPink,
+                    15,
+                    "Tarkov-Regular"
+                );
             }
         }
 
@@ -430,7 +442,7 @@ namespace eft_dma_radar
                 var exfilCoords = screenCoords[index++];
                 if (exfilCoords.X > 0 || exfilCoords.Y > 0 || exfilCoords.Z > 0)
                 {
-                    WriteText(exfil.Name, exfilCoords.X + 5, exfilCoords.Y - 25, "GREEN", 13, "Tarkov-Regular");
+                    WriteText(exfil.Name, (int)exfilCoords.X + 5, (int)exfilCoords.Y - 25, Color.Green, 15, "Tarkov-Regular");
                 }
             }
         }
@@ -445,7 +457,7 @@ namespace eft_dma_radar
                 var grenadeCoords = screenCoords[index++];
                 if (grenadeCoords.X > 0 || grenadeCoords.Y > 0 || grenadeCoords.Z > 0)
                 {
-                    WriteText("Grenade", grenadeCoords.X + 5, grenadeCoords.Y - 25, "RED", 13, "Tarkov-Regular");
+                    WriteText("Grenade", (int)grenadeCoords.X + 5, (int)grenadeCoords.Y - 25, Color.Red, 15, "Tarkov-Regular");
                 }
             }
         }
@@ -454,9 +466,7 @@ namespace eft_dma_radar
         {
             if (_tripwires is null) return;
 
-            var brush = _brushManager.GetBrush("RED");
             int index = 0;
-
             foreach (var tripwire in _tripwires)
             {
                 var fromCoords = screenCoords[index++];
@@ -464,8 +474,8 @@ namespace eft_dma_radar
 
                 if (fromCoords.X > 0 && fromCoords.Y > 0 && toCoords.X > 0 && toCoords.Y > 0)
                 {
-                    _device.DrawLine(new RawVector2(fromCoords.X, fromCoords.Y), new RawVector2(toCoords.X, toCoords.Y), brush);
-                    WriteText("Tripwire", (fromCoords.X + toCoords.X) / 2, (fromCoords.Y + toCoords.Y) / 2 - 25, "WHITE", 13, "Tarkov-Regular");
+                    DrawLine((int)fromCoords.X, (int)fromCoords.Y, (int)toCoords.X, (int)toCoords.Y, Color.Red);
+                    WriteText("Tripwire", (int)((fromCoords.X + toCoords.X) / 2), (int)((fromCoords.Y + toCoords.Y) / 2 - 25), Color.White, 15, "Tarkov-Regular");
                 }
             }
         }
@@ -514,159 +524,167 @@ namespace eft_dma_radar
 
             string name = "ERROR";
             string distance = "ERROR";
-            string brushName = "INVALID_COLOR";
+            Color color = Color.White;
             string fontFamily = "Tarkov-Regular";
-            int fontSize = 13;
+            int fontSize = 15;
 
             switch (player.Type)
             {
                 case PlayerType.BEAR or PlayerType.USEC when IsPMCOn && dist <= PlayerLimit:
                     if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
                     {
-                        DrawSkeletonLines(coords, "RED");
+                        DrawSkeletonLines(coords, Color.Red);
                     }
                     name = player.Name;
                     distance = $"[{Math.Round(dist, 0)}m]";
-                    brushName = "WHITE";
+                    color = Color.White;
                     break;
 
                 case PlayerType.Scav when IsScavOn && dist <= ScavLimit:
                     if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
                     {
-                        DrawSkeletonLines(coords, "YELLOW");
+                        DrawSkeletonLines(coords, Color.Yellow);
                     }
                     name = "Scav";
                     distance = $"[{Math.Round(dist, 0)}m]";
-                    brushName = "YELLOW";
+                    color = Color.Yellow;
                     break;
 
                 case PlayerType.PlayerScav when IsPlayerScavOn && dist <= PlayerLimit:
                     if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
                     {
-                        DrawSkeletonLines(coords, "CYAN");
+                        DrawSkeletonLines(coords, Color.Cyan);
                     }
                     name = "Player Scav";
                     distance = $"[{Math.Round(dist, 0)}m]";
-                    brushName = "CYAN";
+                    color = Color.Cyan;
                     break;
 
                 case PlayerType.Boss when IsScavOn && dist <= ScavLimit:
                     if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
                     {
-                        DrawSkeletonLines(coords, "ORANGE");
+                        DrawSkeletonLines(coords, Color.DarkOrange);
                     }
                     name = player.Name;
                     distance = $"[{Math.Round(dist, 0)}m]";
-                    brushName = "ORANGE";
+                    color = Color.DarkOrange;
                     break;
 
                 case PlayerType.BossFollower or PlayerType.BossGuard when IsScavOn && dist <= ScavLimit:
                     if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
                     {
-                        DrawSkeletonLines(coords, "ORANGE");
+                        DrawSkeletonLines(coords, Color.Orange);
                     }
                     name = "Follower";
                     distance = $"[{Math.Round(dist, 0)}m]";
-                    brushName = "ORANGE";
+                    color = Color.Orange;
                     break;
 
                 case PlayerType.Teammate when IsTeamOn && dist <= TeamLimit:
                     if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
                     {
-                        DrawSkeletonLines(coords, "TEAMMATE");
+                        DrawSkeletonLines(coords, Color.Green);
                     }
                     name = player.Name;
                     distance = $"[{Math.Round(dist, 0)}m]";
-                    brushName = "TEAMMATE";
+                    color = Color.Green;
                     break;
 
                 case PlayerType.Cultist when IsScavOn && dist <= ScavLimit:
                     if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
                     {
-                        DrawSkeletonLines(coords, "PURPLE");
+                        DrawSkeletonLines(coords, Color.Purple);
                     }
                     name = "Cultist";
                     distance = $"[{Math.Round(dist, 0)}m]";
-                    brushName = "PURPLE";
+                    color = Color.Purple;
                     break;
 
                 case PlayerType.Raider when IsScavOn && dist <= ScavLimit:
                     if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
                     {
-                        DrawSkeletonLines(coords, "ORANGE");
+                        DrawSkeletonLines(coords, Color.Orange);
                     }
                     name = "Raider";
                     distance = $"[{Math.Round(dist, 0)}m]";
-                    brushName = "ORANGE";
+                    color = Color.Orange;
                     break;
             }
 
-            using (var textFormat = new TextFormat(_fontFactory, fontFamily, fontSize))
+            WriteText(name, (int)(baseCoords.X - (boxWidth / 2)), (int)(baseCoords.Y + boxHeight) - 35, color, fontSize, fontFamily);
+            WriteText(distance, (int)(baseCoords.X - (boxWidth / 2)), (int)(baseCoords.Y + boxHeight) - 20, color, fontSize, fontFamily);
+        }
+
+        private void WriteText(string msg, int x, int y, System.Drawing.Color color, float fontSize = 15, string fontFamily = "Arial")
+        {
+            // Convert System.Drawing.Color to SharpDX.Color
+            var sharpDxColor = new SharpDX.Color(color.R, color.G, color.B, color.A);
+
+            // Draw the text using SharpDX.Font and SharpDX.Sprite
+            _font.DrawText(_sprite, msg, x, y, sharpDxColor);
+        }
+
+        private void WriteTopLeftText(string msg, Color color, float fontSize = 15, string fontFamily = "Arial", int xOffset = 10, int yOffset = 10)
+        {
+            WriteText(msg, xOffset, yOffset, color, fontSize, fontFamily);
+        }
+
+        private void DrawLine(int x1, int y1, int x2, int y2, Color color)
+        {
+            bool previousZEnable = _device.GetRenderState<bool>(RenderState.ZEnable);
+            bool previousLighting = _device.GetRenderState<bool>(RenderState.Lighting);
+
+            try
             {
-                var nameLayout = new TextLayout(_fontFactory, name, textFormat, float.MaxValue, float.MaxValue);
-                float nameWidth = nameLayout.Metrics.Width;
-                float nameStartX = baseCoords.X - (nameWidth / 2);
+                _device.SetRenderState(RenderState.ZEnable, false);
+                _device.SetRenderState(RenderState.Lighting, false);
+                _device.SetRenderState(RenderState.CullMode, Cull.None);
+                _device.SetRenderState(RenderState.AlphaBlendEnable, true);
+                _device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
+                _device.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
 
-                var distanceLayout = new TextLayout(_fontFactory, distance, textFormat, float.MaxValue, float.MaxValue);
-                float distanceWidth = distanceLayout.Metrics.Width;
-                float distanceStartX = baseCoords.X - (distanceWidth / 2);
+                var vertices = new[]
+                {
+            new Vertex
+            {
+                Position = new SharpDX.Vector3(x1, y1, 0.1f),
+                Color = new SharpDX.ColorBGRA(color.R, color.G, color.B, color.A)
+            },
+            new Vertex
+            {
+                Position = new SharpDX.Vector3(x2, y2, 0.1f),
+                Color = new SharpDX.ColorBGRA(color.R, color.G, color.B, color.A)
+            }
+        };
 
-                WriteText(name, nameStartX, (baseCoords.Y + boxHeight) - 35, brushName, fontSize, fontFamily);
-                WriteText(distance, distanceStartX, (baseCoords.Y + boxHeight) - 20, brushName, fontSize, fontFamily);
+                using (var vertexBuffer = new VertexBuffer(_device,
+                       Vertex.Stride * 2,
+                       Usage.WriteOnly,
+                       Vertex.Format,
+                       Pool.Default))
+                {
+                    vertexBuffer.Lock(0, 0, LockFlags.None).WriteRange(vertices);
+                    vertexBuffer.Unlock();
+
+                    _device.SetTransform(TransformState.World, Matrix.Identity);
+                    _device.SetTransform(TransformState.View, Matrix.Identity);
+                    _device.SetTransform(TransformState.Projection,
+                        Matrix.OrthoOffCenterLH(0, _device.Viewport.Width, _device.Viewport.Height, 0, 0.0f, 1.0f));
+
+                    _device.SetStreamSource(0, vertexBuffer, 0, Vertex.Stride);
+                    _device.VertexFormat = Vertex.Format;
+                    _device.DrawPrimitives(PrimitiveType.LineList, 0, 1);
+                }
+            }
+            finally
+            {
+                _device.SetRenderState(RenderState.ZEnable, previousZEnable);
+                _device.SetRenderState(RenderState.Lighting, previousLighting);
             }
         }
 
-        private void WriteText(string msg, float x, float y, string brushName, float fontSize = 13, string fontFamily = "Arial Unicode MS")
+        private void DrawSkeletonLines(List<Vector3> coords, Color color)
         {
-            var brush = _brushManager.GetBrush(brushName);
-            var measure = PredictSize(msg, fontSize, fontFamily);
-            _device.DrawText(
-                msg,
-                new TextFormat(_fontFactory, fontFamily, fontSize),
-                new RawRectangleF(x, y, x + measure.Width, y + measure.Height),
-                brush
-            );
-        }
-
-        private void WriteTopLeftText(string msg, string brushName, float fontSize = 13, string fontFamily = "Arial Unicode MS", float xOffset = 10, float yOffset = 10)
-        {
-            var x = xOffset;
-            var y = yOffset;
-            WriteText(msg, x, y, brushName, fontSize, fontFamily);
-        }
-
-        private void WriteTopRightText(string msg, string brushName, float fontSize = 13, string fontFamily = "Arial Unicode MS", float xOffset = 10, float yOffset = 10)
-        {
-            var y = yOffset;
-            var measure = PredictSize(msg, fontSize, fontFamily);
-            var x = Width - measure.Width - xOffset; // Aligns the right side of the text
-            WriteText(msg, x, y, brushName, fontSize, fontFamily);
-        }
-
-        private void WriteCenterText(string msg, float y, string brushName, float fontSize = 13, string fontFamily = "Arial Unicode MS")
-        {
-            var measure = PredictSize(msg, fontSize, fontFamily);
-            var x = Width / 2 - measure.Width / 2;
-            WriteText(msg, x, y, brushName, fontSize, fontFamily);
-        }
-
-        private void WriteBottomText(string msg, float x, string brushName, float fontSize = 13, string fontFamily = "Arial Unicode MS")
-        {
-            var measure = PredictSize(msg, fontSize, fontFamily);
-            var y = Height - measure.Height;
-            WriteText(msg, x, y, brushName, fontSize, fontFamily);
-        }
-
-        private Size PredictSize(string msg, float fontSize = 13, string fontFamily = "Arial Unicode MS")
-        {
-            return TextRenderer.MeasureText(msg, new Font(fontFamily, fontSize - 3));
-        }
-
-        private void DrawSkeletonLines(List<Vector3> coords, string brushName)
-        {
-            var brush = _brushManager.GetBrush(brushName);
-
-            // Predefined skeleton line connections
             int[][] connections = new int[][]
             {
                 new int[] { 1, 2 },   // Head to Spine
@@ -683,11 +701,7 @@ namespace eft_dma_radar
 
             foreach (var connection in connections)
             {
-                _device.DrawLine(
-                    new RawVector2(coords[connection[0]].X, coords[connection[0]].Y),
-                    new RawVector2(coords[connection[1]].X, coords[connection[1]].Y),
-                    brush, 2.0f
-                );
+                DrawLine((int)coords[connection[0]].X, (int)coords[connection[0]].Y, (int)coords[connection[1]].X, (int)coords[connection[1]].Y, color);
             }
         }
 
@@ -695,8 +709,8 @@ namespace eft_dma_radar
         {
             try
             {
-                _device.Flush();
-                _device.EndDraw();
+                _device.EndScene();
+                _device.Present();
             }
             catch { }
         }
@@ -707,9 +721,8 @@ namespace eft_dma_radar
             {
                 _isRunning = false;
 
-                _device.Flush();
-                _device.EndDraw();
-                _factory.Dispose();
+                _device.EndScene();
+                _device.Present();
                 _device.Dispose();
                 _device = null;
             }

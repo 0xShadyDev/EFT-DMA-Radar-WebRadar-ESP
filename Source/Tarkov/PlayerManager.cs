@@ -1,4 +1,6 @@
 ﻿using Offsets;
+using Org.BouncyCastle.Math;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace eft_dma_radar
@@ -24,6 +26,7 @@ namespace eft_dma_radar
         private ulong _firmarmController;
         private ulong _skillsManager;
         private ulong _stamina;
+        private ulong _oxygen;
         private ulong _currentItemTemplate;
         private ulong _currentItemId;
 
@@ -236,9 +239,10 @@ namespace eft_dma_radar
             var handsContainerPtr = round3.AddEntry<ulong>(0, 8, proceduralWeaponAnimationPtr, null, Offsets.ProceduralWeaponAnimation.HandsContainer);
             var breathEffectorPtr = round3.AddEntry<ulong>(0, 9, proceduralWeaponAnimationPtr, null, Offsets.ProceduralWeaponAnimation.Breath);
             var shotEffectorPtr = round3.AddEntry<ulong>(0, 10, proceduralWeaponAnimationPtr, null, Offsets.ProceduralWeaponAnimation.Shooting);
-            var newShotRecoilPtr = round4.AddEntry<ulong>(0, 11, shotEffectorPtr, null, Offsets.ShotEffector.NewShotRecoil);
+            var newShotRecoilPtr = round4.AddEntry<ulong>(0, 12, shotEffectorPtr, null, Offsets.ShotEffector.NewShotRecoil);
+            var oxygenPtr = round3.AddEntry<ulong>(0, 11, physicalPtr, null, Offsets.Physical.Stamina);
 
-            var startingIndex = 12; // last scattermap index + 1
+            var startingIndex = 13; // last scattermap index + 1
 
             this.SetupOriginalSkillValues(startingIndex, skillsManagerPtr, ref round5, ref round6);
 
@@ -266,7 +270,9 @@ namespace eft_dma_radar
                 return;
             if (!scatterMap.Results[0][10].TryGetResult<ulong>(out var shotEffector))
                 return;
-            if (!scatterMap.Results[0][11].TryGetResult<ulong>(out var newShotRecoil))
+            if (!scatterMap.Results[0][11].TryGetResult<ulong>(out var oxygen))
+                return;
+            if (!scatterMap.Results[0][12].TryGetResult<ulong>(out var newShotRecoil))
                 return;
 
             this._playerBase = playerBase;
@@ -274,6 +280,7 @@ namespace eft_dma_radar
             this._movementContext = movementContext;
             this._physical = physical;
             this._stamina = stamina;
+            this._oxygen = oxygen;
             this._handsStamina = handsStamina;
             this._skillsManager = skillsManager;
             this._proceduralWeaponAnimation = proceduralWeaponAnimation;
@@ -592,7 +599,36 @@ namespace eft_dma_radar
         {
             try
             {
-                entries.Add(new ScatterWriteDataEntry<bool>(this._stamina + Offsets.Stamina.ForceMode, on));
+                const byte running = 0x5;
+                const byte fallDown = 0x7;
+                var movementState = this._baseMovementState;
+                var currentState = this._animationState;
+                if (this._animationState == running)
+                {
+                    entries.Add(new ScatterWriteDataEntry<byte>(this._animationState, fallDown));
+                    Debug.WriteLine($"InfStamina -> movement state:{currentState}->{fallDown}");
+                }
+
+                const float maxStam = 100f;
+                const float maxOxy = 100f;
+                var phys = this._physical;
+                var stamObj = this._stamina;
+                var currentStam = Memory.ReadValue<float>(stamObj + Offsets.Stamina.Current);
+                if (currentStam < 0f || currentStam > 500f) throw new Exception("Invalid Stam value! Possible bad read");
+                var oxyObj = this._oxygen;
+                var currentOxy = Memory.ReadValue<float>(oxyObj + Offsets.Stamina.Current);
+                if (currentOxy < 0f || currentOxy > 1000f) throw new Exception("Invalid Oxy value! Possible bad read");
+                if (currentStam < maxStam / 3) // Refill when below 33%
+                {
+                    entries.Add(new ScatterWriteDataEntry<float>(stamObj + Offsets.Stamina.Current, maxStam));
+                    Debug.WriteLine($"InfStamina -> stam:{currentStam}->{maxStam}");
+                }
+
+                if (currentOxy < maxOxy / 3) // Refill when below 33%
+                {
+                    entries.Add(new ScatterWriteDataEntry<float>(oxyObj + Offsets.Stamina.Current, maxOxy));
+                    Debug.WriteLine($"InfStamina -> oxy:{currentOxy}->{maxOxy}");
+                }
             }
             catch (Exception ex)
             {
