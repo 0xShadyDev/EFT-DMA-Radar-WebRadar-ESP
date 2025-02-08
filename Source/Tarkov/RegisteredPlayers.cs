@@ -287,7 +287,7 @@ namespace eft_dma_radar
                 var checkHealth = this._healthSW.ElapsedMilliseconds > 1000;
                 var checkWeaponInfo = this._weaponSW.ElapsedMilliseconds > 2000;
                 var checkAmmo = this._AmmoSw.ElapsedMilliseconds > 2500;
-                var checkBones = this._boneSW.ElapsedMilliseconds > 16;
+                var checkBones = this._boneSW.ElapsedMilliseconds > 16 && players.Any(x => x.IsHumanActive);
                 var checkVelocity = this._velocitySW.ElapsedMilliseconds > 16 && players.Any(x => x.IsHumanActive);
                 var checkFireArmPos = this._boneSW.ElapsedMilliseconds > 16; // Add firearm position check using the bone stopwatch
                 var initialisingMono = Memory.Toolbox?.InitialisingMonoAddresses ?? false;
