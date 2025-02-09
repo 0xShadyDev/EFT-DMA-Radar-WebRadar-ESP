@@ -154,6 +154,7 @@
             swMaxCovertMovement = new MaterialSkin.Controls.MaterialSwitch();
             swMaxSearch = new MaterialSkin.Controls.MaterialSwitch();
             swMaxMagDrills = new MaterialSkin.Controls.MaterialSwitch();
+            swMuleMode = new MaterialSkin.Controls.MaterialSwitch();
             swMaxLightVests = new MaterialSkin.Controls.MaterialSwitch();
             swMaxHeavyVests = new MaterialSkin.Controls.MaterialSwitch();
             swMaxAttention = new MaterialSkin.Controls.MaterialSwitch();
@@ -272,6 +273,20 @@
             swPlayerInfoLevel = new MaterialSkin.Controls.MaterialSwitch();
             swPlayerInfoKD = new MaterialSkin.Controls.MaterialSwitch();
             swPlayerInfoHours = new MaterialSkin.Controls.MaterialSwitch();
+            swToggleESP = new MaterialSkin.Controls.MaterialSwitch();
+            swToggleItems = new MaterialSkin.Controls.MaterialSwitch();
+            sldrScavDist = new MaterialSkin.Controls.MaterialSlider();
+            sldrTeamDist = new MaterialSkin.Controls.MaterialSlider();
+            swToggleScavs = new MaterialSkin.Controls.MaterialSwitch();
+            sldrPlayerDist = new MaterialSkin.Controls.MaterialSlider();
+            swToggleTeam = new MaterialSkin.Controls.MaterialSwitch();
+            sldrBoneDist = new MaterialSkin.Controls.MaterialSlider();
+            swToggleBosses = new MaterialSkin.Controls.MaterialSwitch();
+            sldrBossDist = new MaterialSkin.Controls.MaterialSlider();
+            swTogglePlayers = new MaterialSkin.Controls.MaterialSwitch();
+            sldrItemDist = new MaterialSkin.Controls.MaterialSlider();
+            swToggleBones = new MaterialSkin.Controls.MaterialSwitch();
+            materialButton1 = new MaterialSkin.Controls.MaterialButton();
             tabMambo = new MaterialSkin.Controls.MaterialTabControl();
             tabRadar = new TabPage();
             mcRadarLootItemViewer = new MaterialSkin.Controls.MaterialCard();
@@ -480,6 +495,13 @@
             picAIBoss = new PictureBox();
             lblSettingsColorsAIBoss = new MaterialSkin.Controls.MaterialLabel();
             lblSettingsColorsAI = new MaterialSkin.Controls.MaterialLabel();
+            tabSettingsFuser = new TabPage();
+            materialCard1 = new MaterialSkin.Controls.MaterialCard();
+            materialListBox1 = new MaterialSkin.Controls.MaterialListBox();
+            materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
+            materialCard4 = new MaterialSkin.Controls.MaterialCard();
+            btnReloadBones = new MaterialSkin.Controls.MaterialButton();
+            lblESP = new MaterialSkin.Controls.MaterialLabel();
             tabPlayerLoadouts = new TabPage();
             mcPlayerLoadoutsAI = new MaterialSkin.Controls.MaterialCard();
             lblPlayerLoadoutsAI = new MaterialSkin.Controls.MaterialLabel();
@@ -618,6 +640,9 @@
             ((System.ComponentModel.ISupportInitialize)picAIBossFollower).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picAIBossGuard).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picAIBoss).BeginInit();
+            tabSettingsFuser.SuspendLayout();
+            materialCard1.SuspendLayout();
+            materialCard4.SuspendLayout();
             tabPlayerLoadouts.SuspendLayout();
             mcPlayerLoadoutsAI.SuspendLayout();
             mcPlayerLoadoutsBosses.SuspendLayout();
@@ -635,7 +660,7 @@
             materialCard2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)nmbrScreenHeight).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nmbrScreenWidth).BeginInit();
-            SuspendLayout();
+            this.SuspendLayout();
             // 
             // WebRadar
             // 
@@ -669,7 +694,7 @@
             btnMapSetupApply.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnMapSetupApply.UseAccentColor = true;
             btnMapSetupApply.UseVisualStyleBackColor = true;
-            btnMapSetupApply.Click += btnMapSetupApply_Click;
+            btnMapSetupApply.Click += (this.btnMapSetupApply_Click);
             // 
             // txtMapSetupScale
             // 
@@ -774,7 +799,7 @@
             btnToggleMapFree.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnToggleMapFree.Depth = 0;
             btnToggleMapFree.HighEmphasis = true;
-            btnToggleMapFree.Icon = Properties.Resources.tick;
+            btnToggleMapFree.Icon = eft_dma_radar.Properties.Resources.tick;
             btnToggleMapFree.Location = new Point(6, 5);
             btnToggleMapFree.Margin = new Padding(4, 6, 4, 6);
             btnToggleMapFree.MouseState = MaterialSkin.MouseState.HOVER;
@@ -787,7 +812,7 @@
             btnToggleMapFree.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
             btnToggleMapFree.UseAccentColor = true;
             btnToggleMapFree.UseVisualStyleBackColor = true;
-            btnToggleMapFree.Click += btnToggleMapFree_Click;
+            btnToggleMapFree.Click += (this.btnToggleMapFree_Click);
             // 
             // btnRemoveWatchlistEntry
             // 
@@ -808,7 +833,7 @@
             btnRemoveWatchlistEntry.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnRemoveWatchlistEntry.UseAccentColor = true;
             btnRemoveWatchlistEntry.UseVisualStyleBackColor = true;
-            btnRemoveWatchlistEntry.Click += btnRemoveWatchlistEntry_Click;
+            btnRemoveWatchlistEntry.Click += (this.btnRemoveWatchlistEntry_Click);
             // 
             // txtWatchlistAccountID
             // 
@@ -840,7 +865,7 @@
             txtWatchlistAccountID.TrailingIcon = null;
             txtWatchlistAccountID.UseSystemPasswordChar = false;
             txtWatchlistAccountID.UseTallSize = false;
-            txtWatchlistAccountID.KeyDown += txtWatchlistAccountID_KeyDown;
+            txtWatchlistAccountID.KeyDown += (this.txtWatchlistAccountID_KeyDown);
             // 
             // txtWatchlistProfileName
             // 
@@ -872,7 +897,7 @@
             txtWatchlistProfileName.TrailingIcon = null;
             txtWatchlistProfileName.UseSystemPasswordChar = false;
             txtWatchlistProfileName.UseTallSize = false;
-            txtWatchlistProfileName.KeyDown += txtWatchlistProfileName_KeyDown;
+            txtWatchlistProfileName.KeyDown += (this.txtWatchlistProfileName_KeyDown);
             // 
             // btnAddWatchlistEntry
             // 
@@ -893,7 +918,7 @@
             btnAddWatchlistEntry.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnAddWatchlistEntry.UseAccentColor = true;
             btnAddWatchlistEntry.UseVisualStyleBackColor = true;
-            btnAddWatchlistEntry.Click += btnAddWatchlistEntry_Click;
+            btnAddWatchlistEntry.Click += (this.btnAddWatchlistEntry_Click);
             // 
             // btnAddWatchlistProfile
             // 
@@ -914,7 +939,7 @@
             btnAddWatchlistProfile.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnAddWatchlistProfile.UseAccentColor = true;
             btnAddWatchlistProfile.UseVisualStyleBackColor = true;
-            btnAddWatchlistProfile.Click += btnAddWatchlistProfile_Click;
+            btnAddWatchlistProfile.Click += (this.btnAddWatchlistProfile_Click);
             // 
             // btnRemoveWatchlistProfile
             // 
@@ -935,7 +960,7 @@
             btnRemoveWatchlistProfile.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnRemoveWatchlistProfile.UseAccentColor = true;
             btnRemoveWatchlistProfile.UseVisualStyleBackColor = true;
-            btnRemoveWatchlistProfile.Click += btnRemoveWatchlistProfile_Click;
+            btnRemoveWatchlistProfile.Click += (this.btnRemoveWatchlistProfile_Click);
             // 
             // txtWatchlistTag
             // 
@@ -967,7 +992,7 @@
             txtWatchlistTag.TrailingIcon = null;
             txtWatchlistTag.UseSystemPasswordChar = false;
             txtWatchlistTag.UseTallSize = false;
-            txtWatchlistTag.KeyDown += txtWatchlistTag_KeyDown;
+            txtWatchlistTag.KeyDown += (this.txtWatchlistTag_KeyDown);
             // 
             // txtWatchlistPlatformUsername
             // 
@@ -999,7 +1024,7 @@
             txtWatchlistPlatformUsername.TrailingIcon = null;
             txtWatchlistPlatformUsername.UseSystemPasswordChar = false;
             txtWatchlistPlatformUsername.UseTallSize = false;
-            txtWatchlistPlatformUsername.KeyDown += txtWatchlistPlatformUsername_KeyDown;
+            txtWatchlistPlatformUsername.KeyDown += (this.txtWatchlistPlatformUsername_KeyDown);
             // 
             // rdbYoutube
             // 
@@ -1017,7 +1042,7 @@
             rdbYoutube.Text = "YouTube";
             toolTip.SetToolTip(rdbYoutube, "Do they stream on YouTube?");
             rdbYoutube.UseVisualStyleBackColor = true;
-            rdbYoutube.CheckedChanged += rdbYoutube_CheckedChanged;
+            rdbYoutube.CheckedChanged += (this.rdbYoutube_CheckedChanged);
             // 
             // rdbTwitch
             // 
@@ -1035,7 +1060,7 @@
             rdbTwitch.Text = "Twitch";
             toolTip.SetToolTip(rdbTwitch, "Do they stream on Twitch?");
             rdbTwitch.UseVisualStyleBackColor = true;
-            rdbTwitch.CheckedChanged += rdbTwitch_CheckedChanged;
+            rdbTwitch.CheckedChanged += (this.rdbTwitch_CheckedChanged);
             // 
             // swWatchlistIsStreamer
             // 
@@ -1052,7 +1077,7 @@
             swWatchlistIsStreamer.Text = "Streamer";
             toolTip.SetToolTip(swWatchlistIsStreamer, "Are they a streamer?");
             swWatchlistIsStreamer.UseVisualStyleBackColor = true;
-            swWatchlistIsStreamer.CheckedChanged += swWatchlistIsStreamer_CheckedChanged;
+            swWatchlistIsStreamer.CheckedChanged += (this.swWatchlistIsStreamer_CheckedChanged);
             // 
             // btnResetPlayerlist
             // 
@@ -1073,19 +1098,19 @@
             btnResetPlayerlist.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnResetPlayerlist.UseAccentColor = true;
             btnResetPlayerlist.UseVisualStyleBackColor = true;
-            btnResetPlayerlist.Click += btnResetPlayerlist_Click;
+            btnResetPlayerlist.Click += (this.btnResetPlayerlist_Click);
             // 
             // cboLootFilterItemsToAdd
             // 
             cboLootFilterItemsToAdd.AutoResize = false;
-            cboLootFilterItemsToAdd.BackColor = Color.FromArgb(255, 255, 255);
+            cboLootFilterItemsToAdd.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             cboLootFilterItemsToAdd.Depth = 0;
             cboLootFilterItemsToAdd.DrawMode = DrawMode.OwnerDrawVariable;
             cboLootFilterItemsToAdd.DropDownHeight = 727;
             cboLootFilterItemsToAdd.DropDownStyle = ComboBoxStyle.DropDownList;
             cboLootFilterItemsToAdd.DropDownWidth = 121;
             cboLootFilterItemsToAdd.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            cboLootFilterItemsToAdd.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cboLootFilterItemsToAdd.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             cboLootFilterItemsToAdd.FormattingEnabled = true;
             cboLootFilterItemsToAdd.Hint = "Item To Add";
             cboLootFilterItemsToAdd.IntegralHeight = false;
@@ -1130,7 +1155,7 @@
             txtLootFilterItemToSearch.TrailingIcon = null;
             txtLootFilterItemToSearch.UseSystemPasswordChar = false;
             txtLootFilterItemToSearch.UseTallSize = false;
-            txtLootFilterItemToSearch.TextChanged += txtLootFilterItemToSearch_TextChanged;
+            txtLootFilterItemToSearch.TextChanged += (this.txtLootFilterItemToSearch_TextChanged);
             // 
             // btnAddLootFilterItem
             // 
@@ -1151,7 +1176,7 @@
             btnAddLootFilterItem.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnAddLootFilterItem.UseAccentColor = true;
             btnAddLootFilterItem.UseVisualStyleBackColor = true;
-            btnAddLootFilterItem.Click += btnAddLootFilterItem_Click;
+            btnAddLootFilterItem.Click += (this.btnAddLootFilterItem_Click);
             // 
             // btnRemoveLootFilterItem
             // 
@@ -1172,7 +1197,7 @@
             btnRemoveLootFilterItem.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnRemoveLootFilterItem.UseAccentColor = true;
             btnRemoveLootFilterItem.UseVisualStyleBackColor = true;
-            btnRemoveLootFilterItem.Click += btnRemoveLootFilterItem_Click;
+            btnRemoveLootFilterItem.Click += (this.btnRemoveLootFilterItem_Click);
             // 
             // txtLootFilterName
             // 
@@ -1204,7 +1229,7 @@
             txtLootFilterName.TrailingIcon = null;
             txtLootFilterName.UseSystemPasswordChar = false;
             txtLootFilterName.UseTallSize = false;
-            txtLootFilterName.KeyDown += txtLootFilterName_KeyDown;
+            txtLootFilterName.KeyDown += (this.txtLootFilterName_KeyDown);
             // 
             // swLootFilterActive
             // 
@@ -1221,7 +1246,7 @@
             swLootFilterActive.Text = "Active";
             toolTip.SetToolTip(swLootFilterActive, "Only shows items considered 'important' or ones in a filter");
             swLootFilterActive.UseVisualStyleBackColor = true;
-            swLootFilterActive.Click += swLootFilterActive_CheckedChanged;
+            swLootFilterActive.Click += (this.swLootFilterActive_CheckedChanged);
             // 
             // btnAddFilter
             // 
@@ -1242,7 +1267,7 @@
             btnAddFilter.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnAddFilter.UseAccentColor = true;
             btnAddFilter.UseVisualStyleBackColor = true;
-            btnAddFilter.Click += btnAddFilter_Click;
+            btnAddFilter.Click += (this.btnAddFilter_Click);
             // 
             // btnRemoveFilter
             // 
@@ -1263,7 +1288,7 @@
             btnRemoveFilter.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnRemoveFilter.UseAccentColor = true;
             btnRemoveFilter.UseVisualStyleBackColor = true;
-            btnRemoveFilter.Click += btnRemoveFilter_Click;
+            btnRemoveFilter.Click += (this.btnRemoveFilter_Click);
             // 
             // btnPingSelectedItem
             // 
@@ -1286,7 +1311,7 @@
             btnPingSelectedItem.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnPingSelectedItem.UseAccentColor = true;
             btnPingSelectedItem.UseVisualStyleBackColor = true;
-            btnPingSelectedItem.Click += btnPingSelectedItem_Click;
+            btnPingSelectedItem.Click += (this.btnPingSelectedItem_Click);
             // 
             // txtLootItemFilter
             // 
@@ -1318,7 +1343,7 @@
             txtLootItemFilter.TrailingIcon = null;
             txtLootItemFilter.UseSystemPasswordChar = false;
             txtLootItemFilter.UseTallSize = false;
-            txtLootItemFilter.TextChanged += txtLootItemFilter_TextChanged;
+            txtLootItemFilter.TextChanged += (this.txtLootItemFilter_TextChanged);
             // 
             // btnToggleLootItemViewer
             // 
@@ -1327,7 +1352,7 @@
             btnToggleLootItemViewer.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnToggleLootItemViewer.Depth = 0;
             btnToggleLootItemViewer.HighEmphasis = true;
-            btnToggleLootItemViewer.Icon = Properties.Resources.loot_search;
+            btnToggleLootItemViewer.Icon = eft_dma_radar.Properties.Resources.loot_search;
             btnToggleLootItemViewer.Location = new Point(121, 5);
             btnToggleLootItemViewer.Margin = new Padding(4, 6, 4, 6);
             btnToggleLootItemViewer.MouseState = MaterialSkin.MouseState.HOVER;
@@ -1340,7 +1365,7 @@
             btnToggleLootItemViewer.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
             btnToggleLootItemViewer.UseAccentColor = true;
             btnToggleLootItemViewer.UseVisualStyleBackColor = true;
-            btnToggleLootItemViewer.Click += btnToggleLootItemViewer_Click;
+            btnToggleLootItemViewer.Click += (this.btnToggleLootItemViewer_Click);
             // 
             // swAimClosest
             // 
@@ -1357,7 +1382,7 @@
             swAimClosest.Text = "Closest";
             toolTip.SetToolTip(swAimClosest, "Targets Pelvis");
             swAimClosest.UseVisualStyleBackColor = true;
-            swAimClosest.CheckedChanged += swAimClosest_CheckedChanged;
+            swAimClosest.CheckedChanged += (this.swAimClosest_CheckedChanged);
             // 
             // msSAEnableSilentAim
             // 
@@ -1374,7 +1399,7 @@
             msSAEnableSilentAim.Text = "Enable SilentAim";
             toolTip.SetToolTip(msSAEnableSilentAim, "Enables Aimbot");
             msSAEnableSilentAim.UseVisualStyleBackColor = true;
-            msSAEnableSilentAim.CheckedChanged += msSAEnableSilentAim_CheckedChanged;
+            msSAEnableSilentAim.CheckedChanged += (this.msSAEnableSilentAim_CheckedChanged);
             // 
             // swAimEnablePred
             // 
@@ -1391,7 +1416,7 @@
             swAimEnablePred.Text = "Enable Prediction";
             toolTip.SetToolTip(swAimEnablePred, "Enables Aimbot and SilentAim Prediction");
             swAimEnablePred.UseVisualStyleBackColor = true;
-            swAimEnablePred.CheckedChanged += swAimEnablePred_CheckedChanged;
+            swAimEnablePred.CheckedChanged += (this.swAimEnablePred_CheckedChanged);
             // 
             // sldrAimDistance
             // 
@@ -1409,7 +1434,7 @@
             sldrAimDistance.UseAccentColor = true;
             sldrAimDistance.Value = 300;
             sldrAimDistance.ValueMax = 1000;
-            sldrAimDistance.onValueChanged += sldrAimDistance_onValueChanged;
+            sldrAimDistance.onValueChanged += (this.sldrAimDistance_onValueChanged);
             // 
             // swAimLLeg
             // 
@@ -1426,7 +1451,7 @@
             swAimLLeg.Text = "Left Leg";
             toolTip.SetToolTip(swAimLLeg, "Targets Left Leg");
             swAimLLeg.UseVisualStyleBackColor = true;
-            swAimLLeg.CheckedChanged += swAimLLeg_CheckedChanged;
+            swAimLLeg.CheckedChanged += (this.swAimLLeg_CheckedChanged);
             // 
             // swEnableAimBot
             // 
@@ -1443,7 +1468,7 @@
             swEnableAimBot.Text = "Enable AimBot";
             toolTip.SetToolTip(swEnableAimBot, "Enables Aimbot");
             swEnableAimBot.UseVisualStyleBackColor = true;
-            swEnableAimBot.CheckedChanged += swEnableAimBot_CheckedChanged;
+            swEnableAimBot.CheckedChanged += (this.swEnableAimBot_CheckedChanged);
             // 
             // swAimRLeg
             // 
@@ -1460,7 +1485,7 @@
             swAimRLeg.Text = "Right Leg";
             toolTip.SetToolTip(swAimRLeg, "Targets Right Leg");
             swAimRLeg.UseVisualStyleBackColor = true;
-            swAimRLeg.CheckedChanged += swAimRLeg_CheckedChanged;
+            swAimRLeg.CheckedChanged += (this.swAimRLeg_CheckedChanged);
             // 
             // swAimPelvis
             // 
@@ -1477,7 +1502,7 @@
             swAimPelvis.Text = "Pelvis";
             toolTip.SetToolTip(swAimPelvis, "Targets Pelvis");
             swAimPelvis.UseVisualStyleBackColor = true;
-            swAimPelvis.CheckedChanged += swAimPelvis_CheckedChanged;
+            swAimPelvis.CheckedChanged += (this.swAimPelvis_CheckedChanged);
             // 
             // swAimChest
             // 
@@ -1494,7 +1519,7 @@
             swAimChest.Text = "Chest";
             toolTip.SetToolTip(swAimChest, "Targets Chest");
             swAimChest.UseVisualStyleBackColor = true;
-            swAimChest.CheckedChanged += swAimChest_CheckedChanged;
+            swAimChest.CheckedChanged += (this.swAimChest_CheckedChanged);
             // 
             // swAimNeck
             // 
@@ -1512,7 +1537,7 @@
             swAimNeck.TextAlign = ContentAlignment.TopLeft;
             toolTip.SetToolTip(swAimNeck, "Targets Neck");
             swAimNeck.UseVisualStyleBackColor = true;
-            swAimNeck.CheckedChanged += swAimNeck_CheckedChanged;
+            swAimNeck.CheckedChanged += (this.swAimNeck_CheckedChanged);
             // 
             // swHeadAim
             // 
@@ -1529,7 +1554,7 @@
             swHeadAim.Text = "Head";
             toolTip.SetToolTip(swHeadAim, "Targets Head");
             swHeadAim.UseVisualStyleBackColor = true;
-            swHeadAim.CheckedChanged += swHeadAim_CheckedChanged;
+            swHeadAim.CheckedChanged += (this.swHeadAim_CheckedChanged);
             // 
             // sldrAimbotFOV
             // 
@@ -1547,7 +1572,7 @@
             sldrAimbotFOV.UseAccentColor = true;
             sldrAimbotFOV.Value = 30;
             sldrAimbotFOV.ValueMax = 120;
-            sldrAimbotFOV.onValueChanged += sldrAimbotFOV_onValueChanged;
+            sldrAimbotFOV.onValueChanged += (this.sldrAimbotFOV_onValueChanged);
             // 
             // swGetLink
             // 
@@ -1564,7 +1589,7 @@
             swGetLink.Text = "Get Link";
             toolTip.SetToolTip(swGetLink, "Starts and Stops WebServer to host WebRadar on localhost.");
             swGetLink.UseVisualStyleBackColor = true;
-            swGetLink.CheckedChanged += swGetLink_CheckedChanged;
+            swGetLink.CheckedChanged += (this.swGetLink_CheckedChanged);
             // 
             // PublicHostname
             // 
@@ -1618,7 +1643,7 @@
             materialSaveBtn.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             materialSaveBtn.UseAccentColor = true;
             materialSaveBtn.UseVisualStyleBackColor = true;
-            materialSaveBtn.Click += materialSaveBtn_Click;
+            materialSaveBtn.Click += (this.materialSaveBtn_Click);
             // 
             // hostnameTextBox
             // 
@@ -1666,7 +1691,7 @@
             swStartWebServer.Text = "Start/Stop Server";
             toolTip.SetToolTip(swStartWebServer, "Starts and Stops WebServer to host WebRadar on localhost.");
             swStartWebServer.UseVisualStyleBackColor = true;
-            swStartWebServer.CheckedChanged += swStartWebServer_CheckedChanged;
+            swStartWebServer.CheckedChanged += (this.swStartWebServer_CheckedChanged);
             // 
             // btnResetTheme
             // 
@@ -1689,7 +1714,7 @@
             btnResetTheme.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnResetTheme.UseAccentColor = true;
             btnResetTheme.UseVisualStyleBackColor = true;
-            btnResetTheme.Click += btnResetTheme_Click;
+            btnResetTheme.Click += (this.btnResetTheme_Click);
             // 
             // btnRemoveFaction
             // 
@@ -1710,7 +1735,7 @@
             btnRemoveFaction.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnRemoveFaction.UseAccentColor = true;
             btnRemoveFaction.UseVisualStyleBackColor = true;
-            btnRemoveFaction.Click += btnRemoveFaction_Click;
+            btnRemoveFaction.Click += (this.btnRemoveFaction_Click);
             // 
             // btnAddFaction
             // 
@@ -1731,19 +1756,19 @@
             btnAddFaction.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnAddFaction.UseAccentColor = true;
             btnAddFaction.UseVisualStyleBackColor = true;
-            btnAddFaction.Click += btnAddFaction_Click;
+            btnAddFaction.Click += (this.btnAddFaction_Click);
             // 
             // cboFactionType
             // 
             cboFactionType.AutoResize = false;
-            cboFactionType.BackColor = Color.FromArgb(255, 255, 255);
+            cboFactionType.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             cboFactionType.Depth = 0;
             cboFactionType.DrawMode = DrawMode.OwnerDrawVariable;
             cboFactionType.DropDownHeight = 118;
             cboFactionType.DropDownStyle = ComboBoxStyle.DropDownList;
             cboFactionType.DropDownWidth = 121;
             cboFactionType.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            cboFactionType.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cboFactionType.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             cboFactionType.FormattingEnabled = true;
             cboFactionType.Hint = "Faction Type";
             cboFactionType.IntegralHeight = false;
@@ -1757,7 +1782,7 @@
             cboFactionType.TabIndex = 44;
             toolTip.SetToolTip(cboFactionType, "The type of faction it is");
             cboFactionType.UseTallSize = false;
-            cboFactionType.SelectedIndexChanged += cboFactionType_SelectedIndexChanged;
+            cboFactionType.SelectedIndexChanged += (this.cboFactionType_SelectedIndexChanged);
             // 
             // btnAddFactionEntry
             // 
@@ -1778,7 +1803,7 @@
             btnAddFactionEntry.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnAddFactionEntry.UseAccentColor = true;
             btnAddFactionEntry.UseVisualStyleBackColor = true;
-            btnAddFactionEntry.Click += btnAddFactionEntry_Click;
+            btnAddFactionEntry.Click += (this.btnAddFactionEntry_Click);
             // 
             // txtFactionName
             // 
@@ -1810,7 +1835,7 @@
             txtFactionName.TrailingIcon = null;
             txtFactionName.UseSystemPasswordChar = false;
             txtFactionName.UseTallSize = false;
-            txtFactionName.KeyDown += txtFactionName_KeyDown;
+            txtFactionName.KeyDown += (this.txtFactionName_KeyDown);
             // 
             // txtFactionEntryName
             // 
@@ -1842,7 +1867,7 @@
             txtFactionEntryName.TrailingIcon = null;
             txtFactionEntryName.UseSystemPasswordChar = false;
             txtFactionEntryName.UseTallSize = false;
-            txtFactionEntryName.KeyDown += txtFactionEntryName_KeyDown;
+            txtFactionEntryName.KeyDown += (this.txtFactionEntryName_KeyDown);
             // 
             // btnRemoveFactionEntry
             // 
@@ -1863,7 +1888,7 @@
             btnRemoveFactionEntry.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnRemoveFactionEntry.UseAccentColor = true;
             btnRemoveFactionEntry.UseVisualStyleBackColor = true;
-            btnRemoveFactionEntry.Click += btnRemoveFactionEntry_Click;
+            btnRemoveFactionEntry.Click += (this.btnRemoveFactionEntry_Click);
             // 
             // swCorpses
             // 
@@ -1880,7 +1905,7 @@
             swCorpses.Text = "Corpses";
             toolTip.SetToolTip(swCorpses, "Shows player/scav/boss etc corpses");
             swCorpses.UseVisualStyleBackColor = true;
-            swCorpses.CheckedChanged += swCorpses_CheckedChanged;
+            swCorpses.CheckedChanged += (this.swCorpses_CheckedChanged);
             // 
             // swFilteredOnly
             // 
@@ -1897,7 +1922,7 @@
             swFilteredOnly.Text = "Filtered Only";
             toolTip.SetToolTip(swFilteredOnly, "Only shows items considered 'important' or ones in a filter");
             swFilteredOnly.UseVisualStyleBackColor = true;
-            swFilteredOnly.CheckedChanged += swFilteredOnly_CheckedChanged;
+            swFilteredOnly.CheckedChanged += (this.swFilteredOnly_CheckedChanged);
             // 
             // swSubItems
             // 
@@ -1914,7 +1939,7 @@
             swSubItems.Text = "Sub Items";
             toolTip.SetToolTip(swSubItems, "Shows sub-items within a container/corpse");
             swSubItems.UseVisualStyleBackColor = true;
-            swSubItems.CheckedChanged += swSubItems_CheckedChanged;
+            swSubItems.CheckedChanged += (this.swSubItems_CheckedChanged);
             // 
             // swItemValue
             // 
@@ -1931,7 +1956,7 @@
             swItemValue.Text = "Item Value";
             toolTip.SetToolTip(swItemValue, "Shows item value");
             swItemValue.UseVisualStyleBackColor = true;
-            swItemValue.CheckedChanged += swItemValue_CheckedChanged;
+            swItemValue.CheckedChanged += (this.swItemValue_CheckedChanged);
             // 
             // swAutoLootRefresh
             // 
@@ -1948,7 +1973,7 @@
             swAutoLootRefresh.Text = "Loot Refresh";
             toolTip.SetToolTip(swAutoLootRefresh, "Automatically refreshes loot on the map");
             swAutoLootRefresh.UseVisualStyleBackColor = true;
-            swAutoLootRefresh.CheckedChanged += swAutoLootRefresh_CheckedChanged;
+            swAutoLootRefresh.CheckedChanged += (this.swAutoLootRefresh_CheckedChanged);
             // 
             // btnRefreshLoot
             // 
@@ -1971,7 +1996,7 @@
             btnRefreshLoot.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnRefreshLoot.UseAccentColor = true;
             btnRefreshLoot.UseVisualStyleBackColor = true;
-            btnRefreshLoot.Click += btnRefreshLoot_Click;
+            btnRefreshLoot.Click += (this.btnRefreshLoot_Click);
             // 
             // sldrAutoLootRefreshDelay
             // 
@@ -1990,19 +2015,19 @@
             sldrAutoLootRefreshDelay.Value = 15;
             sldrAutoLootRefreshDelay.ValueMax = 30;
             sldrAutoLootRefreshDelay.ValueSuffix = "s";
-            sldrAutoLootRefreshDelay.onValueChanged += sldrAutoRefreshDelay_onValueChanged;
+            sldrAutoLootRefreshDelay.onValueChanged += (this.sldrAutoRefreshDelay_onValueChanged);
             // 
             // cboAutoRefreshMap
             // 
             cboAutoRefreshMap.AutoResize = false;
-            cboAutoRefreshMap.BackColor = Color.FromArgb(255, 255, 255);
+            cboAutoRefreshMap.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             cboAutoRefreshMap.Depth = 0;
             cboAutoRefreshMap.DrawMode = DrawMode.OwnerDrawVariable;
             cboAutoRefreshMap.DropDownHeight = 118;
             cboAutoRefreshMap.DropDownStyle = ComboBoxStyle.DropDownList;
             cboAutoRefreshMap.DropDownWidth = 121;
             cboAutoRefreshMap.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            cboAutoRefreshMap.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cboAutoRefreshMap.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             cboAutoRefreshMap.FormattingEnabled = true;
             cboAutoRefreshMap.Hint = "Map";
             cboAutoRefreshMap.IntegralHeight = false;
@@ -2016,7 +2041,7 @@
             cboAutoRefreshMap.TabIndex = 39;
             toolTip.SetToolTip(cboAutoRefreshMap, "The map to adjust the auto refresh delay on");
             cboAutoRefreshMap.UseTallSize = false;
-            cboAutoRefreshMap.SelectedIndexChanged += cboAutoRefreshMap_SelectedIndexChanged;
+            cboAutoRefreshMap.SelectedIndexChanged += (this.cboAutoRefreshMap_SelectedIndexChanged);
             // 
             // swProcessLoot
             // 
@@ -2033,7 +2058,7 @@
             swProcessLoot.Text = "Process Loot";
             toolTip.SetToolTip(swProcessLoot, "Enables processing of loot items");
             swProcessLoot.UseVisualStyleBackColor = true;
-            swProcessLoot.CheckedChanged += swProcessLoot_CheckedChanged;
+            swProcessLoot.CheckedChanged += (this.swProcessLoot_CheckedChanged);
             // 
             // swQuestHelper
             // 
@@ -2050,7 +2075,7 @@
             swQuestHelper.Text = "Quest Helper";
             toolTip.SetToolTip(swQuestHelper, "Displays all active quest tasks/items on the map. Must use 'Process Loot' to display quest/loot items.");
             swQuestHelper.UseVisualStyleBackColor = true;
-            swQuestHelper.CheckedChanged += swQuestHelper_CheckedChanged;
+            swQuestHelper.CheckedChanged += (this.swQuestHelper_CheckedChanged);
             // 
             // swLooseLoot
             // 
@@ -2067,7 +2092,7 @@
             swLooseLoot.Text = "Loose Loot";
             toolTip.SetToolTip(swLooseLoot, "Shows loose loot items");
             swLooseLoot.UseVisualStyleBackColor = true;
-            swLooseLoot.CheckedChanged += swLooseLoot_CheckedChanged;
+            swLooseLoot.CheckedChanged += (this.swLooseLoot_CheckedChanged);
             // 
             // swAutoTaskRefresh
             // 
@@ -2084,7 +2109,7 @@
             swAutoTaskRefresh.Text = "Task Refresh";
             toolTip.SetToolTip(swAutoTaskRefresh, "Automatically refreshes subtasks & their completion state");
             swAutoTaskRefresh.UseVisualStyleBackColor = true;
-            swAutoTaskRefresh.CheckedChanged += swAutoTaskRefresh_CheckedChanged;
+            swAutoTaskRefresh.CheckedChanged += (this.swAutoTaskRefresh_CheckedChanged);
             // 
             // sldrAutoTaskRefreshDelay
             // 
@@ -2103,7 +2128,7 @@
             sldrAutoTaskRefreshDelay.Value = 15;
             sldrAutoTaskRefreshDelay.ValueMax = 30;
             sldrAutoTaskRefreshDelay.ValueSuffix = "s";
-            sldrAutoTaskRefreshDelay.onValueChanged += sldrAutoTaskRefreshDelay_onValueChanged;
+            sldrAutoTaskRefreshDelay.onValueChanged += (this.sldrAutoTaskRefreshDelay_onValueChanged);
             // 
             // swQuestItems
             // 
@@ -2120,7 +2145,7 @@
             swQuestItems.Text = "Quest Items";
             toolTip.SetToolTip(swQuestItems, "Show quest items automatically");
             swQuestItems.UseVisualStyleBackColor = true;
-            swQuestItems.CheckedChanged += swQuestItems_CheckedChanged;
+            swQuestItems.CheckedChanged += (this.swQuestItems_CheckedChanged);
             // 
             // swUnknownQuestItems
             // 
@@ -2153,7 +2178,7 @@
             swQuestLocations.Text = "Locations";
             toolTip.SetToolTip(swQuestLocations, "Show quest locations on map");
             swQuestLocations.UseVisualStyleBackColor = true;
-            swQuestLocations.CheckedChanged += swQuestLocations_CheckedChanged;
+            swQuestLocations.CheckedChanged += (this.swQuestLocations_CheckedChanged);
             // 
             // swQuestLootItems
             // 
@@ -2170,7 +2195,7 @@
             swQuestLootItems.Text = "Loot Items";
             toolTip.SetToolTip(swQuestLootItems, "Automatically mark loot items required by quests");
             swQuestLootItems.UseVisualStyleBackColor = true;
-            swQuestLootItems.CheckedChanged += swQuestLootItems_CheckedChanged;
+            swQuestLootItems.CheckedChanged += (this.swQuestLootItems_CheckedChanged);
             // 
             // btnRefreshTasks
             // 
@@ -2193,7 +2218,7 @@
             btnRefreshTasks.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnRefreshTasks.UseAccentColor = true;
             btnRefreshTasks.UseVisualStyleBackColor = true;
-            btnRefreshTasks.Click += btnRefreshTasks_Click;
+            btnRefreshTasks.Click += (this.btnRefreshTasks_Click);
             // 
             // sldrMinRegularLoot
             // 
@@ -2212,7 +2237,7 @@
             sldrMinRegularLoot.Value = 85;
             sldrMinRegularLoot.ValueMax = 249;
             sldrMinRegularLoot.ValueSuffix = "k";
-            sldrMinRegularLoot.onValueChanged += sldrMinRegularLoot_onValueChanged;
+            sldrMinRegularLoot.onValueChanged += (this.sldrMinRegularLoot_onValueChanged);
             // 
             // sldrMinCorpse
             // 
@@ -2231,7 +2256,7 @@
             sldrMinCorpse.Value = 200;
             sldrMinCorpse.ValueMax = 800;
             sldrMinCorpse.ValueSuffix = "k";
-            sldrMinCorpse.onValueChanged += sldrMinCorpse_onValueChanged;
+            sldrMinCorpse.onValueChanged += (this.sldrMinCorpse_onValueChanged);
             // 
             // sldrMinSubItems
             // 
@@ -2250,7 +2275,7 @@
             sldrMinSubItems.Value = 100;
             sldrMinSubItems.ValueMax = 200;
             sldrMinSubItems.ValueSuffix = "k";
-            sldrMinSubItems.onValueChanged += sldrMinSubItems_onValueChanged;
+            sldrMinSubItems.onValueChanged += (this.sldrMinSubItems_onValueChanged);
             // 
             // sldrMinImportantLoot
             // 
@@ -2269,7 +2294,7 @@
             sldrMinImportantLoot.Value = 250;
             sldrMinImportantLoot.ValueMax = 600;
             sldrMinImportantLoot.ValueSuffix = "k";
-            sldrMinImportantLoot.onValueChanged += sldrMinImportantLoot_onValueChanged;
+            sldrMinImportantLoot.onValueChanged += (this.sldrMinImportantLoot_onValueChanged);
             // 
             // sldrLootPingAnimationSpeed
             // 
@@ -2288,7 +2313,7 @@
             sldrLootPingAnimationSpeed.Value = 1000;
             sldrLootPingAnimationSpeed.ValueMax = 4000;
             sldrLootPingAnimationSpeed.ValueSuffix = "ms";
-            sldrLootPingAnimationSpeed.onValueChanged += sldrLootPingAnimationSpeed_onValueChanged;
+            sldrLootPingAnimationSpeed.onValueChanged += (this.sldrLootPingAnimationSpeed_onValueChanged);
             // 
             // sldrLootPingMaxRadius
             // 
@@ -2307,7 +2332,7 @@
             sldrLootPingMaxRadius.Value = 25;
             sldrLootPingMaxRadius.ValueMax = 75;
             sldrLootPingMaxRadius.ValueSuffix = "px";
-            sldrLootPingMaxRadius.onValueChanged += sldrLootPingMaxRadius_onValueChanged;
+            sldrLootPingMaxRadius.onValueChanged += (this.sldrLootPingMaxRadius_onValueChanged);
             // 
             // sldrLootPingRepetition
             // 
@@ -2324,7 +2349,7 @@
             sldrLootPingRepetition.UseAccentColor = true;
             sldrLootPingRepetition.Value = 1;
             sldrLootPingRepetition.ValueMax = 5;
-            sldrLootPingRepetition.onValueChanged += sldrLootPingRepetition_onValueChanged;
+            sldrLootPingRepetition.onValueChanged += (this.sldrLootPingRepetition_onValueChanged);
             // 
             // swContainers
             // 
@@ -2341,7 +2366,7 @@
             swContainers.Text = "Containers";
             toolTip.SetToolTip(swContainers, "Shows lootable containers throughout the map");
             swContainers.UseVisualStyleBackColor = true;
-            swContainers.CheckedChanged += swContainers_CheckedChanged;
+            swContainers.CheckedChanged += (this.swContainers_CheckedChanged);
             // 
             // sldrContainerDistance
             // 
@@ -2360,7 +2385,7 @@
             sldrContainerDistance.Value = 300;
             sldrContainerDistance.ValueMax = 1000;
             sldrContainerDistance.ValueSuffix = "m";
-            sldrContainerDistance.onValueChanged += sldrContainerDistance_onValueChanged;
+            sldrContainerDistance.onValueChanged += (this.sldrContainerDistance_onValueChanged);
             // 
             // swInstantADS
             // 
@@ -2377,7 +2402,7 @@
             swInstantADS.Text = "Instant ADS";
             toolTip.SetToolTip(swInstantADS, "Increases ADS speed to be near instantaneous");
             swInstantADS.UseVisualStyleBackColor = true;
-            swInstantADS.CheckedChanged += swInstantADS_CheckedChanged;
+            swInstantADS.CheckedChanged += (this.swInstantADS_CheckedChanged);
             // 
             // swNoVisor
             // 
@@ -2394,7 +2419,7 @@
             swNoVisor.Text = "No Visor";
             toolTip.SetToolTip(swNoVisor, "Removes visual visor effect");
             swNoVisor.UseVisualStyleBackColor = true;
-            swNoVisor.CheckedChanged += swNoVisor_CheckedChanged;
+            swNoVisor.CheckedChanged += (this.swNoVisor_CheckedChanged);
             // 
             // swThermalVision
             // 
@@ -2411,7 +2436,7 @@
             swThermalVision.Text = "Thermal Vision";
             toolTip.SetToolTip(swThermalVision, "Enables T-7 thermal vision");
             swThermalVision.UseVisualStyleBackColor = true;
-            swThermalVision.CheckedChanged += swThermalVision_CheckedChanged;
+            swThermalVision.CheckedChanged += (this.swThermalVision_CheckedChanged);
             // 
             // swRecoil
             // 
@@ -2428,7 +2453,7 @@
             swRecoil.Text = "Recoil";
             toolTip.SetToolTip(swRecoil, "Removes weapon recoil");
             swRecoil.UseVisualStyleBackColor = true;
-            swRecoil.CheckedChanged += swRecoil_CheckedChanged;
+            swRecoil.CheckedChanged += (this.swRecoil_CheckedChanged);
             // 
             // swOpticalThermal
             // 
@@ -2445,7 +2470,7 @@
             swOpticalThermal.Text = "Optical Thermal";
             toolTip.SetToolTip(swOpticalThermal, "Turns optics into thermals");
             swOpticalThermal.UseVisualStyleBackColor = true;
-            swOpticalThermal.CheckedChanged += swOpticalThermal_CheckedChanged;
+            swOpticalThermal.CheckedChanged += (this.swOpticalThermal_CheckedChanged);
             // 
             // swJuggernaut
             // 
@@ -2462,7 +2487,7 @@
             swJuggernaut.Text = "Juggernaut";
             toolTip.SetToolTip(swJuggernaut, "Allows running w/ blacked legs");
             swJuggernaut.UseVisualStyleBackColor = true;
-            swJuggernaut.CheckedChanged += swJuggernaut_CheckedChanged;
+            swJuggernaut.CheckedChanged += (this.swJuggernaut_CheckedChanged);
             // 
             // swNightVision
             // 
@@ -2479,7 +2504,7 @@
             swNightVision.Text = "Night Vision";
             toolTip.SetToolTip(swNightVision, "Enables 'bug eye' night vision");
             swNightVision.UseVisualStyleBackColor = true;
-            swNightVision.CheckedChanged += swNightVision_CheckedChanged;
+            swNightVision.CheckedChanged += (this.swNightVision_CheckedChanged);
             // 
             // swNoWeaponMalfunctions
             // 
@@ -2496,7 +2521,7 @@
             swNoWeaponMalfunctions.Text = "No Malfunctions";
             toolTip.SetToolTip(swNoWeaponMalfunctions, "Removes misfiring, failure to eject/feed, jammed bolts & overheating");
             swNoWeaponMalfunctions.UseVisualStyleBackColor = true;
-            swNoWeaponMalfunctions.CheckedChanged += swNoWeaponMalfunctions_CheckedChanged;
+            swNoWeaponMalfunctions.CheckedChanged += (this.swNoWeaponMalfunctions_CheckedChanged);
             // 
             // sldrXFactor
             // 
@@ -2512,7 +2537,7 @@
             sldrXFactor.UseAccentColor = true;
             sldrXFactor.ValueMax = 100;
             sldrXFactor.ValueSuffix = "%";
-            sldrXFactor.onValueChanged += sldrXFactor_onValueChanged;
+            sldrXFactor.onValueChanged += (this.sldrXFactor_onValueChanged);
             // 
             // swFrostBite
             // 
@@ -2529,7 +2554,7 @@
             swFrostBite.Text = "No Frost";
             toolTip.SetToolTip(swFrostBite, "Removes visual frost bite effect");
             swFrostBite.UseVisualStyleBackColor = true;
-            swFrostBite.CheckedChanged += swFrostBite_CheckedChanged;
+            swFrostBite.CheckedChanged += (this.swFrostBite_CheckedChanged);
             // 
             // sldrSwayFactor
             // 
@@ -2545,7 +2570,7 @@
             sldrSwayFactor.UseAccentColor = true;
             sldrSwayFactor.ValueMax = 100;
             sldrSwayFactor.ValueSuffix = "%";
-            sldrSwayFactor.onValueChanged += sldrWeaponSway_onValueChanged;
+            sldrSwayFactor.onValueChanged += (this.sldrWeaponSway_onValueChanged);
             // 
             // swWeaponSway
             // 
@@ -2562,7 +2587,7 @@
             swWeaponSway.Text = "Weapon Sway";
             toolTip.SetToolTip(swWeaponSway, "Removes weapon sway");
             swWeaponSway.UseVisualStyleBackColor = true;
-            swWeaponSway.CheckedChanged += swWeaponSway_CheckedChanged;
+            swWeaponSway.CheckedChanged += (this.swWeaponSway_CheckedChanged);
             // 
             // sldrYFactor
             // 
@@ -2578,7 +2603,7 @@
             sldrYFactor.UseAccentColor = true;
             sldrYFactor.ValueMax = 100;
             sldrYFactor.ValueSuffix = "%";
-            sldrYFactor.onValueChanged += sldrYFactor_onValueChanged;
+            sldrYFactor.onValueChanged += (this.sldrYFactor_onValueChanged);
             // 
             // swExtendedReach
             // 
@@ -2595,7 +2620,7 @@
             swExtendedReach.Text = "Extended Reach";
             toolTip.SetToolTip(swExtendedReach, "Increases maximum loot/door interaction distance");
             swExtendedReach.UseVisualStyleBackColor = true;
-            swExtendedReach.CheckedChanged += swExtendedReach_CheckedChanged;
+            swExtendedReach.CheckedChanged += (this.swExtendedReach_CheckedChanged);
             // 
             // swInfiniteStamina
             // 
@@ -2612,7 +2637,7 @@
             swInfiniteStamina.Text = "Infinite Stamina";
             toolTip.SetToolTip(swInfiniteStamina, "Allows you to run forever");
             swInfiniteStamina.UseVisualStyleBackColor = true;
-            swInfiniteStamina.CheckedChanged += swInfiniteStamina_CheckedChanged;
+            swInfiniteStamina.CheckedChanged += (this.swInfiniteStamina_CheckedChanged);
             // 
             // swLootThroughWalls
             // 
@@ -2629,7 +2654,7 @@
             swLootThroughWalls.Text = "Loot Through Walls";
             toolTip.SetToolTip(swLootThroughWalls, "Toggles looting through walls (when aiming down sights)");
             swLootThroughWalls.UseVisualStyleBackColor = true;
-            swLootThroughWalls.CheckedChanged += swLootThroughWalls_CheckedChanged;
+            swLootThroughWalls.CheckedChanged += (this.swLootThroughWalls_CheckedChanged);
             // 
             // sldrLootThroughWallsDistance
             // 
@@ -2647,7 +2672,7 @@
             sldrLootThroughWallsDistance.UseAccentColor = true;
             sldrLootThroughWallsDistance.Value = 2;
             sldrLootThroughWallsDistance.ValueMax = 3;
-            sldrLootThroughWallsDistance.onValueChanged += sldrLootThroughWallsDistance_onValueChanged;
+            sldrLootThroughWallsDistance.onValueChanged += (this.sldrLootThroughWallsDistance_onValueChanged);
             // 
             // sldrExtendedReachDistance
             // 
@@ -2666,7 +2691,7 @@
             sldrExtendedReachDistance.UseAccentColor = true;
             sldrExtendedReachDistance.Value = 18;
             sldrExtendedReachDistance.ValueMax = 40;
-            sldrExtendedReachDistance.onValueChanged += sldrExtendedReachDistance_onValueChanged;
+            sldrExtendedReachDistance.onValueChanged += (this.sldrExtendedReachDistance_onValueChanged);
             // 
             // swThirdperson
             // 
@@ -2683,7 +2708,7 @@
             swThirdperson.Text = "Thirdperson";
             toolTip.SetToolTip(swThirdperson, "Enables thirdperson");
             swThirdperson.UseVisualStyleBackColor = true;
-            swThirdperson.CheckedChanged += swThirdperson_CheckedChanged;
+            swThirdperson.CheckedChanged += (this.swThirdperson_CheckedChanged);
             // 
             // swMedPanel
             // 
@@ -2700,7 +2725,7 @@
             swMedPanel.Text = "Med Panel";
             toolTip.SetToolTip(swMedPanel, "Shows med progress panel");
             swMedPanel.UseVisualStyleBackColor = true;
-            swMedPanel.CheckedChanged += swMedPanel_CheckedChanged;
+            swMedPanel.CheckedChanged += (this.swMedPanel_CheckedChanged);
             // 
             // sldrFOV
             // 
@@ -2720,7 +2745,7 @@
             sldrFOV.Value = 75;
             sldrFOV.ValueMax = 120;
             sldrFOV.Visible = false;
-            sldrFOV.onValueChanged += sldrFOV_onValueChanged;
+            sldrFOV.onValueChanged += (this.sldrFOV_onValueChanged);
             // 
             // swInventoryBlur
             // 
@@ -2737,7 +2762,7 @@
             swInventoryBlur.Text = "Inventory Blur";
             toolTip.SetToolTip(swInventoryBlur, "Removes inventory blur");
             swInventoryBlur.UseVisualStyleBackColor = true;
-            swInventoryBlur.CheckedChanged += swInventoryBlur_CheckedChanged;
+            swInventoryBlur.CheckedChanged += (this.swInventoryBlur_CheckedChanged);
             // 
             // swMasterSwitch
             // 
@@ -2754,19 +2779,19 @@
             swMasterSwitch.Text = "Master Switch";
             toolTip.SetToolTip(swMasterSwitch, "Shows exfiltration point names on radar");
             swMasterSwitch.UseVisualStyleBackColor = true;
-            swMasterSwitch.CheckedChanged += swMasterSwitch_CheckedChanged;
+            swMasterSwitch.CheckedChanged += (this.swMasterSwitch_CheckedChanged);
             // 
             // cboThermalType
             // 
             cboThermalType.AutoResize = false;
-            cboThermalType.BackColor = Color.FromArgb(255, 255, 255);
+            cboThermalType.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             cboThermalType.Depth = 0;
             cboThermalType.DrawMode = DrawMode.OwnerDrawVariable;
             cboThermalType.DropDownHeight = 118;
             cboThermalType.DropDownStyle = ComboBoxStyle.DropDownList;
             cboThermalType.DropDownWidth = 121;
             cboThermalType.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            cboThermalType.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cboThermalType.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             cboThermalType.FormattingEnabled = true;
             cboThermalType.Hint = "Type";
             cboThermalType.IntegralHeight = false;
@@ -2781,19 +2806,19 @@
             cboThermalType.TabIndex = 37;
             toolTip.SetToolTip(cboThermalType, "The type of thermal to edit");
             cboThermalType.UseTallSize = false;
-            cboThermalType.SelectedIndexChanged += cboThermalType_SelectedIndexChanged;
+            cboThermalType.SelectedIndexChanged += (this.cboThermalType_SelectedIndexChanged);
             // 
             // cboThermalColorScheme
             // 
             cboThermalColorScheme.AutoResize = false;
-            cboThermalColorScheme.BackColor = Color.FromArgb(255, 255, 255);
+            cboThermalColorScheme.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             cboThermalColorScheme.Depth = 0;
             cboThermalColorScheme.DrawMode = DrawMode.OwnerDrawVariable;
             cboThermalColorScheme.DropDownHeight = 118;
             cboThermalColorScheme.DropDownStyle = ComboBoxStyle.DropDownList;
             cboThermalColorScheme.DropDownWidth = 121;
             cboThermalColorScheme.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            cboThermalColorScheme.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cboThermalColorScheme.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             cboThermalColorScheme.FormattingEnabled = true;
             cboThermalColorScheme.Hint = "Color Scheme";
             cboThermalColorScheme.IntegralHeight = false;
@@ -2808,7 +2833,7 @@
             cboThermalColorScheme.TabIndex = 38;
             toolTip.SetToolTip(cboThermalColorScheme, "The color scheme/preset to edit");
             cboThermalColorScheme.UseTallSize = false;
-            cboThermalColorScheme.SelectedIndexChanged += cboThermalColorScheme_SelectedIndexChanged;
+            cboThermalColorScheme.SelectedIndexChanged += (this.cboThermalColorScheme_SelectedIndexChanged);
             // 
             // swMaxEndurance
             // 
@@ -2825,7 +2850,7 @@
             swMaxEndurance.Text = "Endurance";
             toolTip.SetToolTip(swMaxEndurance, "Maximises endurance buffs");
             swMaxEndurance.UseVisualStyleBackColor = true;
-            swMaxEndurance.CheckedChanged += swMaxEndurance_CheckedChanged;
+            swMaxEndurance.CheckedChanged += (this.swMaxEndurance_CheckedChanged);
             // 
             // sldrMagDrillsSpeed
             // 
@@ -2843,7 +2868,7 @@
             sldrMagDrillsSpeed.UseAccentColor = true;
             sldrMagDrillsSpeed.Value = 30;
             sldrMagDrillsSpeed.ValueMax = 70;
-            sldrMagDrillsSpeed.onValueChanged += sldrMagDrillsSpeed_onValueChanged;
+            sldrMagDrillsSpeed.onValueChanged += (this.sldrMagDrillsSpeed_onValueChanged);
             // 
             // sldrThrowStrength
             // 
@@ -2860,7 +2885,7 @@
             sldrThrowStrength.UseAccentColor = true;
             sldrThrowStrength.ValueMax = 100;
             sldrThrowStrength.ValueSuffix = "%";
-            sldrThrowStrength.onValueChanged += sldrThrowStrength_onValueChanged;
+            sldrThrowStrength.onValueChanged += (this.sldrThrowStrength_onValueChanged);
             // 
             // swMaxStrength
             // 
@@ -2877,7 +2902,7 @@
             swMaxStrength.Text = "Strength";
             toolTip.SetToolTip(swMaxStrength, "Maximises strength buffs");
             swMaxStrength.UseVisualStyleBackColor = true;
-            swMaxStrength.CheckedChanged += swMaxStrength_CheckedChanged;
+            swMaxStrength.CheckedChanged += (this.swMaxStrength_CheckedChanged);
             // 
             // swMaxVitality
             // 
@@ -2894,7 +2919,7 @@
             swMaxVitality.Text = "Vitality";
             toolTip.SetToolTip(swMaxVitality, "Maximises vitality buffs");
             swMaxVitality.UseVisualStyleBackColor = true;
-            swMaxVitality.CheckedChanged += swMaxVitality_CheckedChanged;
+            swMaxVitality.CheckedChanged += (this.swMaxVitality_CheckedChanged);
             // 
             // swMaxHealth
             // 
@@ -2911,7 +2936,7 @@
             swMaxHealth.Text = "Health";
             toolTip.SetToolTip(swMaxHealth, "Maximises health buffs");
             swMaxHealth.UseVisualStyleBackColor = true;
-            swMaxHealth.CheckedChanged += swMaxHealth_CheckedChanged;
+            swMaxHealth.CheckedChanged += (this.swMaxHealth_CheckedChanged);
             // 
             // swMaxStressResistance
             // 
@@ -2928,7 +2953,7 @@
             swMaxStressResistance.Text = "Stress Resistance";
             toolTip.SetToolTip(swMaxStressResistance, "Maximises stress resistance buffs\r\n");
             swMaxStressResistance.UseVisualStyleBackColor = true;
-            swMaxStressResistance.CheckedChanged += swMaxStressResistance_CheckedChanged;
+            swMaxStressResistance.CheckedChanged += (this.swMaxStressResistance_CheckedChanged);
             // 
             // swMaxMetabolism
             // 
@@ -2945,7 +2970,7 @@
             swMaxMetabolism.Text = "Metabolism";
             toolTip.SetToolTip(swMaxMetabolism, "Maximises metabolsim buffs\r\n");
             swMaxMetabolism.UseVisualStyleBackColor = true;
-            swMaxMetabolism.CheckedChanged += swMaxMetabolism_CheckedChanged;
+            swMaxMetabolism.CheckedChanged += (this.swMaxMetabolism_CheckedChanged);
             // 
             // swMaxImmunity
             // 
@@ -2962,7 +2987,7 @@
             swMaxImmunity.Text = "Immunity";
             toolTip.SetToolTip(swMaxImmunity, "Maximises immunity buffs\r\n");
             swMaxImmunity.UseVisualStyleBackColor = true;
-            swMaxImmunity.CheckedChanged += swMaxImmunity_CheckedChanged;
+            swMaxImmunity.CheckedChanged += (this.swMaxImmunity_CheckedChanged);
             // 
             // swMaxPerception
             // 
@@ -2979,7 +3004,7 @@
             swMaxPerception.Text = "Perception";
             toolTip.SetToolTip(swMaxPerception, "Maximises perception buffs\r\n");
             swMaxPerception.UseVisualStyleBackColor = true;
-            swMaxPerception.CheckedChanged += swMaxPerception_CheckedChanged;
+            swMaxPerception.CheckedChanged += (this.swMaxPerception_CheckedChanged);
             // 
             // swMaxIntellect
             // 
@@ -2996,7 +3021,7 @@
             swMaxIntellect.Text = "Intellect";
             toolTip.SetToolTip(swMaxIntellect, "Maximises intellect buffs\r\n");
             swMaxIntellect.UseVisualStyleBackColor = true;
-            swMaxIntellect.CheckedChanged += swMaxIntellect_CheckedChanged;
+            swMaxIntellect.CheckedChanged += (this.swMaxIntellect_CheckedChanged);
             // 
             // swMaxThrowables
             // 
@@ -3013,7 +3038,7 @@
             swMaxThrowables.Text = "Throwables";
             toolTip.SetToolTip(swMaxThrowables, "Maximises throwables buffs\r\n");
             swMaxThrowables.UseVisualStyleBackColor = true;
-            swMaxThrowables.CheckedChanged += swMaxThrowables_CheckedChanged;
+            swMaxThrowables.CheckedChanged += (this.swMaxThrowables_CheckedChanged);
             // 
             // swMaxSurgery
             // 
@@ -3030,7 +3055,7 @@
             swMaxSurgery.Text = "Surgery";
             toolTip.SetToolTip(swMaxSurgery, "Maximises surgery buffs\r\n");
             swMaxSurgery.UseVisualStyleBackColor = true;
-            swMaxSurgery.CheckedChanged += swMaxSurgery_CheckedChanged;
+            swMaxSurgery.CheckedChanged += (this.swMaxSurgery_CheckedChanged);
             // 
             // swMaxCovertMovement
             // 
@@ -3047,7 +3072,7 @@
             swMaxCovertMovement.Text = "Covert Movement";
             toolTip.SetToolTip(swMaxCovertMovement, "Maximises covert movement buffs\r\n");
             swMaxCovertMovement.UseVisualStyleBackColor = true;
-            swMaxCovertMovement.CheckedChanged += swMaxCovertMovement_CheckedChanged;
+            swMaxCovertMovement.CheckedChanged += (this.swMaxCovertMovement_CheckedChanged);
             // 
             // swMaxSearch
             // 
@@ -3064,7 +3089,7 @@
             swMaxSearch.Text = "Search";
             toolTip.SetToolTip(swMaxSearch, "Maximises search buffs\r\n");
             swMaxSearch.UseVisualStyleBackColor = true;
-            swMaxSearch.CheckedChanged += swMaxSearch_CheckedChanged;
+            swMaxSearch.CheckedChanged += (this.swMaxSearch_CheckedChanged);
             // 
             // swMaxMagDrills
             // 
@@ -3081,7 +3106,24 @@
             swMaxMagDrills.Text = "Mag Drills";
             toolTip.SetToolTip(swMaxMagDrills, "Maximises mag drills buffs\r\n");
             swMaxMagDrills.UseVisualStyleBackColor = true;
-            swMaxMagDrills.CheckedChanged += swMaxMagDrills_CheckedChanged;
+            swMaxMagDrills.CheckedChanged += (this.swMaxMagDrills_CheckedChanged);
+            // 
+            // swMuleMode
+            // 
+            swMuleMode.Depth = 0;
+            swMuleMode.Font = new Font("Segoe UI", 9F);
+            swMuleMode.Location = new Point(375, 245);
+            swMuleMode.Margin = new Padding(0);
+            swMuleMode.MouseLocation = new Point(-1, -1);
+            swMuleMode.MouseState = MaterialSkin.MouseState.HOVER;
+            swMuleMode.Name = "swMuleMode";
+            swMuleMode.Ripple = true;
+            swMuleMode.Size = new Size(135, 28);
+            swMuleMode.TabIndex = 48;
+            swMuleMode.Text = "M.U.L.E.";
+            toolTip.SetToolTip(swMuleMode, "Allows Normal Movement Speed While Overweight");
+            swMuleMode.UseVisualStyleBackColor = true;
+            swMuleMode.CheckedChanged += (this.swMuleMode_CheckedChanged);
             // 
             // swMaxLightVests
             // 
@@ -3098,7 +3140,7 @@
             swMaxLightVests.Text = "Light Vests";
             toolTip.SetToolTip(swMaxLightVests, "Maximises light vests buffs\r\n");
             swMaxLightVests.UseVisualStyleBackColor = true;
-            swMaxLightVests.CheckedChanged += swMaxLightVests_CheckedChanged;
+            swMaxLightVests.CheckedChanged += (this.swMaxLightVests_CheckedChanged);
             // 
             // swMaxHeavyVests
             // 
@@ -3115,7 +3157,7 @@
             swMaxHeavyVests.Text = "Heavy Vests";
             toolTip.SetToolTip(swMaxHeavyVests, "Maximises heavy vests buffs\r\n");
             swMaxHeavyVests.UseVisualStyleBackColor = true;
-            swMaxHeavyVests.CheckedChanged += swMaxHeavyVests_CheckedChanged;
+            swMaxHeavyVests.CheckedChanged += (this.swMaxHeavyVests_CheckedChanged);
             // 
             // swMaxAttention
             // 
@@ -3132,7 +3174,7 @@
             swMaxAttention.Text = "Attention";
             toolTip.SetToolTip(swMaxAttention, "Maximises attention buffs\r\n");
             swMaxAttention.UseVisualStyleBackColor = true;
-            swMaxAttention.CheckedChanged += swMaxAttention_CheckedChanged;
+            swMaxAttention.CheckedChanged += (this.swMaxAttention_CheckedChanged);
             // 
             // swChams
             // 
@@ -3149,7 +3191,7 @@
             swChams.Text = "Chams";
             toolTip.SetToolTip(swChams, "Shows selected player types through walls");
             swChams.UseVisualStyleBackColor = true;
-            swChams.CheckedChanged += swChams_CheckedChanged;
+            swChams.CheckedChanged += (this.swChams_CheckedChanged);
             // 
             // swChamsPMCs
             // 
@@ -3166,7 +3208,7 @@
             swChamsPMCs.Text = "PMCs";
             toolTip.SetToolTip(swChamsPMCs, "Shows BEAR/USEC players through walls");
             swChamsPMCs.UseVisualStyleBackColor = true;
-            swChamsPMCs.CheckedChanged += swChamsPlayers_CheckedChanged;
+            swChamsPMCs.CheckedChanged += (this.swChamsPlayers_CheckedChanged);
             // 
             // swChamsBosses
             // 
@@ -3183,7 +3225,7 @@
             swChamsBosses.Text = "Bosses";
             toolTip.SetToolTip(swChamsBosses, "Shows bosses through walls");
             swChamsBosses.UseVisualStyleBackColor = true;
-            swChamsBosses.CheckedChanged += swChamsBosses_CheckedChanged;
+            swChamsBosses.CheckedChanged += (this.swChamsBosses_CheckedChanged);
             // 
             // swChamsRogues
             // 
@@ -3200,7 +3242,7 @@
             swChamsRogues.Text = "Rogues/Guards";
             toolTip.SetToolTip(swChamsRogues, "Shows rogues/boss guards through walls");
             swChamsRogues.UseVisualStyleBackColor = true;
-            swChamsRogues.CheckedChanged += swChamsRogues_CheckedChanged;
+            swChamsRogues.CheckedChanged += (this.swChamsRogues_CheckedChanged);
             // 
             // swChamsCultists
             // 
@@ -3217,7 +3259,7 @@
             swChamsCultists.Text = "Cultists";
             toolTip.SetToolTip(swChamsCultists, "Shows cultists through walls");
             swChamsCultists.UseVisualStyleBackColor = true;
-            swChamsCultists.CheckedChanged += swChamsCultists_CheckedChanged;
+            swChamsCultists.CheckedChanged += (this.swChamsCultists_CheckedChanged);
             // 
             // swChamsScavs
             // 
@@ -3234,7 +3276,7 @@
             swChamsScavs.Text = "Scavs";
             toolTip.SetToolTip(swChamsScavs, "Shows scavs through walls");
             swChamsScavs.UseVisualStyleBackColor = true;
-            swChamsScavs.CheckedChanged += swChamsScavs_CheckedChanged;
+            swChamsScavs.CheckedChanged += (this.swChamsScavs_CheckedChanged);
             // 
             // swChamsTeammates
             // 
@@ -3251,7 +3293,7 @@
             swChamsTeammates.Text = "Teammates";
             toolTip.SetToolTip(swChamsTeammates, "Shows teammates through walls");
             swChamsTeammates.UseVisualStyleBackColor = true;
-            swChamsTeammates.CheckedChanged += swChamsTeammates_CheckedChanged;
+            swChamsTeammates.CheckedChanged += (this.swChamsTeammates_CheckedChanged);
             // 
             // swChamsCorpses
             // 
@@ -3268,7 +3310,7 @@
             swChamsCorpses.Text = "Corpses";
             toolTip.SetToolTip(swChamsCorpses, "Shows corpses through walls");
             swChamsCorpses.UseVisualStyleBackColor = true;
-            swChamsCorpses.CheckedChanged += swChamsCorpses_CheckedChanged;
+            swChamsCorpses.CheckedChanged += (this.swChamsCorpses_CheckedChanged);
             // 
             // swChamsRevert
             // 
@@ -3285,7 +3327,7 @@
             swChamsRevert.Text = "Revert on Crash/Close";
             toolTip.SetToolTip(swChamsRevert, "Reverts applied chams when radar crashes/closes");
             swChamsRevert.UseVisualStyleBackColor = true;
-            swChamsRevert.CheckedChanged += swChamsRevert_CheckedChanged;
+            swChamsRevert.CheckedChanged += (this.swChamsRevert_CheckedChanged);
             // 
             // swChamsPlayerScavs
             // 
@@ -3302,7 +3344,7 @@
             swChamsPlayerScavs.Text = "Player Scavs";
             toolTip.SetToolTip(swChamsPlayerScavs, "Shows Player Scavs through walls");
             swChamsPlayerScavs.UseVisualStyleBackColor = true;
-            swChamsPlayerScavs.CheckedChanged += swChamsPlayerScavs_CheckedChanged;
+            swChamsPlayerScavs.CheckedChanged += (this.swChamsPlayerScavs_CheckedChanged);
             // 
             // swChamsEvent
             // 
@@ -3319,7 +3361,7 @@
             swChamsEvent.Text = "Event";
             toolTip.SetToolTip(swChamsEvent, "Shows event/temporary AI through walls");
             swChamsEvent.UseVisualStyleBackColor = true;
-            swChamsEvent.CheckedChanged += swChamsEvent_CheckedChanged;
+            swChamsEvent.CheckedChanged += (this.swChamsEvent_CheckedChanged);
             // 
             // sldrTimeScaleFactor
             // 
@@ -3339,7 +3381,7 @@
             sldrTimeScaleFactor.UseAccentColor = true;
             sldrTimeScaleFactor.Value = 10;
             sldrTimeScaleFactor.ValueMax = 19;
-            sldrTimeScaleFactor.onValueChanged += sldrTimeScaleFactor_onValueChanged;
+            sldrTimeScaleFactor.onValueChanged += (this.sldrTimeScaleFactor_onValueChanged);
             // 
             // swTimeScale
             // 
@@ -3357,7 +3399,7 @@
             swTimeScale.Text = "Time Scale";
             toolTip.SetToolTip(swTimeScale, "Enables adjusting player time scale (speed hack)");
             swTimeScale.UseVisualStyleBackColor = true;
-            swTimeScale.CheckedChanged += swTimeScale_CheckedChanged;
+            swTimeScale.CheckedChanged += (this.swTimeScale_CheckedChanged);
             // 
             // sldrTimeOfDay
             // 
@@ -3375,7 +3417,7 @@
             sldrTimeOfDay.UseAccentColor = true;
             sldrTimeOfDay.Value = 12;
             sldrTimeOfDay.ValueMax = 24;
-            sldrTimeOfDay.onValueChanged += sldrTimeOfDay_onValueChanged;
+            sldrTimeOfDay.onValueChanged += (this.sldrTimeOfDay_onValueChanged);
             // 
             // swFreezeTime
             // 
@@ -3392,7 +3434,7 @@
             swFreezeTime.Text = "Freeze Time";
             toolTip.SetToolTip(swFreezeTime, "Freeze the in-game time of the day");
             swFreezeTime.UseVisualStyleBackColor = true;
-            swFreezeTime.CheckedChanged += swFreezeTime_CheckedChanged;
+            swFreezeTime.CheckedChanged += (this.swFreezeTime_CheckedChanged);
             // 
             // swNoFog
             // 
@@ -3409,7 +3451,7 @@
             swNoFog.Text = "No Fog";
             toolTip.SetToolTip(swNoFog, "Removes fog effect");
             swNoFog.UseVisualStyleBackColor = true;
-            swNoFog.CheckedChanged += swNoFog_CheckedChanged;
+            swNoFog.CheckedChanged += (this.swNoFog_CheckedChanged);
             // 
             // swNoRain
             // 
@@ -3426,7 +3468,7 @@
             swNoRain.Text = "No Rain";
             toolTip.SetToolTip(swNoRain, "Removes rain effects");
             swNoRain.UseVisualStyleBackColor = true;
-            swNoRain.CheckedChanged += swNoRain_CheckedChanged;
+            swNoRain.CheckedChanged += (this.swNoRain_CheckedChanged);
             // 
             // swNoClouds
             // 
@@ -3443,7 +3485,7 @@
             swNoClouds.Text = "No Clouds";
             toolTip.SetToolTip(swNoClouds, "Minimises amount of clouds");
             swNoClouds.UseVisualStyleBackColor = true;
-            swNoClouds.CheckedChanged += swNoClouds_CheckedChanged;
+            swNoClouds.CheckedChanged += (this.swNoClouds_CheckedChanged);
             // 
             // swNoShadows
             // 
@@ -3460,7 +3502,7 @@
             swNoShadows.Text = "No Shadows";
             toolTip.SetToolTip(swNoShadows, "Removes shadows");
             swNoShadows.UseVisualStyleBackColor = true;
-            swNoShadows.CheckedChanged += swNoShadows_CheckedChanged;
+            swNoShadows.CheckedChanged += (this.swNoShadows_CheckedChanged);
             // 
             // swNoSun
             // 
@@ -3477,7 +3519,7 @@
             swNoSun.Text = "No Sun";
             toolTip.SetToolTip(swNoSun, "Removes the sun (also glare)");
             swNoSun.UseVisualStyleBackColor = true;
-            swNoSun.CheckedChanged += swNoSun_CheckedChanged;
+            swNoSun.CheckedChanged += (this.swNoSun_CheckedChanged);
             // 
             // swNoMoon
             // 
@@ -3494,7 +3536,7 @@
             swNoMoon.Text = "No Moon";
             toolTip.SetToolTip(swNoMoon, "Removes the moon");
             swNoMoon.UseVisualStyleBackColor = true;
-            swNoMoon.CheckedChanged += swNoMoon_CheckedChanged;
+            swNoMoon.CheckedChanged += (this.swNoMoon_CheckedChanged);
             // 
             // sldrMoonIntensity
             // 
@@ -3512,7 +3554,7 @@
             sldrMoonIntensity.UseAccentColor = true;
             sldrMoonIntensity.Value = 1;
             sldrMoonIntensity.ValueMax = 30;
-            sldrMoonIntensity.onValueChanged += sldrMoonIntensity_onValueChanged;
+            sldrMoonIntensity.onValueChanged += (this.sldrMoonIntensity_onValueChanged);
             // 
             // swMoonIntensity
             // 
@@ -3529,7 +3571,7 @@
             swMoonIntensity.Text = "Moon Intensity";
             toolTip.SetToolTip(swMoonIntensity, "Changes how intense the moons light is");
             swMoonIntensity.UseVisualStyleBackColor = true;
-            swMoonIntensity.CheckedChanged += swMoonIntensity_CheckedChanged;
+            swMoonIntensity.CheckedChanged += (this.swMoonIntensity_CheckedChanged);
             // 
             // sldrSunIntensity
             // 
@@ -3547,7 +3589,7 @@
             sldrSunIntensity.UseAccentColor = true;
             sldrSunIntensity.Value = 1;
             sldrSunIntensity.ValueMax = 30;
-            sldrSunIntensity.onValueChanged += sldrSunIntensity_onValueChanged;
+            sldrSunIntensity.onValueChanged += (this.sldrSunIntensity_onValueChanged);
             // 
             // swSunIntensity
             // 
@@ -3564,7 +3606,7 @@
             swSunIntensity.Text = "Sun Intensity";
             toolTip.SetToolTip(swSunIntensity, "Changes how intense the suns light is");
             swSunIntensity.UseVisualStyleBackColor = true;
-            swSunIntensity.CheckedChanged += swSunIntensity_CheckedChanged;
+            swSunIntensity.CheckedChanged += (this.swSunIntensity_CheckedChanged);
             // 
             // btnRemoveHotkey
             // 
@@ -3585,19 +3627,19 @@
             btnRemoveHotkey.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Outlined;
             btnRemoveHotkey.UseAccentColor = true;
             btnRemoveHotkey.UseVisualStyleBackColor = true;
-            btnRemoveHotkey.Click += btnRemoveHotkey_Click;
+            btnRemoveHotkey.Click += (this.btnRemoveHotkey_Click);
             // 
             // cboHotkeyAction
             // 
             cboHotkeyAction.AutoResize = false;
-            cboHotkeyAction.BackColor = Color.FromArgb(255, 255, 255);
+            cboHotkeyAction.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             cboHotkeyAction.Depth = 0;
             cboHotkeyAction.DrawMode = DrawMode.OwnerDrawVariable;
             cboHotkeyAction.DropDownHeight = 263;
             cboHotkeyAction.DropDownStyle = ComboBoxStyle.DropDownList;
             cboHotkeyAction.DropDownWidth = 121;
             cboHotkeyAction.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            cboHotkeyAction.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cboHotkeyAction.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             cboHotkeyAction.FormattingEnabled = true;
             cboHotkeyAction.Hint = "Action to trigger";
             cboHotkeyAction.IntegralHeight = false;
@@ -3611,7 +3653,7 @@
             cboHotkeyAction.TabIndex = 44;
             toolTip.SetToolTip(cboHotkeyAction, "The action to be triggered");
             cboHotkeyAction.UseTallSize = false;
-            cboHotkeyAction.SelectedIndexChanged += cboHotkeyAction_SelectedIndexChanged;
+            cboHotkeyAction.SelectedIndexChanged += (this.cboHotkeyAction_SelectedIndexChanged);
             // 
             // btnAddHotkey
             // 
@@ -3632,7 +3674,7 @@
             btnAddHotkey.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnAddHotkey.UseAccentColor = true;
             btnAddHotkey.UseVisualStyleBackColor = true;
-            btnAddHotkey.Click += btnAddHotkey_Click;
+            btnAddHotkey.Click += (this.btnAddHotkey_Click);
             // 
             // rdbOnKey
             // 
@@ -3650,7 +3692,7 @@
             rdbOnKey.Text = "On Key";
             toolTip.SetToolTip(rdbOnKey, "Trigger the action when the key is held down");
             rdbOnKey.UseVisualStyleBackColor = true;
-            rdbOnKey.CheckedChanged += rdbOnKey_CheckedChanged;
+            rdbOnKey.CheckedChanged += (this.rdbOnKey_CheckedChanged);
             // 
             // rdbToggleKey
             // 
@@ -3668,19 +3710,19 @@
             rdbToggleKey.Text = "Toggle";
             toolTip.SetToolTip(rdbToggleKey, "Trigger the action when the key is pressed");
             rdbToggleKey.UseVisualStyleBackColor = true;
-            rdbToggleKey.CheckedChanged += rdbToggleKey_CheckedChanged;
+            rdbToggleKey.CheckedChanged += (this.rdbToggleKey_CheckedChanged);
             // 
             // cboHotkeyKey
             // 
             cboHotkeyKey.AutoResize = false;
-            cboHotkeyKey.BackColor = Color.FromArgb(255, 255, 255);
+            cboHotkeyKey.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             cboHotkeyKey.Depth = 0;
             cboHotkeyKey.DrawMode = DrawMode.OwnerDrawVariable;
             cboHotkeyKey.DropDownHeight = 582;
             cboHotkeyKey.DropDownStyle = ComboBoxStyle.DropDownList;
             cboHotkeyKey.DropDownWidth = 121;
             cboHotkeyKey.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            cboHotkeyKey.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cboHotkeyKey.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             cboHotkeyKey.FormattingEnabled = true;
             cboHotkeyKey.Hint = "Key for action";
             cboHotkeyKey.IntegralHeight = false;
@@ -3694,7 +3736,7 @@
             cboHotkeyKey.TabIndex = 55;
             toolTip.SetToolTip(cboHotkeyKey, "The key to trigger the action");
             cboHotkeyKey.UseTallSize = false;
-            cboHotkeyKey.SelectedIndexChanged += cboHotkeyKey_SelectedIndexChanged;
+            cboHotkeyKey.SelectedIndexChanged += (this.cboHotkeyKey_SelectedIndexChanged);
             // 
             // swMapHelper
             // 
@@ -3711,7 +3753,7 @@
             swMapHelper.Text = "Map Helper";
             toolTip.SetToolTip(swMapHelper, "Shows the 'Map Setup' panel");
             swMapHelper.UseVisualStyleBackColor = true;
-            swMapHelper.CheckedChanged += swMapHelper_CheckedChanged;
+            swMapHelper.CheckedChanged += (this.swMapHelper_CheckedChanged);
             // 
             // btnToggleMap
             // 
@@ -3733,7 +3775,7 @@
             btnToggleMap.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnToggleMap.UseAccentColor = true;
             btnToggleMap.UseVisualStyleBackColor = true;
-            btnToggleMap.Click += btnToggleMap_Click;
+            btnToggleMap.Click += (this.btnToggleMap_Click);
             // 
             // btnRestartRadar
             // 
@@ -3756,7 +3798,7 @@
             btnRestartRadar.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnRestartRadar.UseAccentColor = true;
             btnRestartRadar.UseVisualStyleBackColor = true;
-            btnRestartRadar.Click += btnRestartRadar_Click;
+            btnRestartRadar.Click += (this.btnRestartRadar_Click);
             // 
             // swRadarStats
             // 
@@ -3773,7 +3815,7 @@
             swRadarStats.Text = "Radar Stats";
             toolTip.SetToolTip(swRadarStats, "Shows radar stats on radar tab");
             swRadarStats.UseVisualStyleBackColor = true;
-            swRadarStats.CheckedChanged += swRadarStats_CheckedChanged;
+            swRadarStats.CheckedChanged += (this.swRadarStats_CheckedChanged);
             // 
             // swRadarVsync
             // 
@@ -3790,7 +3832,7 @@
             swRadarVsync.Text = "Limit FPS";
             toolTip.SetToolTip(swRadarVsync, "Limits FPS for the radar to reduce resource consumption");
             swRadarVsync.UseVisualStyleBackColor = true;
-            swRadarVsync.CheckedChanged += swRadarVsync_CheckedChanged;
+            swRadarVsync.CheckedChanged += (this.swRadarVsync_CheckedChanged);
             // 
             // swRadarEnemyCount
             // 
@@ -3807,7 +3849,7 @@
             swRadarEnemyCount.Text = "Enemy Count";
             toolTip.SetToolTip(swRadarEnemyCount, "Shows enemy count on the radar");
             swRadarEnemyCount.UseVisualStyleBackColor = true;
-            swRadarEnemyCount.CheckedChanged += swRadarEnemyCount_CheckedChanged;
+            swRadarEnemyCount.CheckedChanged += (this.swRadarEnemyCount_CheckedChanged);
             // 
             // swPvEMode
             // 
@@ -3824,7 +3866,7 @@
             swPvEMode.Text = "PvE Mode";
             toolTip.SetToolTip(swPvEMode, "Enables PvE mode specific functionality");
             swPvEMode.UseVisualStyleBackColor = true;
-            swPvEMode.CheckedChanged += swPvEMode_CheckedChanged;
+            swPvEMode.CheckedChanged += (this.swPvEMode_CheckedChanged);
             // 
             // btnTriggerUnityCrash
             // 
@@ -3846,7 +3888,7 @@
             btnTriggerUnityCrash.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnTriggerUnityCrash.UseAccentColor = true;
             btnTriggerUnityCrash.UseVisualStyleBackColor = true;
-            btnTriggerUnityCrash.Click += btnTriggerUnityCrash_Click;
+            btnTriggerUnityCrash.Click += (this.btnTriggerUnityCrash_Click);
             // 
             // txtTeammateID
             // 
@@ -3894,7 +3936,7 @@
             swExfilNames.Text = "Exfil Names";
             toolTip.SetToolTip(swExfilNames, "Shows exfiltration point names on radar");
             swExfilNames.UseVisualStyleBackColor = true;
-            swExfilNames.CheckedChanged += swExfilNames_CheckedChanged;
+            swExfilNames.CheckedChanged += (this.swExfilNames_CheckedChanged);
             // 
             // sldrUIScale
             // 
@@ -3913,7 +3955,7 @@
             sldrUIScale.Value = 100;
             sldrUIScale.ValueMax = 200;
             sldrUIScale.ValueSuffix = "%";
-            sldrUIScale.onValueChanged += sldrUIScale_onValueChanged;
+            sldrUIScale.onValueChanged += (this.sldrUIScale_onValueChanged);
             // 
             // swHoverArmor
             // 
@@ -3930,7 +3972,7 @@
             swHoverArmor.Text = "Hover Armor";
             toolTip.SetToolTip(swHoverArmor, "Show current gear pieces when hovering over a player");
             swHoverArmor.UseVisualStyleBackColor = true;
-            swHoverArmor.CheckedChanged += swHoverArmor_CheckedChanged;
+            swHoverArmor.CheckedChanged += (this.swHoverArmor_CheckedChanged);
             // 
             // sldrFontSize
             // 
@@ -3949,19 +3991,19 @@
             sldrFontSize.Value = 13;
             sldrFontSize.ValueMax = 36;
             sldrFontSize.ValueSuffix = "px";
-            sldrFontSize.onValueChanged += sldrFontSize_onValueChanged;
+            sldrFontSize.onValueChanged += (this.sldrFontSize_onValueChanged);
             // 
             // cboGlobalFont
             // 
             cboGlobalFont.AutoResize = false;
-            cboGlobalFont.BackColor = Color.FromArgb(255, 255, 255);
+            cboGlobalFont.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             cboGlobalFont.Depth = 0;
             cboGlobalFont.DrawMode = DrawMode.OwnerDrawVariable;
             cboGlobalFont.DropDownHeight = 292;
             cboGlobalFont.DropDownStyle = ComboBoxStyle.DropDownList;
             cboGlobalFont.DropDownWidth = 121;
             cboGlobalFont.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            cboGlobalFont.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cboGlobalFont.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             cboGlobalFont.FormattingEnabled = true;
             cboGlobalFont.Hint = "Global Font";
             cboGlobalFont.IntegralHeight = false;
@@ -3975,7 +4017,7 @@
             cboGlobalFont.TabIndex = 39;
             toolTip.SetToolTip(cboGlobalFont, "The font to use for radar text");
             cboGlobalFont.UseTallSize = false;
-            cboGlobalFont.SelectedIndexChanged += cboFont_SelectedIndexChanged;
+            cboGlobalFont.SelectedIndexChanged += (this.cboFont_SelectedIndexChanged);
             // 
             // swTraderPrices
             // 
@@ -3992,19 +4034,19 @@
             swTraderPrices.Text = "Trader Prices";
             toolTip.SetToolTip(swTraderPrices, "Show prices for traders only (ignores flea market) (restart to take effect)");
             swTraderPrices.UseVisualStyleBackColor = true;
-            swTraderPrices.CheckedChanged += swTraderPrices_CheckedChanged;
+            swTraderPrices.CheckedChanged += (this.swTraderPrices_CheckedChanged);
             // 
             // cboPlayerInfoType
             // 
             cboPlayerInfoType.AutoResize = false;
-            cboPlayerInfoType.BackColor = Color.FromArgb(255, 255, 255);
+            cboPlayerInfoType.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             cboPlayerInfoType.Depth = 0;
             cboPlayerInfoType.DrawMode = DrawMode.OwnerDrawVariable;
             cboPlayerInfoType.DropDownHeight = 292;
             cboPlayerInfoType.DropDownStyle = ComboBoxStyle.DropDownList;
             cboPlayerInfoType.DropDownWidth = 121;
             cboPlayerInfoType.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            cboPlayerInfoType.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cboPlayerInfoType.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             cboPlayerInfoType.FormattingEnabled = true;
             cboPlayerInfoType.Hint = "Faction";
             cboPlayerInfoType.IntegralHeight = false;
@@ -4019,7 +4061,7 @@
             cboPlayerInfoType.TabIndex = 39;
             toolTip.SetToolTip(cboPlayerInfoType, "The faction to edit for displaying on the radar");
             cboPlayerInfoType.UseTallSize = false;
-            cboPlayerInfoType.SelectedIndexChanged += cboPlayerInfoType_SelectedIndexChanged;
+            cboPlayerInfoType.SelectedIndexChanged += (this.cboPlayerInfoType_SelectedIndexChanged);
             // 
             // swPlayerInfoName
             // 
@@ -4036,7 +4078,7 @@
             swPlayerInfoName.Text = "Name";
             toolTip.SetToolTip(swPlayerInfoName, "Shows player names on the radar");
             swPlayerInfoName.UseVisualStyleBackColor = true;
-            swPlayerInfoName.CheckedChanged += swPlayerInfoName_CheckedChanged;
+            swPlayerInfoName.CheckedChanged += (this.swPlayerInfoName_CheckedChanged);
             // 
             // swPlayerInfoActiveWeapon
             // 
@@ -4053,7 +4095,7 @@
             swPlayerInfoActiveWeapon.Text = "Active Weapon";
             toolTip.SetToolTip(swPlayerInfoActiveWeapon, "Shows the players active weapon in their hand");
             swPlayerInfoActiveWeapon.UseVisualStyleBackColor = true;
-            swPlayerInfoActiveWeapon.CheckedChanged += swPlayerInfoActiveWeapon_CheckedChanged;
+            swPlayerInfoActiveWeapon.CheckedChanged += (this.swPlayerInfoActiveWeapon_CheckedChanged);
             // 
             // swPlayerInfoGroup
             // 
@@ -4070,7 +4112,7 @@
             swPlayerInfoGroup.Text = "Group";
             toolTip.SetToolTip(swPlayerInfoGroup, "Shows the players Group ID if they have one");
             swPlayerInfoGroup.UseVisualStyleBackColor = true;
-            swPlayerInfoGroup.CheckedChanged += swPlayerInfoGroup_CheckedChanged;
+            swPlayerInfoGroup.CheckedChanged += (this.swPlayerInfoGroup_CheckedChanged);
             // 
             // swPlayerInfoFlags
             // 
@@ -4087,7 +4129,7 @@
             swPlayerInfoFlags.Text = "Flags";
             toolTip.SetToolTip(swPlayerInfoFlags, "Toggles displaying flags on players");
             swPlayerInfoFlags.UseVisualStyleBackColor = true;
-            swPlayerInfoFlags.CheckedChanged += swPlayerInfoFlags_CheckedChanged;
+            swPlayerInfoFlags.CheckedChanged += (this.swPlayerInfoFlags_CheckedChanged);
             // 
             // swPlayerInfoValue
             // 
@@ -4104,7 +4146,7 @@
             swPlayerInfoValue.Text = "Value";
             toolTip.SetToolTip(swPlayerInfoValue, "Shows the estimated value of the player");
             swPlayerInfoValue.UseVisualStyleBackColor = true;
-            swPlayerInfoValue.CheckedChanged += swPlayerInfoValue_CheckedChanged;
+            swPlayerInfoValue.CheckedChanged += (this.swPlayerInfoValue_CheckedChanged);
             // 
             // swPlayerInfoHeight
             // 
@@ -4121,7 +4163,7 @@
             swPlayerInfoHeight.Text = "Height";
             toolTip.SetToolTip(swPlayerInfoHeight, "Shows player height on the radar");
             swPlayerInfoHeight.UseVisualStyleBackColor = true;
-            swPlayerInfoHeight.CheckedChanged += swPlayerInfoHeight_CheckedChanged;
+            swPlayerInfoHeight.CheckedChanged += (this.swPlayerInfoHeight_CheckedChanged);
             // 
             // swPlayerInfoDistance
             // 
@@ -4138,7 +4180,7 @@
             swPlayerInfoDistance.Text = "Distance";
             toolTip.SetToolTip(swPlayerInfoDistance, "Shows player distance on the radar");
             swPlayerInfoDistance.UseVisualStyleBackColor = true;
-            swPlayerInfoDistance.CheckedChanged += swPlayerInfoDistance_CheckedChanged;
+            swPlayerInfoDistance.CheckedChanged += (this.swPlayerInfoDistance_CheckedChanged);
             // 
             // swPlayerInfoHealth
             // 
@@ -4155,7 +4197,7 @@
             swPlayerInfoHealth.Text = "Health";
             toolTip.SetToolTip(swPlayerInfoHealth, "Shows the health status of the player");
             swPlayerInfoHealth.UseVisualStyleBackColor = true;
-            swPlayerInfoHealth.CheckedChanged += swPlayerInfoHealth_CheckedChanged;
+            swPlayerInfoHealth.CheckedChanged += (this.swPlayerInfoHealth_CheckedChanged);
             // 
             // sldrPlayerInfoAimlineLength
             // 
@@ -4174,7 +4216,7 @@
             sldrPlayerInfoAimlineLength.UseAccentColor = true;
             sldrPlayerInfoAimlineLength.Value = 15;
             sldrPlayerInfoAimlineLength.ValueMax = 60;
-            sldrPlayerInfoAimlineLength.onValueChanged += sldrPlayerInfoAimlineLength_onValueChanged;
+            sldrPlayerInfoAimlineLength.onValueChanged += (this.sldrPlayerInfoAimlineLength_onValueChanged);
             // 
             // swPlayerInfoAimline
             // 
@@ -4191,7 +4233,7 @@
             swPlayerInfoAimline.Text = "Aimline";
             toolTip.SetToolTip(swPlayerInfoAimline, "Shows player aimline on the radar");
             swPlayerInfoAimline.UseVisualStyleBackColor = false;
-            swPlayerInfoAimline.CheckedChanged += swPlayerInfoAimline_CheckedChanged;
+            swPlayerInfoAimline.CheckedChanged += (this.swPlayerInfoAimline_CheckedChanged);
             // 
             // sldrPlayerInfoAimlineOpacity
             // 
@@ -4210,7 +4252,7 @@
             sldrPlayerInfoAimlineOpacity.UseAccentColor = true;
             sldrPlayerInfoAimlineOpacity.Value = 255;
             sldrPlayerInfoAimlineOpacity.ValueMax = 255;
-            sldrPlayerInfoAimlineOpacity.onValueChanged += sldrPlayerInfoAimlineOpacity_onValueChanged;
+            sldrPlayerInfoAimlineOpacity.onValueChanged += (this.sldrPlayerInfoAimlineOpacity_onValueChanged);
             // 
             // swPlayerInfoTag
             // 
@@ -4227,19 +4269,19 @@
             swPlayerInfoTag.Text = "Tag";
             toolTip.SetToolTip(swPlayerInfoTag, "Shows a players tag on the radar if they have one");
             swPlayerInfoTag.UseVisualStyleBackColor = true;
-            swPlayerInfoTag.CheckedChanged += swPlayerInfoTag_CheckedChanged;
+            swPlayerInfoTag.CheckedChanged += (this.swPlayerInfoTag_CheckedChanged);
             // 
             // cboPlayerInfoFlagsFont
             // 
             cboPlayerInfoFlagsFont.AutoResize = false;
-            cboPlayerInfoFlagsFont.BackColor = Color.FromArgb(255, 255, 255);
+            cboPlayerInfoFlagsFont.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             cboPlayerInfoFlagsFont.Depth = 0;
             cboPlayerInfoFlagsFont.DrawMode = DrawMode.OwnerDrawVariable;
             cboPlayerInfoFlagsFont.DropDownHeight = 292;
             cboPlayerInfoFlagsFont.DropDownStyle = ComboBoxStyle.DropDownList;
             cboPlayerInfoFlagsFont.DropDownWidth = 121;
             cboPlayerInfoFlagsFont.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            cboPlayerInfoFlagsFont.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cboPlayerInfoFlagsFont.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             cboPlayerInfoFlagsFont.FormattingEnabled = true;
             cboPlayerInfoFlagsFont.Hint = "Flags Font";
             cboPlayerInfoFlagsFont.IntegralHeight = false;
@@ -4253,7 +4295,7 @@
             cboPlayerInfoFlagsFont.TabIndex = 54;
             toolTip.SetToolTip(cboPlayerInfoFlagsFont, "The font to use for flags for this player type on the radar");
             cboPlayerInfoFlagsFont.UseTallSize = false;
-            cboPlayerInfoFlagsFont.SelectedIndexChanged += cboPlayerInfoFlagsFont_SelectedIndexChanged;
+            cboPlayerInfoFlagsFont.SelectedIndexChanged += (this.cboPlayerInfoFlagsFont_SelectedIndexChanged);
             // 
             // sldrPlayerInfoFlagsFontSize
             // 
@@ -4272,19 +4314,19 @@
             sldrPlayerInfoFlagsFontSize.Value = 13;
             sldrPlayerInfoFlagsFontSize.ValueMax = 36;
             sldrPlayerInfoFlagsFontSize.ValueSuffix = "px";
-            sldrPlayerInfoFlagsFontSize.onValueChanged += sldrPlayerInfoFlagsFontSize_onValueChanged;
+            sldrPlayerInfoFlagsFontSize.onValueChanged += (this.sldrPlayerInfoFlagsFontSize_onValueChanged);
             // 
             // cboPlayerInfoFont
             // 
             cboPlayerInfoFont.AutoResize = false;
-            cboPlayerInfoFont.BackColor = Color.FromArgb(255, 255, 255);
+            cboPlayerInfoFont.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             cboPlayerInfoFont.Depth = 0;
             cboPlayerInfoFont.DrawMode = DrawMode.OwnerDrawVariable;
             cboPlayerInfoFont.DropDownHeight = 292;
             cboPlayerInfoFont.DropDownStyle = ComboBoxStyle.DropDownList;
             cboPlayerInfoFont.DropDownWidth = 121;
             cboPlayerInfoFont.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            cboPlayerInfoFont.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            cboPlayerInfoFont.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             cboPlayerInfoFont.FormattingEnabled = true;
             cboPlayerInfoFont.Hint = "Font";
             cboPlayerInfoFont.IntegralHeight = false;
@@ -4298,7 +4340,7 @@
             cboPlayerInfoFont.TabIndex = 56;
             toolTip.SetToolTip(cboPlayerInfoFont, "The font to use for this player type on the radar");
             cboPlayerInfoFont.UseTallSize = false;
-            cboPlayerInfoFont.SelectedIndexChanged += cboPlayerInfoFont_SelectedIndexChanged;
+            cboPlayerInfoFont.SelectedIndexChanged += (this.cboPlayerInfoFont_SelectedIndexChanged);
             // 
             // sldrPlayerInfoFontSize
             // 
@@ -4317,7 +4359,7 @@
             sldrPlayerInfoFontSize.Value = 13;
             sldrPlayerInfoFontSize.ValueMax = 36;
             sldrPlayerInfoFontSize.ValueSuffix = "px";
-            sldrPlayerInfoFontSize.onValueChanged += sldrPlayerInfoFontSize_onValueChanged;
+            sldrPlayerInfoFontSize.onValueChanged += (this.sldrPlayerInfoFontSize_onValueChanged);
             // 
             // swPlayerInfoThermal
             // 
@@ -4334,7 +4376,7 @@
             swPlayerInfoThermal.Text = "Thermal";
             toolTip.SetToolTip(swPlayerInfoThermal, "Toggles displaying flags on players");
             swPlayerInfoThermal.UseVisualStyleBackColor = true;
-            swPlayerInfoThermal.CheckedChanged += swPlayerInfoThermal_CheckedChanged;
+            swPlayerInfoThermal.CheckedChanged += (this.swPlayerInfoThermal_CheckedChanged);
             // 
             // swPlayerInfoNightVision
             // 
@@ -4351,7 +4393,7 @@
             swPlayerInfoNightVision.Text = "Night Vision";
             toolTip.SetToolTip(swPlayerInfoNightVision, "Toggles displaying flags on players");
             swPlayerInfoNightVision.UseVisualStyleBackColor = true;
-            swPlayerInfoNightVision.CheckedChanged += swPlayerInfoNightVision_CheckedChanged;
+            swPlayerInfoNightVision.CheckedChanged += (this.swPlayerInfoNightVision_CheckedChanged);
             // 
             // swPlayerInfoAmmoType
             // 
@@ -4368,7 +4410,7 @@
             swPlayerInfoAmmoType.Text = "Ammo Type";
             toolTip.SetToolTip(swPlayerInfoAmmoType, "Toggles displaying flags on players");
             swPlayerInfoAmmoType.UseVisualStyleBackColor = true;
-            swPlayerInfoAmmoType.CheckedChanged += swPlayerInfoAmmoType_CheckedChanged;
+            swPlayerInfoAmmoType.CheckedChanged += (this.swPlayerInfoAmmoType_CheckedChanged);
             // 
             // swPlayerInfoGear
             // 
@@ -4385,7 +4427,7 @@
             swPlayerInfoGear.Text = "Gear";
             toolTip.SetToolTip(swPlayerInfoGear, "Shows if the player has required gear items (eg on a loot filter / required for quest)");
             swPlayerInfoGear.UseVisualStyleBackColor = true;
-            swPlayerInfoGear.CheckedChanged += swPlayerInfoGear_CheckedChanged;
+            swPlayerInfoGear.CheckedChanged += (this.swPlayerInfoGear_CheckedChanged);
             // 
             // swAVPlayers
             // 
@@ -4402,12 +4444,12 @@
             swAVPlayers.Text = "Enabled";
             toolTip.SetToolTip(swAVPlayers, "Enable rendering of player objects on the aimview");
             swAVPlayers.UseVisualStyleBackColor = true;
-            swAVPlayers.CheckedChanged += swAVPlayers_CheckedChanged;
+            swAVPlayers.CheckedChanged += (this.swAVPlayers_CheckedChanged);
             // 
             // sldrAVPlayerPaintDistance
             // 
             sldrAVPlayerPaintDistance.Depth = 0;
-            sldrAVPlayerPaintDistance.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVPlayerPaintDistance.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVPlayerPaintDistance.Location = new Point(17, 165);
             sldrAVPlayerPaintDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVPlayerPaintDistance.Name = "sldrAVPlayerPaintDistance";
@@ -4419,12 +4461,12 @@
             sldrAVPlayerPaintDistance.UseAccentColor = true;
             sldrAVPlayerPaintDistance.Value = 150;
             sldrAVPlayerPaintDistance.ValueSuffix = "m";
-            sldrAVPlayerPaintDistance.onValueChanged += sldrAVPlayerPaintDistance_onValueChanged;
+            sldrAVPlayerPaintDistance.onValueChanged += (this.sldrAVPlayerPaintDistance_onValueChanged);
             // 
             // sldrAVWidth
             // 
             sldrAVWidth.Depth = 0;
-            sldrAVWidth.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVWidth.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVWidth.Location = new Point(149, 60);
             sldrAVWidth.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVWidth.Name = "sldrAVWidth";
@@ -4436,12 +4478,12 @@
             sldrAVWidth.UseAccentColor = true;
             sldrAVWidth.Value = 200;
             sldrAVWidth.ValueSuffix = "px";
-            sldrAVWidth.onValueChanged += sldrAVWidth_onValueChanged;
+            sldrAVWidth.onValueChanged += (this.sldrAVWidth_onValueChanged);
             // 
             // sldrAVHeight
             // 
             sldrAVHeight.Depth = 0;
-            sldrAVHeight.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVHeight.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVHeight.Location = new Point(371, 60);
             sldrAVHeight.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVHeight.Name = "sldrAVHeight";
@@ -4453,12 +4495,12 @@
             sldrAVHeight.UseAccentColor = true;
             sldrAVHeight.Value = 200;
             sldrAVHeight.ValueSuffix = "px";
-            sldrAVHeight.onValueChanged += sldrAVHeight_onValueChanged;
+            sldrAVHeight.onValueChanged += (this.sldrAVHeight_onValueChanged);
             // 
             // sldrAVLooseLootPaintDistance
             // 
             sldrAVLooseLootPaintDistance.Depth = 0;
-            sldrAVLooseLootPaintDistance.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVLooseLootPaintDistance.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVLooseLootPaintDistance.Location = new Point(17, 270);
             sldrAVLooseLootPaintDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVLooseLootPaintDistance.Name = "sldrAVLooseLootPaintDistance";
@@ -4470,7 +4512,7 @@
             sldrAVLooseLootPaintDistance.UseAccentColor = true;
             sldrAVLooseLootPaintDistance.Value = 150;
             sldrAVLooseLootPaintDistance.ValueSuffix = "m";
-            sldrAVLooseLootPaintDistance.onValueChanged += sldrAVLooseLootPaintDistance_onValueChanged;
+            sldrAVLooseLootPaintDistance.onValueChanged += (this.sldrAVLooseLootPaintDistance_onValueChanged);
             // 
             // swAimview
             // 
@@ -4487,12 +4529,12 @@
             swAimview.Text = "Aimview";
             toolTip.SetToolTip(swAimview, "Displays the 3D aimview");
             swAimview.UseVisualStyleBackColor = true;
-            swAimview.CheckedChanged += swAimview_CheckedChanged;
+            swAimview.CheckedChanged += (this.swAimview_CheckedChanged);
             // 
             // sldrAVLooseLootTextDistance
             // 
             sldrAVLooseLootTextDistance.Depth = 0;
-            sldrAVLooseLootTextDistance.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVLooseLootTextDistance.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVLooseLootTextDistance.Location = new Point(319, 270);
             sldrAVLooseLootTextDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVLooseLootTextDistance.Name = "sldrAVLooseLootTextDistance";
@@ -4504,7 +4546,7 @@
             sldrAVLooseLootTextDistance.UseAccentColor = true;
             sldrAVLooseLootTextDistance.Value = 150;
             sldrAVLooseLootTextDistance.ValueSuffix = "m";
-            sldrAVLooseLootTextDistance.onValueChanged += sldrAVLooseLootTextDistance_onValueChanged;
+            sldrAVLooseLootTextDistance.onValueChanged += (this.sldrAVLooseLootTextDistance_onValueChanged);
             // 
             // swAVLooseLootValue
             // 
@@ -4521,7 +4563,7 @@
             swAVLooseLootValue.Text = "Value";
             toolTip.SetToolTip(swAVLooseLootValue, "Show the value of loose loot on the aimview");
             swAVLooseLootValue.UseVisualStyleBackColor = true;
-            swAVLooseLootValue.CheckedChanged += swAVLooseLootValue_CheckedChanged;
+            swAVLooseLootValue.CheckedChanged += (this.swAVLooseLootValue_CheckedChanged);
             // 
             // swAVLooseLootName
             // 
@@ -4538,12 +4580,12 @@
             swAVLooseLootName.Text = "Name";
             toolTip.SetToolTip(swAVLooseLootName, "Show the name of loose loot on the aimview\r\n");
             swAVLooseLootName.UseVisualStyleBackColor = true;
-            swAVLooseLootName.CheckedChanged += swAVLooseLootName_CheckedChanged;
+            swAVLooseLootName.CheckedChanged += (this.swAVLooseLootName_CheckedChanged);
             // 
             // sldrAVPlayerTextDistance
             // 
             sldrAVPlayerTextDistance.Depth = 0;
-            sldrAVPlayerTextDistance.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVPlayerTextDistance.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVPlayerTextDistance.Location = new Point(319, 165);
             sldrAVPlayerTextDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVPlayerTextDistance.Name = "sldrAVPlayerTextDistance";
@@ -4555,7 +4597,7 @@
             sldrAVPlayerTextDistance.UseAccentColor = true;
             sldrAVPlayerTextDistance.Value = 150;
             sldrAVPlayerTextDistance.ValueSuffix = "m";
-            sldrAVPlayerTextDistance.onValueChanged += sldrAVPlayerTextDistance_onValueChanged;
+            sldrAVPlayerTextDistance.onValueChanged += (this.sldrAVPlayerTextDistance_onValueChanged);
             // 
             // swAVPlayerDistance
             // 
@@ -4572,7 +4614,7 @@
             swAVPlayerDistance.Text = "Distance";
             toolTip.SetToolTip(swAVPlayerDistance, "Show the distance to players on the aimview");
             swAVPlayerDistance.UseVisualStyleBackColor = true;
-            swAVPlayerDistance.CheckedChanged += swAVPlayerDistance_CheckedChanged;
+            swAVPlayerDistance.CheckedChanged += (this.swAVPlayerDistance_CheckedChanged);
             // 
             // swAVLooseLootDistance
             // 
@@ -4589,7 +4631,7 @@
             swAVLooseLootDistance.Text = "Distance";
             toolTip.SetToolTip(swAVLooseLootDistance, "Show the distance to loose loot on the aimview");
             swAVLooseLootDistance.UseVisualStyleBackColor = true;
-            swAVLooseLootDistance.CheckedChanged += swAVLooseLootDistance_CheckedChanged;
+            swAVLooseLootDistance.CheckedChanged += (this.swAVLooseLootDistance_CheckedChanged);
             // 
             // swAVCorpses
             // 
@@ -4606,7 +4648,7 @@
             swAVCorpses.Text = "Enabled";
             toolTip.SetToolTip(swAVCorpses, "Enable rendering of corpse objects on the aimview");
             swAVCorpses.UseVisualStyleBackColor = true;
-            swAVCorpses.CheckedChanged += swAVCorpses_CheckedChanged;
+            swAVCorpses.CheckedChanged += (this.swAVCorpses_CheckedChanged);
             // 
             // swAVLooseLoot
             // 
@@ -4623,7 +4665,7 @@
             swAVLooseLoot.Text = "Enabled";
             toolTip.SetToolTip(swAVLooseLoot, "Enable rendering of loose loot objects on the aimview");
             swAVLooseLoot.UseVisualStyleBackColor = true;
-            swAVLooseLoot.CheckedChanged += swAVLooseLoot_CheckedChanged;
+            swAVLooseLoot.CheckedChanged += (this.swAVLooseLoot_CheckedChanged);
             // 
             // swAVCorpseDistance
             // 
@@ -4640,7 +4682,7 @@
             swAVCorpseDistance.Text = "Distance";
             toolTip.SetToolTip(swAVCorpseDistance, "Show the distance to corpses on the aimview");
             swAVCorpseDistance.UseVisualStyleBackColor = true;
-            swAVCorpseDistance.CheckedChanged += swAVCorpseDistance_CheckedChanged;
+            swAVCorpseDistance.CheckedChanged += (this.swAVCorpseDistance_CheckedChanged);
             // 
             // swAVCorpseName
             // 
@@ -4657,7 +4699,7 @@
             swAVCorpseName.Text = "Name";
             toolTip.SetToolTip(swAVCorpseName, "Show the name of corpses on the aimview");
             swAVCorpseName.UseVisualStyleBackColor = true;
-            swAVCorpseName.CheckedChanged += swAVCorpseName_CheckedChanged;
+            swAVCorpseName.CheckedChanged += (this.swAVCorpseName_CheckedChanged);
             // 
             // swAVCorpseValue
             // 
@@ -4674,12 +4716,12 @@
             swAVCorpseValue.Text = "Value";
             toolTip.SetToolTip(swAVCorpseValue, "Show the value of corpses on the aimview");
             swAVCorpseValue.UseVisualStyleBackColor = true;
-            swAVCorpseValue.CheckedChanged += swAVCorpseValue_CheckedChanged;
+            swAVCorpseValue.CheckedChanged += (this.swAVCorpseValue_CheckedChanged);
             // 
             // sldrAVCorpsePaintDistance
             // 
             sldrAVCorpsePaintDistance.Depth = 0;
-            sldrAVCorpsePaintDistance.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVCorpsePaintDistance.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVCorpsePaintDistance.Location = new Point(17, 375);
             sldrAVCorpsePaintDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVCorpsePaintDistance.Name = "sldrAVCorpsePaintDistance";
@@ -4691,12 +4733,12 @@
             sldrAVCorpsePaintDistance.UseAccentColor = true;
             sldrAVCorpsePaintDistance.Value = 150;
             sldrAVCorpsePaintDistance.ValueSuffix = "m";
-            sldrAVCorpsePaintDistance.onValueChanged += sldrAVCorpsePaintDistance_onValueChanged;
+            sldrAVCorpsePaintDistance.onValueChanged += (this.sldrAVCorpsePaintDistance_onValueChanged);
             // 
             // sldrAVCorpseTextDistance
             // 
             sldrAVCorpseTextDistance.Depth = 0;
-            sldrAVCorpseTextDistance.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVCorpseTextDistance.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVCorpseTextDistance.Location = new Point(319, 375);
             sldrAVCorpseTextDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVCorpseTextDistance.Name = "sldrAVCorpseTextDistance";
@@ -4708,12 +4750,12 @@
             sldrAVCorpseTextDistance.UseAccentColor = true;
             sldrAVCorpseTextDistance.Value = 150;
             sldrAVCorpseTextDistance.ValueSuffix = "m";
-            sldrAVCorpseTextDistance.onValueChanged += sldrAVCorpseTextDistance_onValueChanged;
+            sldrAVCorpseTextDistance.onValueChanged += (this.sldrAVCorpseTextDistance_onValueChanged);
             // 
             // sldrAVContainerTextDistance
             // 
             sldrAVContainerTextDistance.Depth = 0;
-            sldrAVContainerTextDistance.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVContainerTextDistance.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVContainerTextDistance.Location = new Point(319, 585);
             sldrAVContainerTextDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVContainerTextDistance.Name = "sldrAVContainerTextDistance";
@@ -4725,7 +4767,7 @@
             sldrAVContainerTextDistance.UseAccentColor = true;
             sldrAVContainerTextDistance.Value = 150;
             sldrAVContainerTextDistance.ValueSuffix = "m";
-            sldrAVContainerTextDistance.onValueChanged += sldrAVContainerTextDistance_onValueChanged;
+            sldrAVContainerTextDistance.onValueChanged += (this.sldrAVContainerTextDistance_onValueChanged);
             // 
             // swAVContainers
             // 
@@ -4742,7 +4784,7 @@
             swAVContainers.Text = "Enabled";
             toolTip.SetToolTip(swAVContainers, "Enable rendering of containers on the aimview");
             swAVContainers.UseVisualStyleBackColor = true;
-            swAVContainers.CheckedChanged += swAVContainers_CheckedChanged;
+            swAVContainers.CheckedChanged += (this.swAVContainers_CheckedChanged);
             // 
             // swAVContainerName
             // 
@@ -4759,7 +4801,7 @@
             swAVContainerName.Text = "Name";
             toolTip.SetToolTip(swAVContainerName, "Show the name of containers on the aimview");
             swAVContainerName.UseVisualStyleBackColor = true;
-            swAVContainerName.CheckedChanged += swAVContainerName_CheckedChanged;
+            swAVContainerName.CheckedChanged += (this.swAVContainerName_CheckedChanged);
             // 
             // swAVContainerDistance
             // 
@@ -4776,12 +4818,12 @@
             swAVContainerDistance.Text = "Distance";
             toolTip.SetToolTip(swAVContainerDistance, "Show the distance to containers on the aimview");
             swAVContainerDistance.UseVisualStyleBackColor = true;
-            swAVContainerDistance.CheckedChanged += swAVContainerDistance_CheckedChanged;
+            swAVContainerDistance.CheckedChanged += (this.swAVContainerDistance_CheckedChanged);
             // 
             // sldrAVQuestZoneTextDistance
             // 
             sldrAVQuestZoneTextDistance.Depth = 0;
-            sldrAVQuestZoneTextDistance.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVQuestZoneTextDistance.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVQuestZoneTextDistance.Location = new Point(319, 795);
             sldrAVQuestZoneTextDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVQuestZoneTextDistance.Name = "sldrAVQuestZoneTextDistance";
@@ -4793,7 +4835,7 @@
             sldrAVQuestZoneTextDistance.UseAccentColor = true;
             sldrAVQuestZoneTextDistance.Value = 150;
             sldrAVQuestZoneTextDistance.ValueSuffix = "m";
-            sldrAVQuestZoneTextDistance.onValueChanged += sldrAVQuestZoneTextDistance_onValueChanged;
+            sldrAVQuestZoneTextDistance.onValueChanged += (this.sldrAVQuestZoneTextDistance_onValueChanged);
             // 
             // swAVQuestZones
             // 
@@ -4810,7 +4852,7 @@
             swAVQuestZones.Text = "Enabled";
             toolTip.SetToolTip(swAVQuestZones, "Enable rendering of quest zones on the aimview");
             swAVQuestZones.UseVisualStyleBackColor = true;
-            swAVQuestZones.CheckedChanged += swAVQuestZones_CheckedChanged;
+            swAVQuestZones.CheckedChanged += (this.swAVQuestZones_CheckedChanged);
             // 
             // swAVQuestZoneName
             // 
@@ -4827,7 +4869,7 @@
             swAVQuestZoneName.Text = "Name";
             toolTip.SetToolTip(swAVQuestZoneName, "Show the objective type of quest zones on the aimview");
             swAVQuestZoneName.UseVisualStyleBackColor = true;
-            swAVQuestZoneName.CheckedChanged += swAVQuestZoneName_CheckedChanged;
+            swAVQuestZoneName.CheckedChanged += (this.swAVQuestZoneName_CheckedChanged);
             // 
             // swAVQuestZoneDistance
             // 
@@ -4844,7 +4886,7 @@
             swAVQuestZoneDistance.Text = "Distance";
             toolTip.SetToolTip(swAVQuestZoneDistance, "Show the distance to quest zones on the aimview");
             swAVQuestZoneDistance.UseVisualStyleBackColor = true;
-            swAVQuestZoneDistance.CheckedChanged += swAVQuestZoneDistance_CheckedChanged;
+            swAVQuestZoneDistance.CheckedChanged += (this.swAVQuestZoneDistance_CheckedChanged);
             // 
             // swAVTransitDistance
             // 
@@ -4861,7 +4903,7 @@
             swAVTransitDistance.Text = "Distance";
             toolTip.SetToolTip(swAVTransitDistance, "Show the distance to distance on the aimview");
             swAVTransitDistance.UseVisualStyleBackColor = true;
-            swAVTransitDistance.CheckedChanged += swAVTransitDistance_CheckedChanged;
+            swAVTransitDistance.CheckedChanged += (this.swAVTransitDistance_CheckedChanged);
             // 
             // swAVQuestItems
             // 
@@ -4878,7 +4920,7 @@
             swAVQuestItems.Text = "Enabled";
             toolTip.SetToolTip(swAVQuestItems, "Enable rendering of quest items on the aimview");
             swAVQuestItems.UseVisualStyleBackColor = true;
-            swAVQuestItems.CheckedChanged += swAVQuestItems_CheckedChanged;
+            swAVQuestItems.CheckedChanged += (this.swAVQuestItems_CheckedChanged);
             // 
             // swAVTransitName
             // 
@@ -4895,7 +4937,7 @@
             swAVTransitName.Text = "Name";
             toolTip.SetToolTip(swAVTransitName, "Show the name of transits on the aimview");
             swAVTransitName.UseVisualStyleBackColor = true;
-            swAVTransitName.CheckedChanged += swAVTransitName_CheckedChanged;
+            swAVTransitName.CheckedChanged += (this.swAVTransitName_CheckedChanged);
             // 
             // swAVQuestItemDistance
             // 
@@ -4912,7 +4954,7 @@
             swAVQuestItemDistance.Text = "Distance";
             toolTip.SetToolTip(swAVQuestItemDistance, "Show the distance to quest items on the aimview");
             swAVQuestItemDistance.UseVisualStyleBackColor = true;
-            swAVQuestItemDistance.CheckedChanged += swAVQuestItemDistance_CheckedChanged;
+            swAVQuestItemDistance.CheckedChanged += (this.swAVQuestItemDistance_CheckedChanged);
             // 
             // swAVQuestItemName
             // 
@@ -4929,7 +4971,7 @@
             swAVQuestItemName.Text = "Name";
             toolTip.SetToolTip(swAVQuestItemName, "Show the name of quest items on the aimview");
             swAVQuestItemName.UseVisualStyleBackColor = true;
-            swAVQuestItemName.CheckedChanged += swAVQuestItemName_CheckedChanged;
+            swAVQuestItemName.CheckedChanged += (this.swAVQuestItemName_CheckedChanged);
             // 
             // swAVTransits
             // 
@@ -4946,12 +4988,12 @@
             swAVTransits.Text = "Enabled";
             toolTip.SetToolTip(swAVTransits, "Enable rendering of transits on the aimview");
             swAVTransits.UseVisualStyleBackColor = true;
-            swAVTransits.CheckedChanged += swAVTransits_CheckedChanged;
+            swAVTransits.CheckedChanged += (this.swAVTransits_CheckedChanged);
             // 
             // sldrAVQuestItemPaintDistance
             // 
             sldrAVQuestItemPaintDistance.Depth = 0;
-            sldrAVQuestItemPaintDistance.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVQuestItemPaintDistance.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVQuestItemPaintDistance.Location = new Point(17, 480);
             sldrAVQuestItemPaintDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVQuestItemPaintDistance.Name = "sldrAVQuestItemPaintDistance";
@@ -4963,12 +5005,12 @@
             sldrAVQuestItemPaintDistance.UseAccentColor = true;
             sldrAVQuestItemPaintDistance.Value = 150;
             sldrAVQuestItemPaintDistance.ValueSuffix = "m";
-            sldrAVQuestItemPaintDistance.onValueChanged += sldrAVQuestItemPaintDistance_onValueChanged;
+            sldrAVQuestItemPaintDistance.onValueChanged += (this.sldrAVQuestItemPaintDistance_onValueChanged);
             // 
             // sldrAVTransitTextDistance
             // 
             sldrAVTransitTextDistance.Depth = 0;
-            sldrAVTransitTextDistance.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVTransitTextDistance.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVTransitTextDistance.Location = new Point(319, 1005);
             sldrAVTransitTextDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVTransitTextDistance.Name = "sldrAVTransitTextDistance";
@@ -4980,12 +5022,12 @@
             sldrAVTransitTextDistance.UseAccentColor = true;
             sldrAVTransitTextDistance.Value = 150;
             sldrAVTransitTextDistance.ValueSuffix = "m";
-            sldrAVTransitTextDistance.onValueChanged += sldrAVTransitTextDistance_onValueChanged;
+            sldrAVTransitTextDistance.onValueChanged += (this.sldrAVTransitTextDistance_onValueChanged);
             // 
             // sldrAVQuestItemTextDistance
             // 
             sldrAVQuestItemTextDistance.Depth = 0;
-            sldrAVQuestItemTextDistance.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVQuestItemTextDistance.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVQuestItemTextDistance.Location = new Point(319, 480);
             sldrAVQuestItemTextDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVQuestItemTextDistance.Name = "sldrAVQuestItemTextDistance";
@@ -4997,7 +5039,7 @@
             sldrAVQuestItemTextDistance.UseAccentColor = true;
             sldrAVQuestItemTextDistance.Value = 150;
             sldrAVQuestItemTextDistance.ValueSuffix = "m";
-            sldrAVQuestItemTextDistance.onValueChanged += sldrAVQuestItemTextDistance_onValueChanged;
+            sldrAVQuestItemTextDistance.onValueChanged += (this.sldrAVQuestItemTextDistance_onValueChanged);
             // 
             // swAVExfilDistance
             // 
@@ -5014,7 +5056,7 @@
             swAVExfilDistance.Text = "Distance";
             toolTip.SetToolTip(swAVExfilDistance, "Show the distance to exfils on the aimview");
             swAVExfilDistance.UseVisualStyleBackColor = true;
-            swAVExfilDistance.CheckedChanged += swAVExfilDistance_CheckedChanged;
+            swAVExfilDistance.CheckedChanged += (this.swAVExfilDistance_CheckedChanged);
             // 
             // swAVExfilName
             // 
@@ -5031,12 +5073,12 @@
             swAVExfilName.Text = "Name";
             toolTip.SetToolTip(swAVExfilName, "Show the name of exfils on the aimview");
             swAVExfilName.UseVisualStyleBackColor = true;
-            swAVExfilName.CheckedChanged += swAVExfilName_CheckedChanged;
+            swAVExfilName.CheckedChanged += (this.swAVExfilName_CheckedChanged);
             // 
             // sldrAVTripwireTextDistance
             // 
             sldrAVTripwireTextDistance.Depth = 0;
-            sldrAVTripwireTextDistance.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVTripwireTextDistance.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVTripwireTextDistance.Location = new Point(319, 690);
             sldrAVTripwireTextDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVTripwireTextDistance.Name = "sldrAVTripwireTextDistance";
@@ -5048,7 +5090,7 @@
             sldrAVTripwireTextDistance.UseAccentColor = true;
             sldrAVTripwireTextDistance.Value = 150;
             sldrAVTripwireTextDistance.ValueSuffix = "m";
-            sldrAVTripwireTextDistance.onValueChanged += sldrAVTripwireTextDistance_onValueChanged;
+            sldrAVTripwireTextDistance.onValueChanged += (this.sldrAVTripwireTextDistance_onValueChanged);
             // 
             // swAVTripwire
             // 
@@ -5065,7 +5107,7 @@
             swAVTripwire.Text = "Enabled";
             toolTip.SetToolTip(swAVTripwire, "Enable rendering of tripwire on the aimview");
             swAVTripwire.UseVisualStyleBackColor = true;
-            swAVTripwire.CheckedChanged += swAVTripwire_CheckedChanged;
+            swAVTripwire.CheckedChanged += (this.swAVTripwire_CheckedChanged);
             // 
             // swAVExfils
             // 
@@ -5082,12 +5124,12 @@
             swAVExfils.Text = "Enabled";
             toolTip.SetToolTip(swAVExfils, "Enable rendering of exfils on the aimview");
             swAVExfils.UseVisualStyleBackColor = true;
-            swAVExfils.CheckedChanged += swAVExfils_CheckedChanged;
+            swAVExfils.CheckedChanged += (this.swAVExfils_CheckedChanged);
             // 
             // sldrAVExfilTextDistance
             // 
             sldrAVExfilTextDistance.Depth = 0;
-            sldrAVExfilTextDistance.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVExfilTextDistance.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVExfilTextDistance.Location = new Point(319, 900);
             sldrAVExfilTextDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVExfilTextDistance.Name = "sldrAVExfilTextDistance";
@@ -5099,7 +5141,7 @@
             sldrAVExfilTextDistance.UseAccentColor = true;
             sldrAVExfilTextDistance.Value = 150;
             sldrAVExfilTextDistance.ValueSuffix = "m";
-            sldrAVExfilTextDistance.onValueChanged += sldrAVExfilTextDistance_onValueChanged;
+            sldrAVExfilTextDistance.onValueChanged += (this.sldrAVExfilTextDistance_onValueChanged);
             // 
             // swAVTripwireDistance
             // 
@@ -5116,12 +5158,12 @@
             swAVTripwireDistance.Text = "Distance";
             toolTip.SetToolTip(swAVTripwireDistance, "Show the distance to tripwire on the aimview");
             swAVTripwireDistance.UseVisualStyleBackColor = true;
-            swAVTripwireDistance.CheckedChanged += swAVTripwireDistance_CheckedChanged;
+            swAVTripwireDistance.CheckedChanged += (this.swAVTripwireDistance_CheckedChanged);
             // 
             // sldrAVContainerPaintDistance
             // 
             sldrAVContainerPaintDistance.Depth = 0;
-            sldrAVContainerPaintDistance.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVContainerPaintDistance.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVContainerPaintDistance.Location = new Point(17, 585);
             sldrAVContainerPaintDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVContainerPaintDistance.Name = "sldrAVContainerPaintDistance";
@@ -5133,12 +5175,12 @@
             sldrAVContainerPaintDistance.UseAccentColor = true;
             sldrAVContainerPaintDistance.Value = 150;
             sldrAVContainerPaintDistance.ValueSuffix = "m";
-            sldrAVContainerPaintDistance.onValueChanged += sldrAVContainerPaintDistance_onValueChanged;
+            sldrAVContainerPaintDistance.onValueChanged += (this.sldrAVContainerPaintDistance_onValueChanged);
             // 
             // sldrAVTripwirePaintDistance
             // 
             sldrAVTripwirePaintDistance.Depth = 0;
-            sldrAVTripwirePaintDistance.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAVTripwirePaintDistance.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAVTripwirePaintDistance.Location = new Point(17, 690);
             sldrAVTripwirePaintDistance.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAVTripwirePaintDistance.Name = "sldrAVTripwirePaintDistance";
@@ -5150,7 +5192,7 @@
             sldrAVTripwirePaintDistance.UseAccentColor = true;
             sldrAVTripwirePaintDistance.Value = 150;
             sldrAVTripwirePaintDistance.ValueSuffix = "m";
-            sldrAVTripwirePaintDistance.onValueChanged += sldrAVTripwirePaintDistance_onValueChanged;
+            sldrAVTripwirePaintDistance.onValueChanged += (this.sldrAVTripwirePaintDistance_onValueChanged);
             // 
             // swPlayerInfoLevel
             // 
@@ -5167,7 +5209,7 @@
             swPlayerInfoLevel.Text = "Level";
             toolTip.SetToolTip(swPlayerInfoLevel, "Shows the players level");
             swPlayerInfoLevel.UseVisualStyleBackColor = true;
-            swPlayerInfoLevel.CheckedChanged += swPlayerInfoLevel_CheckedChanged;
+            swPlayerInfoLevel.CheckedChanged += (this.swPlayerInfoLevel_CheckedChanged);
             // 
             // swPlayerInfoKD
             // 
@@ -5184,7 +5226,7 @@
             swPlayerInfoKD.Text = "KDR";
             toolTip.SetToolTip(swPlayerInfoKD, "Shows the players KD");
             swPlayerInfoKD.UseVisualStyleBackColor = true;
-            swPlayerInfoKD.CheckedChanged += swPlayerInfoKD_CheckedChanged;
+            swPlayerInfoKD.CheckedChanged += (this.swPlayerInfoKD_CheckedChanged);
             // 
             // swPlayerInfoHours
             // 
@@ -5201,7 +5243,256 @@
             swPlayerInfoHours.Text = "Hours";
             toolTip.SetToolTip(swPlayerInfoHours, "Shows the players hours");
             swPlayerInfoHours.UseVisualStyleBackColor = true;
-            swPlayerInfoHours.CheckedChanged += swPlayerInfoHours_CheckedChanged;
+            swPlayerInfoHours.CheckedChanged += (this.swPlayerInfoHours_CheckedChanged);
+            // 
+            // swToggleESP
+            // 
+            swToggleESP.Depth = 0;
+            swToggleESP.Font = new Font("Segoe UI", 9F);
+            swToggleESP.Location = new Point(15, 45);
+            swToggleESP.Margin = new Padding(0);
+            swToggleESP.MouseLocation = new Point(-1, -1);
+            swToggleESP.MouseState = MaterialSkin.MouseState.HOVER;
+            swToggleESP.Name = "swToggleESP";
+            swToggleESP.Ripple = true;
+            swToggleESP.Size = new Size(172, 28);
+            swToggleESP.TabIndex = 38;
+            swToggleESP.Text = "Toggle ESP";
+            toolTip.SetToolTip(swToggleESP, "Master Switch for ESP");
+            swToggleESP.UseVisualStyleBackColor = true;
+            swToggleESP.CheckedChanged += (this.swToggleESP_CheckedChanged);
+            // 
+            // swToggleItems
+            // 
+            swToggleItems.Depth = 0;
+            swToggleItems.Font = new Font("Segoe UI", 9F);
+            swToggleItems.Location = new Point(16, 245);
+            swToggleItems.Margin = new Padding(0);
+            swToggleItems.MouseLocation = new Point(-1, -1);
+            swToggleItems.MouseState = MaterialSkin.MouseState.HOVER;
+            swToggleItems.Name = "swToggleItems";
+            swToggleItems.Ripple = true;
+            swToggleItems.Size = new Size(173, 28);
+            swToggleItems.TabIndex = 49;
+            swToggleItems.Text = "Toggle Items";
+            toolTip.SetToolTip(swToggleItems, "Toggle Item ESP");
+            swToggleItems.UseVisualStyleBackColor = true;
+            swToggleItems.CheckedChanged += (this.swToggleItems_CheckedChanged);
+            // 
+            // sldrScavDist
+            // 
+            sldrScavDist.Depth = 0;
+            sldrScavDist.ForeColor = Color.Black;
+            sldrScavDist.Location = new Point(209, 158);
+            sldrScavDist.MouseState = MaterialSkin.MouseState.HOVER;
+            sldrScavDist.Name = "sldrScavDist";
+            sldrScavDist.RangeMax = 1000;
+            sldrScavDist.RangeMin = 1;
+            sldrScavDist.Size = new Size(381, 40);
+            sldrScavDist.TabIndex = 44;
+            sldrScavDist.Text = "Scav Distance";
+            toolTip.SetToolTip(sldrScavDist, "The distance it will draw Scav ESP");
+            sldrScavDist.UseAccentColor = true;
+            sldrScavDist.Value = 300;
+            sldrScavDist.ValueMax = 1000;
+            sldrScavDist.onValueChanged += (this.sldrScavDist_onValueChanged);
+            // 
+            // sldrTeamDist
+            // 
+            sldrTeamDist.Depth = 0;
+            sldrTeamDist.ForeColor = Color.Black;
+            sldrTeamDist.Location = new Point(209, 118);
+            sldrTeamDist.MouseState = MaterialSkin.MouseState.HOVER;
+            sldrTeamDist.Name = "sldrTeamDist";
+            sldrTeamDist.RangeMax = 1000;
+            sldrTeamDist.Size = new Size(381, 40);
+            sldrTeamDist.TabIndex = 43;
+            sldrTeamDist.Text = "Team Distance";
+            toolTip.SetToolTip(sldrTeamDist, "The distance it will draw Teammate/s ESP");
+            sldrTeamDist.UseAccentColor = true;
+            sldrTeamDist.Value = 300;
+            sldrTeamDist.ValueMax = 1000;
+            sldrTeamDist.onValueChanged += (this.sldrTeamDist_onValueChanged);
+            // 
+            // swToggleScavs
+            // 
+            swToggleScavs.Depth = 0;
+            swToggleScavs.Font = new Font("Segoe UI", 9F);
+            swToggleScavs.Location = new Point(15, 165);
+            swToggleScavs.Margin = new Padding(0);
+            swToggleScavs.MouseLocation = new Point(-1, -1);
+            swToggleScavs.MouseState = MaterialSkin.MouseState.HOVER;
+            swToggleScavs.Name = "swToggleScavs";
+            swToggleScavs.Ripple = true;
+            swToggleScavs.Size = new Size(174, 28);
+            swToggleScavs.TabIndex = 42;
+            swToggleScavs.Text = "Toggle Scavs";
+            toolTip.SetToolTip(swToggleScavs, "Toggles Scav ESP");
+            swToggleScavs.UseVisualStyleBackColor = true;
+            swToggleScavs.CheckedChanged += (this.swToggleScavs_CheckedChanged);
+            // 
+            // sldrPlayerDist
+            // 
+            sldrPlayerDist.Depth = 0;
+            sldrPlayerDist.ForeColor = Color.Black;
+            sldrPlayerDist.Location = new Point(209, 79);
+            sldrPlayerDist.MouseState = MaterialSkin.MouseState.HOVER;
+            sldrPlayerDist.Name = "sldrPlayerDist";
+            sldrPlayerDist.RangeMax = 1000;
+            sldrPlayerDist.RangeMin = 1;
+            sldrPlayerDist.Size = new Size(381, 40);
+            sldrPlayerDist.TabIndex = 40;
+            sldrPlayerDist.Text = "Player Distance";
+            toolTip.SetToolTip(sldrPlayerDist, "The distance it will draw Player ESP");
+            sldrPlayerDist.UseAccentColor = true;
+            sldrPlayerDist.Value = 300;
+            sldrPlayerDist.ValueMax = 1000;
+            sldrPlayerDist.onValueChanged += (this.sldrPlayerDist_onValueChanged);
+            // 
+            // swToggleTeam
+            // 
+            swToggleTeam.Depth = 0;
+            swToggleTeam.Font = new Font("Segoe UI", 9F);
+            swToggleTeam.Location = new Point(15, 125);
+            swToggleTeam.Margin = new Padding(0);
+            swToggleTeam.MouseLocation = new Point(-1, -1);
+            swToggleTeam.MouseState = MaterialSkin.MouseState.HOVER;
+            swToggleTeam.Name = "swToggleTeam";
+            swToggleTeam.Ripple = true;
+            swToggleTeam.Size = new Size(174, 28);
+            swToggleTeam.TabIndex = 39;
+            swToggleTeam.Text = "Toggle Team";
+            toolTip.SetToolTip(swToggleTeam, "Toggles Teammate ESP");
+            swToggleTeam.UseVisualStyleBackColor = true;
+            swToggleTeam.CheckedChanged += (this.swToggleTeam_CheckedChanged);
+            // 
+            // sldrBoneDist
+            // 
+            sldrBoneDist.Depth = 0;
+            sldrBoneDist.ForeColor = Color.Black;
+            sldrBoneDist.Location = new Point(209, 279);
+            sldrBoneDist.MouseState = MaterialSkin.MouseState.HOVER;
+            sldrBoneDist.Name = "sldrBoneDist";
+            sldrBoneDist.RangeMax = 1000;
+            sldrBoneDist.RangeMin = 1;
+            sldrBoneDist.Size = new Size(381, 40);
+            sldrBoneDist.TabIndex = 30;
+            sldrBoneDist.Text = "Bone Distance";
+            toolTip.SetToolTip(sldrBoneDist, "Global Distance setting to draw Bone ESP");
+            sldrBoneDist.UseAccentColor = true;
+            sldrBoneDist.Value = 300;
+            sldrBoneDist.ValueMax = 1000;
+            sldrBoneDist.onValueChanged += (this.sldrBoneDist_onValueChanged);
+            // 
+            // swToggleBosses
+            // 
+            swToggleBosses.Depth = 0;
+            swToggleBosses.Font = new Font("Segoe UI", 9F);
+            swToggleBosses.Location = new Point(15, 205);
+            swToggleBosses.Margin = new Padding(0);
+            swToggleBosses.MouseLocation = new Point(-1, -1);
+            swToggleBosses.MouseState = MaterialSkin.MouseState.HOVER;
+            swToggleBosses.Name = "swToggleBosses";
+            swToggleBosses.Ripple = true;
+            swToggleBosses.Size = new Size(174, 28);
+            swToggleBosses.TabIndex = 7;
+            swToggleBosses.Text = "Toggle Bosses";
+            toolTip.SetToolTip(swToggleBosses, "Toggles Boss ESP");
+            swToggleBosses.UseVisualStyleBackColor = true;
+            swToggleBosses.CheckedChanged += (this.swToggleBosses_CheckedChanged);
+            // 
+            // sldrBossDist
+            // 
+            sldrBossDist.Depth = 0;
+            sldrBossDist.ForeColor = Color.Black;
+            sldrBossDist.Location = new Point(209, 198);
+            sldrBossDist.MouseState = MaterialSkin.MouseState.HOVER;
+            sldrBossDist.Name = "sldrBossDist";
+            sldrBossDist.RangeMax = 1000;
+            sldrBossDist.RangeMin = 1;
+            sldrBossDist.Size = new Size(381, 40);
+            sldrBossDist.TabIndex = 30;
+            sldrBossDist.Text = "Boss Distance";
+            toolTip.SetToolTip(sldrBossDist, "The distance it will Boss ESP");
+            sldrBossDist.UseAccentColor = true;
+            sldrBossDist.Value = 300;
+            sldrBossDist.ValueMax = 1000;
+            sldrBossDist.onValueChanged += (this.sldrBossDist_onValueChanged);
+            // 
+            // swTogglePlayers
+            // 
+            swTogglePlayers.Depth = 0;
+            swTogglePlayers.Font = new Font("Segoe UI", 9F);
+            swTogglePlayers.Location = new Point(15, 85);
+            swTogglePlayers.Margin = new Padding(0);
+            swTogglePlayers.MouseLocation = new Point(-1, -1);
+            swTogglePlayers.MouseState = MaterialSkin.MouseState.HOVER;
+            swTogglePlayers.Name = "swTogglePlayers";
+            swTogglePlayers.Ripple = true;
+            swTogglePlayers.Size = new Size(174, 28);
+            swTogglePlayers.TabIndex = 5;
+            swTogglePlayers.Text = "Toggle Players";
+            toolTip.SetToolTip(swTogglePlayers, "Toggles Player ESP");
+            swTogglePlayers.UseVisualStyleBackColor = true;
+            swTogglePlayers.CheckedChanged += (this.swTogglePlayers_CheckedChanged);
+            // 
+            // sldrItemDist
+            // 
+            sldrItemDist.Depth = 0;
+            sldrItemDist.ForeColor = Color.Black;
+            sldrItemDist.Location = new Point(209, 239);
+            sldrItemDist.MouseState = MaterialSkin.MouseState.HOVER;
+            sldrItemDist.Name = "sldrItemDist";
+            sldrItemDist.RangeMax = 1000;
+            sldrItemDist.RangeMin = 1;
+            sldrItemDist.Size = new Size(381, 40);
+            sldrItemDist.TabIndex = 50;
+            sldrItemDist.Text = "Item Distance";
+            toolTip.SetToolTip(sldrItemDist, "The distance it will draw Items");
+            sldrItemDist.UseAccentColor = true;
+            sldrItemDist.Value = 250;
+            sldrItemDist.ValueMax = 1000;
+            sldrItemDist.onValueChanged += (this.sldrItemDist_onValueChanged);
+            // 
+            // swToggleBones
+            // 
+            swToggleBones.Depth = 0;
+            swToggleBones.Font = new Font("Segoe UI", 9F);
+            swToggleBones.Location = new Point(16, 285);
+            swToggleBones.Margin = new Padding(0);
+            swToggleBones.MouseLocation = new Point(-1, -1);
+            swToggleBones.MouseState = MaterialSkin.MouseState.HOVER;
+            swToggleBones.Name = "swToggleBones";
+            swToggleBones.Ripple = true;
+            swToggleBones.Size = new Size(173, 28);
+            swToggleBones.TabIndex = 51;
+            swToggleBones.Text = "Skeletons";
+            toolTip.SetToolTip(swToggleBones, "Global Toggle for Bone ESP");
+            swToggleBones.UseVisualStyleBackColor = true;
+            swToggleBones.CheckedChanged += (this.swToggleBones_CheckedChanged);
+            // 
+            // materialButton1
+            // 
+            materialButton1.AutoSize = false;
+            materialButton1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            materialButton1.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            materialButton1.Depth = 0;
+            materialButton1.Font = new Font("Segoe UI", 8F);
+            materialButton1.HighEmphasis = true;
+            materialButton1.Icon = null;
+            materialButton1.Location = new Point(32, 157);
+            materialButton1.Margin = new Padding(4, 6, 4, 6);
+            materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
+            materialButton1.Name = "materialButton1";
+            materialButton1.NoAccentTextColor = Color.Empty;
+            materialButton1.Size = new Size(143, 36);
+            materialButton1.TabIndex = 35;
+            materialButton1.Text = "Start Overlay";
+            toolTip.SetToolTip(materialButton1, "Starts Overlay on Selected Monitor");
+            materialButton1.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            materialButton1.UseAccentColor = true;
+            materialButton1.UseVisualStyleBackColor = true;
+            materialButton1.Click += (this.materialButton1_Click);
             // 
             // tabMambo
             // 
@@ -5222,7 +5513,7 @@
             tabMambo.SelectedIndex = 0;
             tabMambo.Size = new Size(1460, 746);
             tabMambo.TabIndex = 10;
-            tabMambo.SelectedIndexChanged += TabControl_SelectedIndexChanged;
+            tabMambo.SelectedIndexChanged += (this.TabControl_SelectedIndexChanged);
             // 
             // tabRadar
             // 
@@ -5243,13 +5534,13 @@
             // 
             // mcRadarLootItemViewer
             // 
-            mcRadarLootItemViewer.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            mcRadarLootItemViewer.BackColor = Color.FromArgb(255, 255, 255);
+            mcRadarLootItemViewer.Anchor = (AnchorStyles)(AnchorStyles.Bottom) | (AnchorStyles.Left);
+            mcRadarLootItemViewer.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcRadarLootItemViewer.Controls.Add(txtLootItemFilter);
             mcRadarLootItemViewer.Controls.Add(lstLootItems);
             mcRadarLootItemViewer.Controls.Add(btnPingSelectedItem);
             mcRadarLootItemViewer.Depth = 0;
-            mcRadarLootItemViewer.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcRadarLootItemViewer.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcRadarLootItemViewer.Location = new Point(5, 491);
             mcRadarLootItemViewer.Margin = new Padding(14);
             mcRadarLootItemViewer.MouseState = MaterialSkin.MouseState.HOVER;
@@ -5261,11 +5552,11 @@
             // lstLootItems
             // 
             lstLootItems.AutoSizeTable = false;
-            lstLootItems.BackColor = Color.FromArgb(255, 255, 255);
+            lstLootItems.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             lstLootItems.BorderStyle = BorderStyle.None;
             lstLootItems.Columns.AddRange(new ColumnHeader[] { colItemQuantity, colItemName, colItemValue });
             lstLootItems.Depth = 0;
-            lstLootItems.Font = new Font("Segoe UI", 8.25F, FontStyle.Underline | FontStyle.Strikeout, GraphicsUnit.Point, 0);
+            lstLootItems.Font = new Font("Segoe UI", 8.25F, (FontStyle)(FontStyle.Underline) | (FontStyle.Strikeout), GraphicsUnit.Point, (byte)0);
             lstLootItems.FullRowSelect = true;
             lstLootItems.Location = new Point(0, 1);
             lstLootItems.MinimumSize = new Size(100, 100);
@@ -5277,7 +5568,7 @@
             lstLootItems.TabIndex = 50;
             lstLootItems.UseCompatibleStateImageBehavior = false;
             lstLootItems.View = View.Details;
-            lstLootItems.SelectedIndexChanged += lstLootItems_SelectedIndexChanged;
+            lstLootItems.SelectedIndexChanged += (this.lstLootItems_SelectedIndexChanged);
             // 
             // colItemQuantity
             // 
@@ -5296,8 +5587,8 @@
             // 
             // mcRadarEnemyStats
             // 
-            mcRadarEnemyStats.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            mcRadarEnemyStats.BackColor = Color.FromArgb(255, 255, 255);
+            mcRadarEnemyStats.Anchor = (AnchorStyles)(AnchorStyles.Bottom) | (AnchorStyles.Right);
+            mcRadarEnemyStats.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcRadarEnemyStats.Controls.Add(lblRadarOtherValue);
             mcRadarEnemyStats.Controls.Add(lblRadarOther);
             mcRadarEnemyStats.Controls.Add(lblRadarBossesValue);
@@ -5311,7 +5602,7 @@
             mcRadarEnemyStats.Controls.Add(lblRadarAIScavs);
             mcRadarEnemyStats.Controls.Add(lblRadarPMCs);
             mcRadarEnemyStats.Depth = 0;
-            mcRadarEnemyStats.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcRadarEnemyStats.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcRadarEnemyStats.Location = new Point(1247, 610);
             mcRadarEnemyStats.Margin = new Padding(14);
             mcRadarEnemyStats.MouseState = MaterialSkin.MouseState.HOVER;
@@ -5479,8 +5770,8 @@
             // 
             // mcRadarStats
             // 
-            mcRadarStats.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            mcRadarStats.BackColor = Color.FromArgb(255, 255, 255);
+            mcRadarStats.Anchor = (AnchorStyles)(AnchorStyles.Bottom) | (AnchorStyles.Right);
+            mcRadarStats.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcRadarStats.Controls.Add(lblRadarCorpsesValue);
             mcRadarStats.Controls.Add(lblRadarCorpses);
             mcRadarStats.Controls.Add(lblRadarMemSValue);
@@ -5492,7 +5783,7 @@
             mcRadarStats.Controls.Add(lblRadarLooseLoot);
             mcRadarStats.Controls.Add(lblRadarFPS);
             mcRadarStats.Depth = 0;
-            mcRadarStats.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcRadarStats.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcRadarStats.Location = new Point(1346, 623);
             mcRadarStats.Margin = new Padding(14);
             mcRadarStats.MouseState = MaterialSkin.MouseState.HOVER;
@@ -5634,12 +5925,12 @@
             // 
             // mcRadarSettings
             // 
-            mcRadarSettings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            mcRadarSettings.BackColor = Color.FromArgb(255, 255, 255);
+            mcRadarSettings.Anchor = (AnchorStyles)(AnchorStyles.Top) | (AnchorStyles.Right);
+            mcRadarSettings.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcRadarSettings.Controls.Add(btnToggleLootItemViewer);
             mcRadarSettings.Controls.Add(btnToggleMapFree);
             mcRadarSettings.Depth = 0;
-            mcRadarSettings.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcRadarSettings.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcRadarSettings.Location = new Point(1282, 4);
             mcRadarSettings.Margin = new Padding(14);
             mcRadarSettings.MouseState = MaterialSkin.MouseState.HOVER;
@@ -5650,14 +5941,14 @@
             // 
             // mcRadarMapSetup
             // 
-            mcRadarMapSetup.BackColor = Color.FromArgb(255, 255, 255);
+            mcRadarMapSetup.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcRadarMapSetup.Controls.Add(btnMapSetupApply);
             mcRadarMapSetup.Controls.Add(txtMapSetupScale);
             mcRadarMapSetup.Controls.Add(txtMapSetupY);
             mcRadarMapSetup.Controls.Add(txtMapSetupX);
             mcRadarMapSetup.Controls.Add(lblRadarMapSetup);
             mcRadarMapSetup.Depth = 0;
-            mcRadarMapSetup.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcRadarMapSetup.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcRadarMapSetup.Location = new Point(5, 5);
             mcRadarMapSetup.Margin = new Padding(14);
             mcRadarMapSetup.MouseState = MaterialSkin.MouseState.HOVER;
@@ -5692,10 +5983,10 @@
             skMapCanvas.Size = new Size(1446, 697);
             skMapCanvas.TabIndex = 13;
             skMapCanvas.VSync = true;
-            skMapCanvas.PaintSurface += skMapCanvas_PaintSurface;
-            skMapCanvas.MouseDown += skMapCanvas_MouseDown;
-            skMapCanvas.MouseMove += skMapCanvas_MouseMovePlayer;
-            skMapCanvas.MouseUp += skMapCanvas_MouseUp;
+            skMapCanvas.PaintSurface += (this.skMapCanvas_PaintSurface);
+            skMapCanvas.MouseDown += (this.skMapCanvas_MouseDown);
+            skMapCanvas.MouseMove += (this.skMapCanvas_MouseMovePlayer);
+            skMapCanvas.MouseUp += (this.skMapCanvas_MouseUp);
             // 
             // tabSettings
             // 
@@ -5725,17 +6016,18 @@
             tabSelector.TabIndex = 29;
             tabSelector.TabIndicatorHeight = 1;
             tabSelector.Text = "tabSelectorSettings";
-            tabSelector.Click += tabSelector_Click;
+            tabSelector.Click += (this.tabSelector_Click);
             // 
             // tabControlSettings
             // 
-            tabControlSettings.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabControlSettings.Anchor = (AnchorStyles)(((AnchorStyles.Top) | (AnchorStyles.Bottom)) | (AnchorStyles.Left)) | (AnchorStyles.Right);
             tabControlSettings.Controls.Add(tabSettingsGeneral);
             tabControlSettings.Controls.Add(tabSettingsHotkeys);
             tabControlSettings.Controls.Add(tabSettingsMemoryWriting);
             tabControlSettings.Controls.Add(tabSettingsLoot);
             tabControlSettings.Controls.Add(tabSettingsAIFactions);
             tabControlSettings.Controls.Add(tabSettingsColors);
+            tabControlSettings.Controls.Add(tabSettingsFuser);
             tabControlSettings.Depth = 0;
             tabControlSettings.Font = new Font("Segoe UI", 9F);
             tabControlSettings.Location = new Point(0, 35);
@@ -5763,9 +6055,9 @@
             // 
             // mcSettingsGeneralAimview
             // 
-            mcSettingsGeneralAimview.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            mcSettingsGeneralAimview.Anchor = (AnchorStyles)((AnchorStyles.Top) | (AnchorStyles.Bottom)) | (AnchorStyles.Left);
             mcSettingsGeneralAimview.AutoScroll = true;
-            mcSettingsGeneralAimview.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsGeneralAimview.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsGeneralAimview.Controls.Add(sldrAVTripwirePaintDistance);
             mcSettingsGeneralAimview.Controls.Add(sldrAVContainerPaintDistance);
             mcSettingsGeneralAimview.Controls.Add(swAVTripwireDistance);
@@ -5833,18 +6125,18 @@
             mcSettingsGeneralAimview.Controls.Add(sldrAVPlayerPaintDistance);
             mcSettingsGeneralAimview.Controls.Add(swAVPlayers);
             mcSettingsGeneralAimview.Depth = 0;
-            mcSettingsGeneralAimview.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsGeneralAimview.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsGeneralAimview.Location = new Point(15, 353);
             mcSettingsGeneralAimview.Margin = new Padding(14);
             mcSettingsGeneralAimview.MouseState = MaterialSkin.MouseState.HOVER;
             mcSettingsGeneralAimview.Name = "mcSettingsGeneralAimview";
             mcSettingsGeneralAimview.Padding = new Padding(14);
-            mcSettingsGeneralAimview.Size = new Size(633, 277);
+            mcSettingsGeneralAimview.Size = new Size(633, 273);
             mcSettingsGeneralAimview.TabIndex = 33;
             // 
             // dvdrTransits
             // 
-            dvdrTransits.BackColor = Color.FromArgb(30, 0, 0, 0);
+            dvdrTransits.BackColor = Color.FromArgb((int)(byte)30, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             dvdrTransits.Depth = 0;
             dvdrTransits.Location = new Point(0, 1045);
             dvdrTransits.MouseState = MaterialSkin.MouseState.HOVER;
@@ -5881,7 +6173,7 @@
             // 
             // dvdrExfils
             // 
-            dvdrExfils.BackColor = Color.FromArgb(30, 0, 0, 0);
+            dvdrExfils.BackColor = Color.FromArgb((int)(byte)30, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             dvdrExfils.Depth = 0;
             dvdrExfils.Location = new Point(0, 940);
             dvdrExfils.MouseState = MaterialSkin.MouseState.HOVER;
@@ -5892,7 +6184,7 @@
             // 
             // dvdrContainers
             // 
-            dvdrContainers.BackColor = Color.FromArgb(30, 0, 0, 0);
+            dvdrContainers.BackColor = Color.FromArgb((int)(byte)30, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             dvdrContainers.Depth = 0;
             dvdrContainers.Location = new Point(0, 625);
             dvdrContainers.MouseState = MaterialSkin.MouseState.HOVER;
@@ -5929,7 +6221,7 @@
             // 
             // dvdrQuestZones
             // 
-            dvdrQuestZones.BackColor = Color.FromArgb(30, 0, 0, 0);
+            dvdrQuestZones.BackColor = Color.FromArgb((int)(byte)30, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             dvdrQuestZones.Depth = 0;
             dvdrQuestZones.Location = new Point(0, 835);
             dvdrQuestZones.MouseState = MaterialSkin.MouseState.HOVER;
@@ -5953,7 +6245,7 @@
             // 
             // dvdrTripwire
             // 
-            dvdrTripwire.BackColor = Color.FromArgb(30, 0, 0, 0);
+            dvdrTripwire.BackColor = Color.FromArgb((int)(byte)30, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             dvdrTripwire.Depth = 0;
             dvdrTripwire.Location = new Point(0, 730);
             dvdrTripwire.MouseState = MaterialSkin.MouseState.HOVER;
@@ -5977,7 +6269,7 @@
             // 
             // dvdrQuestItems
             // 
-            dvdrQuestItems.BackColor = Color.FromArgb(30, 0, 0, 0);
+            dvdrQuestItems.BackColor = Color.FromArgb((int)(byte)30, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             dvdrQuestItems.Depth = 0;
             dvdrQuestItems.Location = new Point(0, 520);
             dvdrQuestItems.MouseState = MaterialSkin.MouseState.HOVER;
@@ -5988,7 +6280,7 @@
             // 
             // dvdrLooseLoot
             // 
-            dvdrLooseLoot.BackColor = Color.FromArgb(30, 0, 0, 0);
+            dvdrLooseLoot.BackColor = Color.FromArgb((int)(byte)30, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             dvdrLooseLoot.Depth = 0;
             dvdrLooseLoot.Location = new Point(0, 310);
             dvdrLooseLoot.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6012,7 +6304,7 @@
             // 
             // dvdrPlayers
             // 
-            dvdrPlayers.BackColor = Color.FromArgb(30, 0, 0, 0);
+            dvdrPlayers.BackColor = Color.FromArgb((int)(byte)30, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             dvdrPlayers.Depth = 0;
             dvdrPlayers.Location = new Point(0, 205);
             dvdrPlayers.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6023,7 +6315,7 @@
             // 
             // dvdrRendering
             // 
-            dvdrRendering.BackColor = Color.FromArgb(30, 0, 0, 0);
+            dvdrRendering.BackColor = Color.FromArgb((int)(byte)30, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             dvdrRendering.Depth = 0;
             dvdrRendering.Location = new Point(0, 100);
             dvdrRendering.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6060,7 +6352,7 @@
             // 
             // dvdrCorpses
             // 
-            dvdrCorpses.BackColor = Color.FromArgb(30, 0, 0, 0);
+            dvdrCorpses.BackColor = Color.FromArgb((int)(byte)30, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             dvdrCorpses.Depth = 0;
             dvdrCorpses.Location = new Point(0, 415);
             dvdrCorpses.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6099,7 +6391,7 @@
             // 
             // mcSettingsGeneralPlayerInformation
             // 
-            mcSettingsGeneralPlayerInformation.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsGeneralPlayerInformation.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsGeneralPlayerInformation.Controls.Add(swPlayerInfoLevel);
             mcSettingsGeneralPlayerInformation.Controls.Add(swPlayerInfoKD);
             mcSettingsGeneralPlayerInformation.Controls.Add(swPlayerInfoHours);
@@ -6126,7 +6418,7 @@
             mcSettingsGeneralPlayerInformation.Controls.Add(cboPlayerInfoType);
             mcSettingsGeneralPlayerInformation.Controls.Add(lblSettingsGeneralPlayerInformation);
             mcSettingsGeneralPlayerInformation.Depth = 0;
-            mcSettingsGeneralPlayerInformation.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsGeneralPlayerInformation.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsGeneralPlayerInformation.Location = new Point(663, 14);
             mcSettingsGeneralPlayerInformation.Margin = new Padding(14);
             mcSettingsGeneralPlayerInformation.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6152,7 +6444,7 @@
             // 
             // mcSettingsGeneralUI
             // 
-            mcSettingsGeneralUI.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsGeneralUI.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsGeneralUI.Controls.Add(swTraderPrices);
             mcSettingsGeneralUI.Controls.Add(sldrZoomSensitivity);
             mcSettingsGeneralUI.Controls.Add(cboGlobalFont);
@@ -6163,7 +6455,7 @@
             mcSettingsGeneralUI.Controls.Add(swExfilNames);
             mcSettingsGeneralUI.Controls.Add(txtTeammateID);
             mcSettingsGeneralUI.Depth = 0;
-            mcSettingsGeneralUI.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsGeneralUI.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsGeneralUI.Location = new Point(14, 165);
             mcSettingsGeneralUI.Margin = new Padding(14);
             mcSettingsGeneralUI.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6188,7 +6480,7 @@
             sldrZoomSensitivity.UseAccentColor = true;
             sldrZoomSensitivity.Value = 40;
             sldrZoomSensitivity.ValueMax = 150;
-            sldrZoomSensitivity.onValueChanged += sldrZoomSensitivity_onValueChanged;
+            sldrZoomSensitivity.onValueChanged += (this.sldrZoomSensitivity_onValueChanged);
             // 
             // lblSettingsGeneralUI
             // 
@@ -6207,7 +6499,7 @@
             // 
             // mcSettingsGeneralRadar
             // 
-            mcSettingsGeneralRadar.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsGeneralRadar.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsGeneralRadar.Controls.Add(btnTriggerUnityCrash);
             mcSettingsGeneralRadar.Controls.Add(swPvEMode);
             mcSettingsGeneralRadar.Controls.Add(swRadarEnemyCount);
@@ -6218,7 +6510,7 @@
             mcSettingsGeneralRadar.Controls.Add(btnToggleMap);
             mcSettingsGeneralRadar.Controls.Add(swMapHelper);
             mcSettingsGeneralRadar.Depth = 0;
-            mcSettingsGeneralRadar.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsGeneralRadar.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsGeneralRadar.Location = new Point(15, 14);
             mcSettingsGeneralRadar.Margin = new Padding(14);
             mcSettingsGeneralRadar.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6255,7 +6547,7 @@
             // 
             // mcSettingsHotkeys
             // 
-            mcSettingsHotkeys.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsHotkeys.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsHotkeys.Controls.Add(cboHotkeyKey);
             mcSettingsHotkeys.Controls.Add(rdbToggleKey);
             mcSettingsHotkeys.Controls.Add(rdbOnKey);
@@ -6265,7 +6557,7 @@
             mcSettingsHotkeys.Controls.Add(btnRemoveHotkey);
             mcSettingsHotkeys.Controls.Add(materialLabel1);
             mcSettingsHotkeys.Depth = 0;
-            mcSettingsHotkeys.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsHotkeys.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsHotkeys.Location = new Point(15, 14);
             mcSettingsHotkeys.Margin = new Padding(14);
             mcSettingsHotkeys.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6277,7 +6569,7 @@
             // lstHotkeys
             // 
             lstHotkeys.AutoSizeTable = false;
-            lstHotkeys.BackColor = Color.FromArgb(255, 255, 255);
+            lstHotkeys.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             lstHotkeys.BorderStyle = BorderStyle.None;
             lstHotkeys.Columns.AddRange(new ColumnHeader[] { colHotkeysAction, colHotkeysKey, colHotkeysType });
             lstHotkeys.Depth = 0;
@@ -6292,7 +6584,7 @@
             lstHotkeys.TabIndex = 44;
             lstHotkeys.UseCompatibleStateImageBehavior = false;
             lstHotkeys.View = View.Details;
-            lstHotkeys.SelectedIndexChanged += lstHotkeys_SelectedIndexChanged;
+            lstHotkeys.SelectedIndexChanged += (this.lstHotkeys_SelectedIndexChanged);
             // 
             // colHotkeysAction
             // 
@@ -6343,7 +6635,7 @@
             // 
             // mcSettingsMemoryWritingWorld
             // 
-            mcSettingsMemoryWritingWorld.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsMemoryWritingWorld.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsMemoryWritingWorld.Controls.Add(swSunIntensity);
             mcSettingsMemoryWritingWorld.Controls.Add(sldrSunIntensity);
             mcSettingsMemoryWritingWorld.Controls.Add(swMoonIntensity);
@@ -6361,7 +6653,7 @@
             mcSettingsMemoryWritingWorld.Controls.Add(sldrTimeScaleFactor);
             mcSettingsMemoryWritingWorld.Controls.Add(lblSettingsMemoryWritingTimeScaleFactor);
             mcSettingsMemoryWritingWorld.Depth = 0;
-            mcSettingsMemoryWritingWorld.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsMemoryWritingWorld.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsMemoryWritingWorld.Location = new Point(1108, 56);
             mcSettingsMemoryWritingWorld.Margin = new Padding(14);
             mcSettingsMemoryWritingWorld.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6399,7 +6691,7 @@
             // 
             // mcSettingsMemoryWritingChams
             // 
-            mcSettingsMemoryWritingChams.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsMemoryWritingChams.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsMemoryWritingChams.Controls.Add(swChamsEvent);
             mcSettingsMemoryWritingChams.Controls.Add(swChamsPlayerScavs);
             mcSettingsMemoryWritingChams.Controls.Add(swChamsRevert);
@@ -6413,7 +6705,7 @@
             mcSettingsMemoryWritingChams.Controls.Add(swChams);
             mcSettingsMemoryWritingChams.Controls.Add(lblSettingsMemoryWritingChams);
             mcSettingsMemoryWritingChams.Depth = 0;
-            mcSettingsMemoryWritingChams.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsMemoryWritingChams.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsMemoryWritingChams.Location = new Point(565, 393);
             mcSettingsMemoryWritingChams.Margin = new Padding(14);
             mcSettingsMemoryWritingChams.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6439,7 +6731,7 @@
             // 
             // mcSettingsMemoryWritingSkillBuffs
             // 
-            mcSettingsMemoryWritingSkillBuffs.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsMemoryWritingSkillBuffs.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsMemoryWritingSkillBuffs.Controls.Add(swMaxAttention);
             mcSettingsMemoryWritingSkillBuffs.Controls.Add(swMaxHeavyVests);
             mcSettingsMemoryWritingSkillBuffs.Controls.Add(swMaxLightVests);
@@ -6459,9 +6751,10 @@
             mcSettingsMemoryWritingSkillBuffs.Controls.Add(sldrThrowStrength);
             mcSettingsMemoryWritingSkillBuffs.Controls.Add(sldrMagDrillsSpeed);
             mcSettingsMemoryWritingSkillBuffs.Controls.Add(swMaxEndurance);
+            mcSettingsMemoryWritingSkillBuffs.Controls.Add(swMuleMode);
             mcSettingsMemoryWritingSkillBuffs.Controls.Add(lblSettingsMemoryWritingSkills);
             mcSettingsMemoryWritingSkillBuffs.Depth = 0;
-            mcSettingsMemoryWritingSkillBuffs.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsMemoryWritingSkillBuffs.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsMemoryWritingSkillBuffs.Location = new Point(565, 56);
             mcSettingsMemoryWritingSkillBuffs.Margin = new Padding(14);
             mcSettingsMemoryWritingSkillBuffs.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6487,7 +6780,7 @@
             // 
             // mcSettingsMemoryWritingThermal
             // 
-            mcSettingsMemoryWritingThermal.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsMemoryWritingThermal.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsMemoryWritingThermal.Controls.Add(cboThermalColorScheme);
             mcSettingsMemoryWritingThermal.Controls.Add(cboThermalType);
             mcSettingsMemoryWritingThermal.Controls.Add(sldrThermalColorCoefficient);
@@ -6495,7 +6788,7 @@
             mcSettingsMemoryWritingThermal.Controls.Add(lblSettingsMemoryWritingThermal);
             mcSettingsMemoryWritingThermal.Controls.Add(sldrThermalRampShift);
             mcSettingsMemoryWritingThermal.Depth = 0;
-            mcSettingsMemoryWritingThermal.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsMemoryWritingThermal.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsMemoryWritingThermal.Location = new Point(15, 529);
             mcSettingsMemoryWritingThermal.Margin = new Padding(14);
             mcSettingsMemoryWritingThermal.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6518,7 +6811,7 @@
             sldrThermalColorCoefficient.UseAccentColor = true;
             sldrThermalColorCoefficient.Value = 30;
             sldrThermalColorCoefficient.ValueMax = 100;
-            sldrThermalColorCoefficient.onValueChanged += sldrThermalColorCoefficient_onValueChanged;
+            sldrThermalColorCoefficient.onValueChanged += (this.sldrThermalColorCoefficient_onValueChanged);
             // 
             // sldrMinTemperature
             // 
@@ -6534,7 +6827,7 @@
             sldrMinTemperature.UseAccentColor = true;
             sldrMinTemperature.Value = 30;
             sldrMinTemperature.ValueMax = 100;
-            sldrMinTemperature.onValueChanged += sldrMinTemperature_onValueChanged;
+            sldrMinTemperature.onValueChanged += (this.sldrMinTemperature_onValueChanged);
             // 
             // lblSettingsMemoryWritingThermal
             // 
@@ -6565,11 +6858,11 @@
             sldrThermalRampShift.UseAccentColor = true;
             sldrThermalRampShift.Value = 30;
             sldrThermalRampShift.ValueMax = 100;
-            sldrThermalRampShift.onValueChanged += sldrThermalRampShift_onValueChanged;
+            sldrThermalRampShift.onValueChanged += (this.sldrThermalRampShift_onValueChanged);
             // 
             // mcSettingsMemoryWritingGlobal
             // 
-            mcSettingsMemoryWritingGlobal.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsMemoryWritingGlobal.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsMemoryWritingGlobal.Controls.Add(swInventoryBlur);
             mcSettingsMemoryWritingGlobal.Controls.Add(sldrFOV);
             mcSettingsMemoryWritingGlobal.Controls.Add(swMedPanel);
@@ -6583,7 +6876,7 @@
             mcSettingsMemoryWritingGlobal.Controls.Add(lblSettingsMemoryWritingGlobal);
             mcSettingsMemoryWritingGlobal.Controls.Add(swExtendedReach);
             mcSettingsMemoryWritingGlobal.Depth = 0;
-            mcSettingsMemoryWritingGlobal.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsMemoryWritingGlobal.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsMemoryWritingGlobal.Location = new Point(15, 56);
             mcSettingsMemoryWritingGlobal.Margin = new Padding(14);
             mcSettingsMemoryWritingGlobal.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6633,7 +6926,7 @@
             // 
             // mcSettingsMemoryWritingGear
             // 
-            mcSettingsMemoryWritingGear.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsMemoryWritingGear.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsMemoryWritingGear.Controls.Add(sldrYFactor);
             mcSettingsMemoryWritingGear.Controls.Add(swWeaponSway);
             mcSettingsMemoryWritingGear.Controls.Add(sldrSwayFactor);
@@ -6649,7 +6942,7 @@
             mcSettingsMemoryWritingGear.Controls.Add(swNoVisor);
             mcSettingsMemoryWritingGear.Controls.Add(swInstantADS);
             mcSettingsMemoryWritingGear.Depth = 0;
-            mcSettingsMemoryWritingGear.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsMemoryWritingGear.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsMemoryWritingGear.Location = new Point(15, 280);
             mcSettingsMemoryWritingGear.Margin = new Padding(14);
             mcSettingsMemoryWritingGear.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6689,13 +6982,13 @@
             // 
             // mcSettingsLootContainers
             // 
-            mcSettingsLootContainers.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsLootContainers.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsLootContainers.Controls.Add(sldrContainerDistance);
             mcSettingsLootContainers.Controls.Add(lstContainers);
             mcSettingsLootContainers.Controls.Add(swContainers);
             mcSettingsLootContainers.Controls.Add(lblSettingsLootContainers);
             mcSettingsLootContainers.Depth = 0;
-            mcSettingsLootContainers.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsLootContainers.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsLootContainers.Location = new Point(646, 14);
             mcSettingsLootContainers.Margin = new Padding(14);
             mcSettingsLootContainers.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6707,9 +7000,9 @@
             // lstContainers
             // 
             lstContainers.AutoScroll = true;
-            lstContainers.BackColor = Color.FromArgb(255, 255, 255);
+            lstContainers.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             lstContainers.Depth = 0;
-            lstContainers.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lstContainers.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, (byte)0);
             lstContainers.Location = new Point(17, 85);
             lstContainers.MouseState = MaterialSkin.MouseState.HOVER;
             lstContainers.Name = "lstContainers";
@@ -6735,13 +7028,13 @@
             // 
             // mcSettingsLootPing
             // 
-            mcSettingsLootPing.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsLootPing.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsLootPing.Controls.Add(sldrLootPingRepetition);
             mcSettingsLootPing.Controls.Add(lblSettingsLootPing);
             mcSettingsLootPing.Controls.Add(sldrLootPingMaxRadius);
             mcSettingsLootPing.Controls.Add(sldrLootPingAnimationSpeed);
             mcSettingsLootPing.Depth = 0;
-            mcSettingsLootPing.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsLootPing.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsLootPing.Location = new Point(15, 418);
             mcSettingsLootPing.Margin = new Padding(14);
             mcSettingsLootPing.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6767,14 +7060,14 @@
             // 
             // mcSettingsLootMinRubleValue
             // 
-            mcSettingsLootMinRubleValue.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsLootMinRubleValue.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsLootMinRubleValue.Controls.Add(sldrMinImportantLoot);
             mcSettingsLootMinRubleValue.Controls.Add(sldrMinSubItems);
             mcSettingsLootMinRubleValue.Controls.Add(lblSettingsLootMinRubleValues);
             mcSettingsLootMinRubleValue.Controls.Add(sldrMinCorpse);
             mcSettingsLootMinRubleValue.Controls.Add(sldrMinRegularLoot);
             mcSettingsLootMinRubleValue.Depth = 0;
-            mcSettingsLootMinRubleValue.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsLootMinRubleValue.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsLootMinRubleValue.Location = new Point(15, 274);
             mcSettingsLootMinRubleValue.Margin = new Padding(14);
             mcSettingsLootMinRubleValue.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6800,7 +7093,7 @@
             // 
             // mcSettingsLootGeneral
             // 
-            mcSettingsLootGeneral.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsLootGeneral.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsLootGeneral.Controls.Add(btnRefreshTasks);
             mcSettingsLootGeneral.Controls.Add(swQuestLootItems);
             mcSettingsLootGeneral.Controls.Add(swQuestLocations);
@@ -6821,7 +7114,7 @@
             mcSettingsLootGeneral.Controls.Add(lblSettingsLootGeneral);
             mcSettingsLootGeneral.Controls.Add(swCorpses);
             mcSettingsLootGeneral.Depth = 0;
-            mcSettingsLootGeneral.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsLootGeneral.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsLootGeneral.Location = new Point(15, 14);
             mcSettingsLootGeneral.Margin = new Padding(14);
             mcSettingsLootGeneral.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6860,9 +7153,9 @@
             // 
             // lstFactionEntries
             // 
-            lstFactionEntries.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            lstFactionEntries.Anchor = (AnchorStyles)((AnchorStyles.Top) | (AnchorStyles.Bottom)) | (AnchorStyles.Left);
             lstFactionEntries.AutoSizeTable = false;
-            lstFactionEntries.BackColor = Color.FromArgb(255, 255, 255);
+            lstFactionEntries.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             lstFactionEntries.BorderStyle = BorderStyle.None;
             lstFactionEntries.Columns.AddRange(new ColumnHeader[] { colFactionsAIName });
             lstFactionEntries.Depth = 0;
@@ -6876,11 +7169,11 @@
             lstFactionEntries.MultiSelect = false;
             lstFactionEntries.Name = "lstFactionEntries";
             lstFactionEntries.OwnerDraw = true;
-            lstFactionEntries.Size = new Size(250, 623);
+            lstFactionEntries.Size = new Size(250, 619);
             lstFactionEntries.TabIndex = 44;
             lstFactionEntries.UseCompatibleStateImageBehavior = false;
             lstFactionEntries.View = View.Details;
-            lstFactionEntries.SelectedIndexChanged += lstFactionEntries_SelectedIndexChanged;
+            lstFactionEntries.SelectedIndexChanged += (this.lstFactionEntries_SelectedIndexChanged);
             // 
             // colFactionsAIName
             // 
@@ -6889,12 +7182,12 @@
             // 
             // mcSettingsAIFactionsEntryManagement
             // 
-            mcSettingsAIFactionsEntryManagement.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsAIFactionsEntryManagement.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsAIFactionsEntryManagement.Controls.Add(btnRemoveFactionEntry);
             mcSettingsAIFactionsEntryManagement.Controls.Add(txtFactionEntryName);
             mcSettingsAIFactionsEntryManagement.Controls.Add(lblSettingsAIFactionsEntryManagement);
             mcSettingsAIFactionsEntryManagement.Depth = 0;
-            mcSettingsAIFactionsEntryManagement.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsAIFactionsEntryManagement.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsAIFactionsEntryManagement.Location = new Point(280, 14);
             mcSettingsAIFactionsEntryManagement.Margin = new Padding(14);
             mcSettingsAIFactionsEntryManagement.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6920,7 +7213,7 @@
             // 
             // mcSettingsAIFactionsFactions
             // 
-            mcSettingsAIFactionsFactions.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsAIFactionsFactions.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsAIFactionsFactions.Controls.Add(lstFactions);
             mcSettingsAIFactionsFactions.Controls.Add(txtFactionName);
             mcSettingsAIFactionsFactions.Controls.Add(btnAddFactionEntry);
@@ -6929,7 +7222,7 @@
             mcSettingsAIFactionsFactions.Controls.Add(btnRemoveFaction);
             mcSettingsAIFactionsFactions.Controls.Add(lblSettingsAIFactionsFactions);
             mcSettingsAIFactionsFactions.Depth = 0;
-            mcSettingsAIFactionsFactions.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsAIFactionsFactions.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsAIFactionsFactions.Location = new Point(280, 127);
             mcSettingsAIFactionsFactions.Margin = new Padding(14);
             mcSettingsAIFactionsFactions.MouseState = MaterialSkin.MouseState.HOVER;
@@ -6941,7 +7234,7 @@
             // lstFactions
             // 
             lstFactions.AutoSizeTable = false;
-            lstFactions.BackColor = Color.FromArgb(255, 255, 255);
+            lstFactions.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             lstFactions.BorderStyle = BorderStyle.None;
             lstFactions.Columns.AddRange(new ColumnHeader[] { colFactionName });
             lstFactions.Depth = 0;
@@ -6956,7 +7249,7 @@
             lstFactions.TabIndex = 44;
             lstFactions.UseCompatibleStateImageBehavior = false;
             lstFactions.View = View.Details;
-            lstFactions.SelectedIndexChanged += lstFactions_SelectedIndexChanged;
+            lstFactions.SelectedIndexChanged += (this.lstFactions_SelectedIndexChanged);
             // 
             // colFactionName
             // 
@@ -6997,7 +7290,7 @@
             // 
             // mcSettingsColorsGameWorld
             // 
-            mcSettingsColorsGameWorld.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsColorsGameWorld.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsColorsGameWorld.Controls.Add(picTripwires);
             mcSettingsColorsGameWorld.Controls.Add(lblSettingsColorsGameWorldTripwire);
             mcSettingsColorsGameWorld.Controls.Add(lblSettingsColorsGameWorld);
@@ -7006,7 +7299,7 @@
             mcSettingsColorsGameWorld.Controls.Add(picDeathMarker);
             mcSettingsColorsGameWorld.Controls.Add(lblSettingsColorGameWorldDeathMarker);
             mcSettingsColorsGameWorld.Depth = 0;
-            mcSettingsColorsGameWorld.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsColorsGameWorld.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsColorsGameWorld.Location = new Point(819, 14);
             mcSettingsColorsGameWorld.Margin = new Padding(14);
             mcSettingsColorsGameWorld.MouseState = MaterialSkin.MouseState.HOVER;
@@ -7024,7 +7317,7 @@
             picTripwires.Size = new Size(70, 23);
             picTripwires.TabIndex = 60;
             picTripwires.TabStop = false;
-            picTripwires.Click += picTripwires_Click;
+            picTripwires.Click += (this.picTripwires_Click);
             // 
             // lblSettingsColorsGameWorldTripwire
             // 
@@ -7063,7 +7356,7 @@
             picGrenades.Size = new Size(70, 23);
             picGrenades.TabIndex = 58;
             picGrenades.TabStop = false;
-            picGrenades.Click += picGrenades_Click;
+            picGrenades.Click += (this.picGrenades_Click);
             // 
             // lblSettingsColorsGameWorldGrenades
             // 
@@ -7087,7 +7380,7 @@
             picDeathMarker.Size = new Size(70, 23);
             picDeathMarker.TabIndex = 48;
             picDeathMarker.TabStop = false;
-            picDeathMarker.Click += picDeathMarker_Click;
+            picDeathMarker.Click += (this.picDeathMarker_Click);
             // 
             // lblSettingsColorGameWorldDeathMarker
             // 
@@ -7104,14 +7397,14 @@
             // 
             // mcSettingsColorsEvent
             // 
-            mcSettingsColorsEvent.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsColorsEvent.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsColorsEvent.Controls.Add(picEventZombie);
             mcSettingsColorsEvent.Controls.Add(lblSettingsColorsEventZombie);
             mcSettingsColorsEvent.Controls.Add(lblSettingsColorsEvent);
             mcSettingsColorsEvent.Controls.Add(picEventFollowerOfMorana);
             mcSettingsColorsEvent.Controls.Add(lblSettingsColorsEventMoranaFollower);
             mcSettingsColorsEvent.Depth = 0;
-            mcSettingsColorsEvent.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsColorsEvent.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsColorsEvent.Location = new Point(15, 349);
             mcSettingsColorsEvent.Margin = new Padding(14);
             mcSettingsColorsEvent.MouseState = MaterialSkin.MouseState.HOVER;
@@ -7129,7 +7422,7 @@
             picEventZombie.Size = new Size(70, 23);
             picEventZombie.TabIndex = 60;
             picEventZombie.TabStop = false;
-            picEventZombie.Click += picEventZombie_Click;
+            picEventZombie.Click += (this.picEventZombie_Click);
             // 
             // lblSettingsColorsEventZombie
             // 
@@ -7168,7 +7461,7 @@
             picEventFollowerOfMorana.Size = new Size(70, 23);
             picEventFollowerOfMorana.TabIndex = 58;
             picEventFollowerOfMorana.TabStop = false;
-            picEventFollowerOfMorana.Click += picEventFollowerOfMorana_Click;
+            picEventFollowerOfMorana.Click += (this.picEventFollowerOfMorana_Click);
             // 
             // lblSettingsColorsEventMoranaFollower
             // 
@@ -7185,7 +7478,7 @@
             // 
             // mcSettingsColorsOther
             // 
-            mcSettingsColorsOther.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsColorsOther.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsColorsOther.Controls.Add(btnResetTheme);
             mcSettingsColorsOther.Controls.Add(picOtherAccent);
             mcSettingsColorsOther.Controls.Add(lblSettingsColorOtherAccent);
@@ -7201,7 +7494,7 @@
             mcSettingsColorsOther.Controls.Add(lblSettingsColorOtherTextOutline);
             mcSettingsColorsOther.Controls.Add(lblSettingsColorsOther);
             mcSettingsColorsOther.Depth = 0;
-            mcSettingsColorsOther.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsColorsOther.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsColorsOther.Location = new Point(1020, 14);
             mcSettingsColorsOther.Margin = new Padding(14);
             mcSettingsColorsOther.MouseState = MaterialSkin.MouseState.HOVER;
@@ -7219,7 +7512,7 @@
             picOtherAccent.Size = new Size(70, 23);
             picOtherAccent.TabIndex = 58;
             picOtherAccent.TabStop = false;
-            picOtherAccent.Click += picOtherAccent_Click;
+            picOtherAccent.Click += (this.picOtherAccent_Click);
             // 
             // lblSettingsColorOtherAccent
             // 
@@ -7243,7 +7536,7 @@
             picOtherPrimaryLight.Size = new Size(70, 23);
             picOtherPrimaryLight.TabIndex = 56;
             picOtherPrimaryLight.TabStop = false;
-            picOtherPrimaryLight.Click += picOtherPrimaryLight_Click;
+            picOtherPrimaryLight.Click += (this.picOtherPrimaryLight_Click);
             // 
             // ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
             // 
@@ -7267,7 +7560,7 @@
             picOtherPrimaryDark.Size = new Size(70, 23);
             picOtherPrimaryDark.TabIndex = 54;
             picOtherPrimaryDark.TabStop = false;
-            picOtherPrimaryDark.Click += picOtherPrimaryDark_Click;
+            picOtherPrimaryDark.Click += (this.picOtherPrimaryDark_Click);
             // 
             // lblSettingsColorOtherPrimaryDark
             // 
@@ -7291,7 +7584,7 @@
             picOtherPrimary.Size = new Size(70, 23);
             picOtherPrimary.TabIndex = 52;
             picOtherPrimary.TabStop = false;
-            picOtherPrimary.Click += picOtherPrimary_Click;
+            picOtherPrimary.Click += (this.picOtherPrimary_Click);
             // 
             // lblSettingsColorOtherPrimary
             // 
@@ -7315,7 +7608,7 @@
             picOtherChams.Size = new Size(70, 23);
             picOtherChams.TabIndex = 50;
             picOtherChams.TabStop = false;
-            picOtherChams.Click += picOtherChams_Click;
+            picOtherChams.Click += (this.picOtherChams_Click);
             // 
             // lblSettingsColorOtherChams
             // 
@@ -7339,7 +7632,7 @@
             picOtherTextOutline.Size = new Size(70, 23);
             picOtherTextOutline.TabIndex = 46;
             picOtherTextOutline.TabStop = false;
-            picOtherTextOutline.Click += picOtherTextOutline_Click;
+            picOtherTextOutline.Click += (this.picOtherTextOutline_Click);
             // 
             // lblSettingsColorOtherTextOutline
             // 
@@ -7371,7 +7664,7 @@
             // 
             // mcSettingsColorsLootAndQuests
             // 
-            mcSettingsColorsLootAndQuests.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsColorsLootAndQuests.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsColorsLootAndQuests.Controls.Add(picRequiredQuestItem);
             mcSettingsColorsLootAndQuests.Controls.Add(lblSettingsColorsRequiredQuestItems);
             mcSettingsColorsLootAndQuests.Controls.Add(picLootPing);
@@ -7386,7 +7679,7 @@
             mcSettingsColorsLootAndQuests.Controls.Add(lblSettingsColorsLootRegular);
             mcSettingsColorsLootAndQuests.Controls.Add(lblSettingsColorsLootQuests);
             mcSettingsColorsLootAndQuests.Depth = 0;
-            mcSettingsColorsLootAndQuests.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsColorsLootAndQuests.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsColorsLootAndQuests.Location = new Point(606, 14);
             mcSettingsColorsLootAndQuests.Margin = new Padding(14);
             mcSettingsColorsLootAndQuests.MouseState = MaterialSkin.MouseState.HOVER;
@@ -7404,7 +7697,7 @@
             picRequiredQuestItem.Size = new Size(70, 23);
             picRequiredQuestItem.TabIndex = 56;
             picRequiredQuestItem.TabStop = false;
-            picRequiredQuestItem.Click += picRequiredQuestItem_Click;
+            picRequiredQuestItem.Click += (this.picRequiredQuestItem_Click);
             // 
             // lblSettingsColorsRequiredQuestItems
             // 
@@ -7428,7 +7721,7 @@
             picLootPing.Size = new Size(70, 23);
             picLootPing.TabIndex = 54;
             picLootPing.TabStop = false;
-            picLootPing.Click += picLootPing_Click;
+            picLootPing.Click += (this.picLootPing_Click);
             // 
             // lblSettingsColorsLootPing
             // 
@@ -7452,7 +7745,7 @@
             picQuestZone.Size = new Size(70, 23);
             picQuestZone.TabIndex = 52;
             picQuestZone.TabStop = false;
-            picQuestZone.Click += picQuestZone_Click;
+            picQuestZone.Click += (this.picQuestZone_Click);
             // 
             // lblSettingsColorsQuestZones
             // 
@@ -7476,7 +7769,7 @@
             picQuestItem.Size = new Size(70, 23);
             picQuestItem.TabIndex = 50;
             picQuestItem.TabStop = false;
-            picQuestItem.Click += picQuestItem_Click;
+            picQuestItem.Click += (this.picQuestItem_Click);
             // 
             // lblSettingsColorsQuestItems
             // 
@@ -7500,7 +7793,7 @@
             picLootImportant.Size = new Size(70, 23);
             picLootImportant.TabIndex = 48;
             picLootImportant.TabStop = false;
-            picLootImportant.Click += picLootImportant_Click;
+            picLootImportant.Click += (this.picLootImportant_Click);
             // 
             // lblSettingsColorsLootImportant
             // 
@@ -7524,7 +7817,7 @@
             picLootRegular.Size = new Size(70, 23);
             picLootRegular.TabIndex = 46;
             picLootRegular.TabStop = false;
-            picLootRegular.Click += picLootRegular_Click;
+            picLootRegular.Click += (this.picLootRegular_Click);
             // 
             // lblSettingsColorsLootRegular
             // 
@@ -7556,7 +7849,7 @@
             // 
             // mcSettingsColorsExfiltration
             // 
-            mcSettingsColorsExfiltration.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsColorsExfiltration.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsColorsExfiltration.Controls.Add(picTransitIcon);
             mcSettingsColorsExfiltration.Controls.Add(picExfilClosedIcon);
             mcSettingsColorsExfiltration.Controls.Add(lblSettingsColorsTransitIcon);
@@ -7575,7 +7868,7 @@
             mcSettingsColorsExfiltration.Controls.Add(lblSettingsColorsExfilActiveText);
             mcSettingsColorsExfiltration.Controls.Add(lblSettingsColorsExfiltration);
             mcSettingsColorsExfiltration.Depth = 0;
-            mcSettingsColorsExfiltration.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsColorsExfiltration.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsColorsExfiltration.Location = new Point(408, 14);
             mcSettingsColorsExfiltration.Margin = new Padding(14);
             mcSettingsColorsExfiltration.MouseState = MaterialSkin.MouseState.HOVER;
@@ -7593,7 +7886,7 @@
             picTransitIcon.Size = new Size(70, 23);
             picTransitIcon.TabIndex = 48;
             picTransitIcon.TabStop = false;
-            picTransitIcon.Click += picTransitIcon_Click;
+            picTransitIcon.Click += (this.picTransitIcon_Click);
             // 
             // picExfilClosedIcon
             // 
@@ -7604,7 +7897,7 @@
             picExfilClosedIcon.Size = new Size(70, 23);
             picExfilClosedIcon.TabIndex = 56;
             picExfilClosedIcon.TabStop = false;
-            picExfilClosedIcon.Click += picExfilClosedIcon_Click;
+            picExfilClosedIcon.Click += (this.picExfilClosedIcon_Click);
             // 
             // lblSettingsColorsTransitIcon
             // 
@@ -7641,7 +7934,7 @@
             picTransitText.Size = new Size(70, 23);
             picTransitText.TabIndex = 46;
             picTransitText.TabStop = false;
-            picTransitText.Click += picTransitText_Click;
+            picTransitText.Click += (this.picTransitText_Click);
             // 
             // lblSettingsColorsTransitText
             // 
@@ -7665,7 +7958,7 @@
             picExfilClosedText.Size = new Size(70, 23);
             picExfilClosedText.TabIndex = 54;
             picExfilClosedText.TabStop = false;
-            picExfilClosedText.Click += picExfilClosedText_Click;
+            picExfilClosedText.Click += (this.picExfilClosedText_Click);
             // 
             // lblSettingsColorsExfilClosedText
             // 
@@ -7689,7 +7982,7 @@
             picExfilPendingIcon.Size = new Size(70, 23);
             picExfilPendingIcon.TabIndex = 52;
             picExfilPendingIcon.TabStop = false;
-            picExfilPendingIcon.Click += picExfilPendingIcon_Click;
+            picExfilPendingIcon.Click += (this.picExfilPendingIcon_Click);
             // 
             // lblSettingsColorsExfilPendingIcon
             // 
@@ -7713,7 +8006,7 @@
             picExfilPendingText.Size = new Size(70, 23);
             picExfilPendingText.TabIndex = 50;
             picExfilPendingText.TabStop = false;
-            picExfilPendingText.Click += picExfilPendingText_Click;
+            picExfilPendingText.Click += (this.picExfilPendingText_Click);
             // 
             // lblSettingsColorsExfilPendingText
             // 
@@ -7737,7 +8030,7 @@
             picExfilActiveIcon.Size = new Size(70, 23);
             picExfilActiveIcon.TabIndex = 48;
             picExfilActiveIcon.TabStop = false;
-            picExfilActiveIcon.Click += picExfilActiveIcon_Click;
+            picExfilActiveIcon.Click += (this.picExfilActiveIcon_Click);
             // 
             // lblSettingsColorsExfilActiveIcon
             // 
@@ -7761,7 +8054,7 @@
             picExfilActiveText.Size = new Size(70, 23);
             picExfilActiveText.TabIndex = 46;
             picExfilActiveText.TabStop = false;
-            picExfilActiveText.Click += picExfilActiveText_Click;
+            picExfilActiveText.Click += (this.picExfilActiveText_Click);
             // 
             // lblSettingsColorsExfilActiveText
             // 
@@ -7793,7 +8086,7 @@
             // 
             // mcSettingsColorsPlayers
             // 
-            mcSettingsColorsPlayers.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsColorsPlayers.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsColorsPlayers.Controls.Add(picPlayersSpecial);
             mcSettingsColorsPlayers.Controls.Add(lblSettingsColorsPlayersSpecial);
             mcSettingsColorsPlayers.Controls.Add(picPlayersTeamHover);
@@ -7810,7 +8103,7 @@
             mcSettingsColorsPlayers.Controls.Add(lblSettingsColorsPlayersUSEC);
             mcSettingsColorsPlayers.Controls.Add(lblSettingsColorsPlayers);
             mcSettingsColorsPlayers.Depth = 0;
-            mcSettingsColorsPlayers.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsColorsPlayers.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsColorsPlayers.Location = new Point(216, 14);
             mcSettingsColorsPlayers.Margin = new Padding(14);
             mcSettingsColorsPlayers.MouseState = MaterialSkin.MouseState.HOVER;
@@ -7828,7 +8121,7 @@
             picPlayersSpecial.Size = new Size(70, 23);
             picPlayersSpecial.TabIndex = 58;
             picPlayersSpecial.TabStop = false;
-            picPlayersSpecial.Click += picPlayersSpecial_Click;
+            picPlayersSpecial.Click += (this.picPlayersSpecial_Click);
             // 
             // lblSettingsColorsPlayersSpecial
             // 
@@ -7852,7 +8145,7 @@
             picPlayersTeamHover.Size = new Size(70, 23);
             picPlayersTeamHover.TabIndex = 56;
             picPlayersTeamHover.TabStop = false;
-            picPlayersTeamHover.Click += picPlayersTeamHover_Click;
+            picPlayersTeamHover.Click += (this.picPlayersTeamHover_Click);
             // 
             // lblSettingsColorsPlayersTeamHover
             // 
@@ -7876,7 +8169,7 @@
             picPlayersTeammate.Size = new Size(70, 23);
             picPlayersTeammate.TabIndex = 54;
             picPlayersTeammate.TabStop = false;
-            picPlayersTeammate.Click += picPlayersTeammate_Click;
+            picPlayersTeammate.Click += (this.picPlayersTeammate_Click);
             // 
             // lblSettingsColorsPlayersTeammate
             // 
@@ -7900,7 +8193,7 @@
             picPlayersLocalPlayer.Size = new Size(70, 23);
             picPlayersLocalPlayer.TabIndex = 52;
             picPlayersLocalPlayer.TabStop = false;
-            picPlayersLocalPlayer.Click += picPlayersLocalPlayer_Click;
+            picPlayersLocalPlayer.Click += (this.picPlayersLocalPlayer_Click);
             // 
             // lblSettingsColorsPlayersLocalPlayer
             // 
@@ -7924,7 +8217,7 @@
             picPlayersScav.Size = new Size(70, 23);
             picPlayersScav.TabIndex = 50;
             picPlayersScav.TabStop = false;
-            picPlayersScav.Click += picPlayersScav_Click;
+            picPlayersScav.Click += (this.picPlayersScav_Click);
             // 
             // lblSettingsColorsPlayersScav
             // 
@@ -7948,7 +8241,7 @@
             picPlayersBEAR.Size = new Size(70, 23);
             picPlayersBEAR.TabIndex = 48;
             picPlayersBEAR.TabStop = false;
-            picPlayersBEAR.Click += picPlayersBEAR_Click;
+            picPlayersBEAR.Click += (this.picPlayersBEAR_Click);
             // 
             // lblSettingsColorsPlayersBEAR
             // 
@@ -7972,7 +8265,7 @@
             picPlayersUSEC.Size = new Size(70, 23);
             picPlayersUSEC.TabIndex = 46;
             picPlayersUSEC.TabStop = false;
-            picPlayersUSEC.Click += picPlayersUSEC_Click;
+            picPlayersUSEC.Click += (this.picPlayersUSEC_Click);
             // 
             // lblSettingsColorsPlayersUSEC
             // 
@@ -8004,7 +8297,7 @@
             // 
             // mcSettingsColorsAI
             // 
-            mcSettingsColorsAI.BackColor = Color.FromArgb(255, 255, 255);
+            mcSettingsColorsAI.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcSettingsColorsAI.Controls.Add(picAIOther);
             mcSettingsColorsAI.Controls.Add(lblSettingsColorsAIOther);
             mcSettingsColorsAI.Controls.Add(picAIScav);
@@ -8023,7 +8316,7 @@
             mcSettingsColorsAI.Controls.Add(lblSettingsColorsAIBoss);
             mcSettingsColorsAI.Controls.Add(lblSettingsColorsAI);
             mcSettingsColorsAI.Depth = 0;
-            mcSettingsColorsAI.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcSettingsColorsAI.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcSettingsColorsAI.Location = new Point(15, 14);
             mcSettingsColorsAI.Margin = new Padding(14);
             mcSettingsColorsAI.MouseState = MaterialSkin.MouseState.HOVER;
@@ -8041,7 +8334,7 @@
             picAIOther.Size = new Size(70, 23);
             picAIOther.TabIndex = 62;
             picAIOther.TabStop = false;
-            picAIOther.Click += picAIOther_Click;
+            picAIOther.Click += (this.picAIOther_Click);
             // 
             // lblSettingsColorsAIOther
             // 
@@ -8065,7 +8358,7 @@
             picAIScav.Size = new Size(70, 23);
             picAIScav.TabIndex = 60;
             picAIScav.TabStop = false;
-            picAIScav.Click += picAIScav_Click;
+            picAIScav.Click += (this.picAIScav_Click);
             // 
             // lblSettingsColorsAIScav
             // 
@@ -8089,7 +8382,7 @@
             picAICultist.Size = new Size(70, 23);
             picAICultist.TabIndex = 56;
             picAICultist.TabStop = false;
-            picAICultist.Click += picAICultist_Click;
+            picAICultist.Click += (this.picAICultist_Click);
             // 
             // lblSettingsColorsAICultists
             // 
@@ -8113,7 +8406,7 @@
             picAIRogue.Size = new Size(70, 23);
             picAIRogue.TabIndex = 54;
             picAIRogue.TabStop = false;
-            picAIRogue.Click += picAIRogue_Click;
+            picAIRogue.Click += (this.picAIRogue_Click);
             // 
             // lblSettingsColorsAIRogues
             // 
@@ -8137,7 +8430,7 @@
             picAIRaider.Size = new Size(70, 23);
             picAIRaider.TabIndex = 52;
             picAIRaider.TabStop = false;
-            picAIRaider.Click += picAIRaider_Click;
+            picAIRaider.Click += (this.picAIRaider_Click);
             // 
             // lblSettingsColorsAIRaiders
             // 
@@ -8161,7 +8454,7 @@
             picAIBossFollower.Size = new Size(70, 23);
             picAIBossFollower.TabIndex = 50;
             picAIBossFollower.TabStop = false;
-            picAIBossFollower.Click += picAIBossFollower_Click;
+            picAIBossFollower.Click += (this.picAIBossFollower_Click);
             // 
             // lblSettingsColorsAIBossFollower
             // 
@@ -8185,7 +8478,7 @@
             picAIBossGuard.Size = new Size(70, 23);
             picAIBossGuard.TabIndex = 48;
             picAIBossGuard.TabStop = false;
-            picAIBossGuard.Click += picAIBossGuard_Click;
+            picAIBossGuard.Click += (this.picAIBossGuard_Click);
             // 
             // lblSettingsColorsAIBossGuard
             // 
@@ -8209,7 +8502,7 @@
             picAIBoss.Size = new Size(70, 23);
             picAIBoss.TabIndex = 46;
             picAIBoss.TabStop = false;
-            picAIBoss.Click += picAIBoss_Click;
+            picAIBoss.Click += (this.picAIBoss_Click);
             // 
             // lblSettingsColorsAIBoss
             // 
@@ -8239,6 +8532,125 @@
             lblSettingsColorsAI.Text = "AI";
             lblSettingsColorsAI.UseAccent = true;
             // 
+            // tabSettingsFuser
+            // 
+            tabSettingsFuser.Controls.Add(materialCard1);
+            tabSettingsFuser.Controls.Add(materialCard4);
+            tabSettingsFuser.Location = new Point(4, 24);
+            tabSettingsFuser.Name = "tabSettingsFuser";
+            tabSettingsFuser.Size = new Size(1444, 640);
+            tabSettingsFuser.TabIndex = 6;
+            tabSettingsFuser.Text = "Fuser";
+            tabSettingsFuser.UseVisualStyleBackColor = true;
+            // 
+            // materialCard1
+            // 
+            materialCard1.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
+            materialCard1.Controls.Add(materialListBox1);
+            materialCard1.Controls.Add(materialButton1);
+            materialCard1.Controls.Add(materialLabel2);
+            materialCard1.Depth = 0;
+            materialCard1.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
+            materialCard1.Location = new Point(657, 15);
+            materialCard1.Margin = new Padding(10, 8, 10, 8);
+            materialCard1.MouseState = MaterialSkin.MouseState.HOVER;
+            materialCard1.Name = "materialCard1";
+            materialCard1.Padding = new Padding(10, 8, 10, 8);
+            materialCard1.Size = new Size(488, 233);
+            materialCard1.TabIndex = 40;
+            // 
+            // materialListBox1
+            // 
+            materialListBox1.BackColor = Color.White;
+            materialListBox1.BorderColor = Color.LightGray;
+            materialListBox1.Depth = 0;
+            materialListBox1.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialListBox1.Location = new Point(32, 68);
+            materialListBox1.MouseState = MaterialSkin.MouseState.HOVER;
+            materialListBox1.Name = "materialListBox1";
+            materialListBox1.SelectedIndex = -1;
+            materialListBox1.SelectedItem = null;
+            materialListBox1.Size = new Size(418, 80);
+            materialListBox1.TabIndex = 36;
+            // 
+            // materialLabel2
+            // 
+            materialLabel2.AutoSize = true;
+            materialLabel2.Depth = 0;
+            materialLabel2.Font = new Font("Roboto Medium", 20F, FontStyle.Bold, GraphicsUnit.Pixel);
+            materialLabel2.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            materialLabel2.HighEmphasis = true;
+            materialLabel2.Location = new Point(32, 12);
+            materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel2.Name = "materialLabel2";
+            materialLabel2.Size = new Size(108, 24);
+            materialLabel2.TabIndex = 34;
+            materialLabel2.Text = "Fuser Setup";
+            materialLabel2.UseAccent = true;
+            // 
+            // materialCard4
+            // 
+            materialCard4.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
+            materialCard4.Controls.Add(btnReloadBones);
+            materialCard4.Controls.Add(swToggleBones);
+            materialCard4.Controls.Add(sldrItemDist);
+            materialCard4.Controls.Add(swToggleItems);
+            materialCard4.Controls.Add(sldrScavDist);
+            materialCard4.Controls.Add(sldrTeamDist);
+            materialCard4.Controls.Add(swToggleScavs);
+            materialCard4.Controls.Add(sldrPlayerDist);
+            materialCard4.Controls.Add(swToggleTeam);
+            materialCard4.Controls.Add(swToggleESP);
+            materialCard4.Controls.Add(lblESP);
+            materialCard4.Controls.Add(sldrBoneDist);
+            materialCard4.Controls.Add(swToggleBosses);
+            materialCard4.Controls.Add(swTogglePlayers);
+            materialCard4.Controls.Add(sldrBossDist);
+            materialCard4.Depth = 0;
+            materialCard4.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
+            materialCard4.Location = new Point(15, 15);
+            materialCard4.Margin = new Padding(14);
+            materialCard4.MouseState = MaterialSkin.MouseState.HOVER;
+            materialCard4.Name = "materialCard4";
+            materialCard4.Padding = new Padding(14);
+            materialCard4.Size = new Size(618, 441);
+            materialCard4.TabIndex = 39;
+            // 
+            // btnReloadBones
+            // 
+            btnReloadBones.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnReloadBones.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnReloadBones.Depth = 0;
+            btnReloadBones.HighEmphasis = true;
+            btnReloadBones.Icon = null;
+            btnReloadBones.Location = new Point(513, 360);
+            btnReloadBones.Margin = new Padding(4, 6, 4, 6);
+            btnReloadBones.MouseState = MaterialSkin.MouseState.HOVER;
+            btnReloadBones.Name = "btnReloadBones";
+            btnReloadBones.NoAccentTextColor = Color.Empty;
+            btnReloadBones.Size = new Size(77, 36);
+            btnReloadBones.TabIndex = 54;
+            btnReloadBones.Text = "Reload";
+            btnReloadBones.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnReloadBones.UseAccentColor = false;
+            btnReloadBones.UseVisualStyleBackColor = true;
+            btnReloadBones.Click += (this.btnReloadBones_Click);
+            // 
+            // lblESP
+            // 
+            lblESP.AutoSize = true;
+            lblESP.Depth = 0;
+            lblESP.Font = new Font("Roboto Medium", 20F, FontStyle.Bold, GraphicsUnit.Pixel);
+            lblESP.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
+            lblESP.HighEmphasis = true;
+            lblESP.Location = new Point(17, 12);
+            lblESP.MouseState = MaterialSkin.MouseState.HOVER;
+            lblESP.Name = "lblESP";
+            lblESP.Size = new Size(92, 24);
+            lblESP.TabIndex = 33;
+            lblESP.Text = "Fuser ESP";
+            lblESP.UseAccent = true;
+            // 
             // tabPlayerLoadouts
             // 
             tabPlayerLoadouts.BackColor = Color.White;
@@ -8254,12 +8666,12 @@
             // 
             // mcPlayerLoadoutsAI
             // 
-            mcPlayerLoadoutsAI.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            mcPlayerLoadoutsAI.BackColor = Color.FromArgb(255, 255, 255);
+            mcPlayerLoadoutsAI.Anchor = (AnchorStyles)((AnchorStyles.Top) | (AnchorStyles.Bottom)) | (AnchorStyles.Left);
+            mcPlayerLoadoutsAI.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcPlayerLoadoutsAI.Controls.Add(lblPlayerLoadoutsAI);
             mcPlayerLoadoutsAI.Controls.Add(flpPlayerLoadoutsAI);
             mcPlayerLoadoutsAI.Depth = 0;
-            mcPlayerLoadoutsAI.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcPlayerLoadoutsAI.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcPlayerLoadoutsAI.Location = new Point(1246, 5);
             mcPlayerLoadoutsAI.Margin = new Padding(0);
             mcPlayerLoadoutsAI.MaximumSize = new Size(600, 900);
@@ -8287,7 +8699,7 @@
             // 
             // flpPlayerLoadoutsAI
             // 
-            flpPlayerLoadoutsAI.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            flpPlayerLoadoutsAI.Anchor = (AnchorStyles)(((AnchorStyles.Top) | (AnchorStyles.Bottom)) | (AnchorStyles.Left)) | (AnchorStyles.Right);
             flpPlayerLoadoutsAI.AutoScroll = true;
             flpPlayerLoadoutsAI.FlowDirection = FlowDirection.TopDown;
             flpPlayerLoadoutsAI.Location = new Point(3, 50);
@@ -8298,12 +8710,12 @@
             // 
             // mcPlayerLoadoutsBosses
             // 
-            mcPlayerLoadoutsBosses.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            mcPlayerLoadoutsBosses.BackColor = Color.FromArgb(255, 255, 255);
+            mcPlayerLoadoutsBosses.Anchor = (AnchorStyles)((AnchorStyles.Top) | (AnchorStyles.Bottom)) | (AnchorStyles.Left);
+            mcPlayerLoadoutsBosses.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcPlayerLoadoutsBosses.Controls.Add(lblPlayerLoadoutsBosses);
             mcPlayerLoadoutsBosses.Controls.Add(flpPlayerLoadoutsBosses);
             mcPlayerLoadoutsBosses.Depth = 0;
-            mcPlayerLoadoutsBosses.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcPlayerLoadoutsBosses.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcPlayerLoadoutsBosses.Location = new Point(631, 5);
             mcPlayerLoadoutsBosses.Margin = new Padding(0);
             mcPlayerLoadoutsBosses.MaximumSize = new Size(600, 900);
@@ -8331,7 +8743,7 @@
             // 
             // flpPlayerLoadoutsBosses
             // 
-            flpPlayerLoadoutsBosses.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            flpPlayerLoadoutsBosses.Anchor = (AnchorStyles)(((AnchorStyles.Top) | (AnchorStyles.Bottom)) | (AnchorStyles.Left)) | (AnchorStyles.Right);
             flpPlayerLoadoutsBosses.AutoScroll = true;
             flpPlayerLoadoutsBosses.FlowDirection = FlowDirection.TopDown;
             flpPlayerLoadoutsBosses.Location = new Point(3, 50);
@@ -8342,12 +8754,12 @@
             // 
             // mcPlayerLoadoutsPlayers
             // 
-            mcPlayerLoadoutsPlayers.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            mcPlayerLoadoutsPlayers.BackColor = Color.FromArgb(255, 255, 255);
+            mcPlayerLoadoutsPlayers.Anchor = (AnchorStyles)((AnchorStyles.Top) | (AnchorStyles.Bottom)) | (AnchorStyles.Left);
+            mcPlayerLoadoutsPlayers.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcPlayerLoadoutsPlayers.Controls.Add(lblPlayerLoadoutsPlayers);
             mcPlayerLoadoutsPlayers.Controls.Add(flpPlayerLoadoutsPlayers);
             mcPlayerLoadoutsPlayers.Depth = 0;
-            mcPlayerLoadoutsPlayers.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcPlayerLoadoutsPlayers.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcPlayerLoadoutsPlayers.Location = new Point(15, 5);
             mcPlayerLoadoutsPlayers.Margin = new Padding(0);
             mcPlayerLoadoutsPlayers.MaximumSize = new Size(600, 900);
@@ -8375,7 +8787,7 @@
             // 
             // flpPlayerLoadoutsPlayers
             // 
-            flpPlayerLoadoutsPlayers.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            flpPlayerLoadoutsPlayers.Anchor = (AnchorStyles)(((AnchorStyles.Top) | (AnchorStyles.Bottom)) | (AnchorStyles.Left)) | (AnchorStyles.Right);
             flpPlayerLoadoutsPlayers.AutoScroll = true;
             flpPlayerLoadoutsPlayers.FlowDirection = FlowDirection.TopDown;
             flpPlayerLoadoutsPlayers.Location = new Point(3, 50);
@@ -8400,12 +8812,12 @@
             // 
             // mcWatchlistPlayerlist
             // 
-            mcWatchlistPlayerlist.BackColor = Color.FromArgb(255, 255, 255);
+            mcWatchlistPlayerlist.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcWatchlistPlayerlist.Controls.Add(lstWatchlistPlayerList);
             mcWatchlistPlayerlist.Controls.Add(btnResetPlayerlist);
             mcWatchlistPlayerlist.Controls.Add(lblWatchlistPlayerlist);
             mcWatchlistPlayerlist.Depth = 0;
-            mcWatchlistPlayerlist.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcWatchlistPlayerlist.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcWatchlistPlayerlist.Location = new Point(945, 5);
             mcWatchlistPlayerlist.Margin = new Padding(14);
             mcWatchlistPlayerlist.MouseState = MaterialSkin.MouseState.HOVER;
@@ -8417,7 +8829,7 @@
             // lstWatchlistPlayerList
             // 
             lstWatchlistPlayerList.AutoSizeTable = false;
-            lstWatchlistPlayerList.BackColor = Color.FromArgb(255, 255, 255);
+            lstWatchlistPlayerList.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             lstWatchlistPlayerList.BorderStyle = BorderStyle.None;
             lstWatchlistPlayerList.Columns.AddRange(new ColumnHeader[] { colPlayerlistName });
             lstWatchlistPlayerList.Depth = 0;
@@ -8455,7 +8867,7 @@
             // 
             // mcWatchlistProfiles
             // 
-            mcWatchlistProfiles.BackColor = Color.FromArgb(255, 255, 255);
+            mcWatchlistProfiles.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcWatchlistProfiles.Controls.Add(lstWatchlistProfiles);
             mcWatchlistProfiles.Controls.Add(txtWatchlistProfileName);
             mcWatchlistProfiles.Controls.Add(lblWatchlistProfiles);
@@ -8463,7 +8875,7 @@
             mcWatchlistProfiles.Controls.Add(btnAddWatchlistProfile);
             mcWatchlistProfiles.Controls.Add(btnRemoveWatchlistProfile);
             mcWatchlistProfiles.Depth = 0;
-            mcWatchlistProfiles.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcWatchlistProfiles.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcWatchlistProfiles.Location = new Point(450, 211);
             mcWatchlistProfiles.Margin = new Padding(14);
             mcWatchlistProfiles.MouseState = MaterialSkin.MouseState.HOVER;
@@ -8475,7 +8887,7 @@
             // lstWatchlistProfiles
             // 
             lstWatchlistProfiles.AutoSizeTable = false;
-            lstWatchlistProfiles.BackColor = Color.FromArgb(255, 255, 255);
+            lstWatchlistProfiles.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             lstWatchlistProfiles.BorderStyle = BorderStyle.None;
             lstWatchlistProfiles.Columns.AddRange(new ColumnHeader[] { colWatchlistProfileName });
             lstWatchlistProfiles.Depth = 0;
@@ -8490,7 +8902,7 @@
             lstWatchlistProfiles.TabIndex = 49;
             lstWatchlistProfiles.UseCompatibleStateImageBehavior = false;
             lstWatchlistProfiles.View = View.Details;
-            lstWatchlistProfiles.SelectedIndexChanged += lstWatchlistProfiles_SelectedIndexChanged;
+            lstWatchlistProfiles.SelectedIndexChanged += (this.lstWatchlistProfiles_SelectedIndexChanged);
             // 
             // colWatchlistProfileName
             // 
@@ -8514,7 +8926,7 @@
             // 
             // mcWatchlistPlayerManagement
             // 
-            mcWatchlistPlayerManagement.BackColor = Color.FromArgb(255, 255, 255);
+            mcWatchlistPlayerManagement.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcWatchlistPlayerManagement.Controls.Add(lblWatchlistPlayerManagement);
             mcWatchlistPlayerManagement.Controls.Add(txtWatchlistPlatformUsername);
             mcWatchlistPlayerManagement.Controls.Add(rdbYoutube);
@@ -8524,7 +8936,7 @@
             mcWatchlistPlayerManagement.Controls.Add(swWatchlistIsStreamer);
             mcWatchlistPlayerManagement.Controls.Add(txtWatchlistTag);
             mcWatchlistPlayerManagement.Depth = 0;
-            mcWatchlistPlayerManagement.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcWatchlistPlayerManagement.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcWatchlistPlayerManagement.Location = new Point(450, 5);
             mcWatchlistPlayerManagement.Margin = new Padding(14);
             mcWatchlistPlayerManagement.MouseState = MaterialSkin.MouseState.HOVER;
@@ -8550,9 +8962,9 @@
             // 
             // lstWatchlistEntries
             // 
-            lstWatchlistEntries.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            lstWatchlistEntries.Anchor = (AnchorStyles)((AnchorStyles.Top) | (AnchorStyles.Bottom)) | (AnchorStyles.Left);
             lstWatchlistEntries.AutoSizeTable = false;
-            lstWatchlistEntries.BackColor = Color.FromArgb(255, 255, 255);
+            lstWatchlistEntries.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             lstWatchlistEntries.BorderStyle = BorderStyle.None;
             lstWatchlistEntries.Columns.AddRange(new ColumnHeader[] { colWatchlistAccID, colWatchlistTag, colWatchlistUsername });
             lstWatchlistEntries.Depth = 0;
@@ -8570,7 +8982,7 @@
             lstWatchlistEntries.TabIndex = 37;
             lstWatchlistEntries.UseCompatibleStateImageBehavior = false;
             lstWatchlistEntries.View = View.Details;
-            lstWatchlistEntries.SelectedIndexChanged += lstViewWatchlistEntries_SelectedIndexChanged;
+            lstWatchlistEntries.SelectedIndexChanged += (this.lstViewWatchlistEntries_SelectedIndexChanged);
             // 
             // colWatchlistAccID
             // 
@@ -8602,7 +9014,7 @@
             // 
             // mcLootFilterFilters
             // 
-            mcLootFilterFilters.BackColor = Color.FromArgb(255, 255, 255);
+            mcLootFilterFilters.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcLootFilterFilters.Controls.Add(lstLootFilters);
             mcLootFilterFilters.Controls.Add(lblSettingsLootFilters);
             mcLootFilterFilters.Controls.Add(txtLootFilterName);
@@ -8614,7 +9026,7 @@
             mcLootFilterFilters.Controls.Add(lblSettingsLootFilterColor);
             mcLootFilterFilters.Controls.Add(btnFilterPriorityDown);
             mcLootFilterFilters.Depth = 0;
-            mcLootFilterFilters.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcLootFilterFilters.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcLootFilterFilters.Location = new Point(580, 162);
             mcLootFilterFilters.Margin = new Padding(14);
             mcLootFilterFilters.MouseState = MaterialSkin.MouseState.HOVER;
@@ -8626,7 +9038,7 @@
             // lstLootFilters
             // 
             lstLootFilters.AutoSizeTable = false;
-            lstLootFilters.BackColor = Color.FromArgb(255, 255, 255);
+            lstLootFilters.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             lstLootFilters.BorderStyle = BorderStyle.None;
             lstLootFilters.Columns.AddRange(new ColumnHeader[] { colLootFilterName });
             lstLootFilters.Depth = 0;
@@ -8642,7 +9054,7 @@
             lstLootFilters.TabIndex = 47;
             lstLootFilters.UseCompatibleStateImageBehavior = false;
             lstLootFilters.View = View.Details;
-            lstLootFilters.SelectedIndexChanged += lstLootFilters_SelectedIndexChanged;
+            lstLootFilters.SelectedIndexChanged += (this.lstLootFilters_SelectedIndexChanged);
             // 
             // colLootFilterName
             // 
@@ -8673,7 +9085,7 @@
             picLootFilterColor.Size = new Size(124, 23);
             picLootFilterColor.TabIndex = 46;
             picLootFilterColor.TabStop = false;
-            picLootFilterColor.Click += picLootFilterColor_Click;
+            picLootFilterColor.Click += (this.picLootFilterColor_Click);
             // 
             // btnFilterPriorityUp
             // 
@@ -8693,7 +9105,7 @@
             btnFilterPriorityUp.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
             btnFilterPriorityUp.UseAccentColor = true;
             btnFilterPriorityUp.UseVisualStyleBackColor = true;
-            btnFilterPriorityUp.Click += btnFilterPriorityUp_Click;
+            btnFilterPriorityUp.Click += (this.btnFilterPriorityUp_Click);
             // 
             // lblSettingsLootFilterColor
             // 
@@ -8726,18 +9138,18 @@
             btnFilterPriorityDown.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
             btnFilterPriorityDown.UseAccentColor = true;
             btnFilterPriorityDown.UseVisualStyleBackColor = true;
-            btnFilterPriorityDown.Click += btnFilterPriorityDown_Click;
+            btnFilterPriorityDown.Click += (this.btnFilterPriorityDown_Click);
             // 
             // mcLootFilterItemManagement
             // 
-            mcLootFilterItemManagement.BackColor = Color.FromArgb(255, 255, 255);
+            mcLootFilterItemManagement.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             mcLootFilterItemManagement.Controls.Add(lblLootFilterItemManagement);
             mcLootFilterItemManagement.Controls.Add(btnAddLootFilterItem);
             mcLootFilterItemManagement.Controls.Add(btnRemoveLootFilterItem);
             mcLootFilterItemManagement.Controls.Add(txtLootFilterItemToSearch);
             mcLootFilterItemManagement.Controls.Add(cboLootFilterItemsToAdd);
             mcLootFilterItemManagement.Depth = 0;
-            mcLootFilterItemManagement.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            mcLootFilterItemManagement.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             mcLootFilterItemManagement.Location = new Point(580, 5);
             mcLootFilterItemManagement.Margin = new Padding(14);
             mcLootFilterItemManagement.MouseState = MaterialSkin.MouseState.HOVER;
@@ -8763,9 +9175,9 @@
             // 
             // lstLootFilterEntries
             // 
-            lstLootFilterEntries.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            lstLootFilterEntries.Anchor = (AnchorStyles)((AnchorStyles.Top) | (AnchorStyles.Bottom)) | (AnchorStyles.Left);
             lstLootFilterEntries.AutoSizeTable = false;
-            lstLootFilterEntries.BackColor = Color.FromArgb(255, 255, 255);
+            lstLootFilterEntries.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             lstLootFilterEntries.BorderStyle = BorderStyle.None;
             lstLootFilterEntries.Columns.AddRange(new ColumnHeader[] { colLootFilterItemName, colLootFilterItemValue });
             lstLootFilterEntries.Depth = 0;
@@ -8808,7 +9220,7 @@
             // 
             // materialCard3
             // 
-            materialCard3.BackColor = Color.FromArgb(255, 255, 255);
+            materialCard3.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             materialCard3.Controls.Add(swGetLink);
             materialCard3.Controls.Add(PublicHostname);
             materialCard3.Controls.Add(materialSaveBtn);
@@ -8816,7 +9228,7 @@
             materialCard3.Controls.Add(lblWebRadar);
             materialCard3.Controls.Add(swStartWebServer);
             materialCard3.Depth = 0;
-            materialCard3.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialCard3.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             materialCard3.Location = new Point(741, 14);
             materialCard3.Margin = new Padding(14);
             materialCard3.MouseState = MaterialSkin.MouseState.HOVER;
@@ -8842,7 +9254,7 @@
             // 
             // materialCard2
             // 
-            materialCard2.BackColor = Color.FromArgb(255, 255, 255);
+            materialCard2.BackColor = Color.FromArgb((int)(byte)255, (int)(byte)255, (int)(byte)255);
             materialCard2.Controls.Add(lblHeight);
             materialCard2.Controls.Add(lblWidth);
             materialCard2.Controls.Add(nmbrScreenHeight);
@@ -8871,7 +9283,7 @@
             materialCard2.Controls.Add(lblAimbotGlobal);
             materialCard2.Controls.Add(lblKeybind);
             materialCard2.Depth = 0;
-            materialCard2.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialCard2.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             materialCard2.Location = new Point(14, 14);
             materialCard2.Margin = new Padding(14);
             materialCard2.MouseState = MaterialSkin.MouseState.HOVER;
@@ -8905,7 +9317,7 @@
             nmbrScreenHeight.Name = "nmbrScreenHeight";
             nmbrScreenHeight.Size = new Size(67, 23);
             nmbrScreenHeight.TabIndex = 67;
-            nmbrScreenHeight.ValueChanged += nmbrScreenHeight_ValueChanged;
+            nmbrScreenHeight.ValueChanged += (this.nmbrScreenHeight_ValueChanged);
             // 
             // nmbrScreenWidth
             // 
@@ -8914,7 +9326,7 @@
             nmbrScreenWidth.Name = "nmbrScreenWidth";
             nmbrScreenWidth.Size = new Size(67, 23);
             nmbrScreenWidth.TabIndex = 66;
-            nmbrScreenWidth.ValueChanged += nmbrScreenWidth_ValueChanged;
+            nmbrScreenWidth.ValueChanged += (this.nmbrScreenWidth_ValueChanged);
             // 
             // lblScreen
             // 
@@ -8934,7 +9346,7 @@
             // sldrAimRecoilSpeed
             // 
             sldrAimRecoilSpeed.Depth = 0;
-            sldrAimRecoilSpeed.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            sldrAimRecoilSpeed.ForeColor = Color.FromArgb((int)(byte)222, (int)(byte)0, (int)(byte)0, (int)(byte)0);
             sldrAimRecoilSpeed.Location = new Point(17, 323);
             sldrAimRecoilSpeed.MouseState = MaterialSkin.MouseState.HOVER;
             sldrAimRecoilSpeed.Name = "sldrAimRecoilSpeed";
@@ -8944,7 +9356,7 @@
             sldrAimRecoilSpeed.TabIndex = 64;
             sldrAimRecoilSpeed.Text = "TargetSwitch Speed";
             sldrAimRecoilSpeed.UseAccentColor = true;
-            sldrAimRecoilSpeed.Click += sldrAimRecoilSpeed_onValueChanged;
+            sldrAimRecoilSpeed.Click += (this.sldrAimRecoilSpeed_onValueChanged);
             // 
             // swAimbotRecoil
             // 
@@ -8960,7 +9372,7 @@
             swAimbotRecoil.TabIndex = 63;
             swAimbotRecoil.Text = "Imitate Recoil";
             swAimbotRecoil.UseVisualStyleBackColor = true;
-            swAimbotRecoil.CheckedChanged += swAimbotRecoil_CheckedChanged;
+            swAimbotRecoil.CheckedChanged += (this.swAimbotRecoil_CheckedChanged);
             // 
             // txtBonesInfo
             // 
@@ -9075,8 +9487,8 @@
             msSAKeyBind.TabIndex = 55;
             msSAKeyBind.Text = "Click to set keybind";
             msSAKeyBind.TextAlign = ContentAlignment.TopCenter;
-            msSAKeyBind.MouseClick += msSAKeyBind_MouseClick;
-            msSAKeyBind.MouseDown += SAMainForm_MouseDown;
+            msSAKeyBind.MouseClick += (this.msSAKeyBind_MouseClick);
+            msSAKeyBind.MouseDown += (this.SAMainForm_MouseDown);
             // 
             // lblAimbotGlobal
             // 
@@ -9096,7 +9508,7 @@
             // lblKeybind
             // 
             lblKeybind.AutoSize = true;
-            lblKeybind.BackColor = Color.FromArgb(0, 0, 192);
+            lblKeybind.BackColor = Color.FromArgb((int)(byte)0, (int)(byte)0, (int)(byte)192);
             lblKeybind.BorderStyle = BorderStyle.FixedSingle;
             lblKeybind.Depth = 0;
             lblKeybind.Font = new Font("Roboto Medium", 20F, FontStyle.Bold, GraphicsUnit.Pixel);
@@ -9110,8 +9522,8 @@
             lblKeybind.TabIndex = 55;
             lblKeybind.Text = "Click to set keybind";
             lblKeybind.TextAlign = ContentAlignment.TopCenter;
-            lblKeybind.MouseClick += lblKeybind_MouseClick;
-            lblKeybind.MouseDown += MainForm_MouseDown;
+            lblKeybind.MouseClick += (this.lblKeybind_MouseClick);
+            lblKeybind.MouseDown += (this.MainForm_MouseDown);
             // 
             // iconList
             // 
@@ -9127,19 +9539,19 @@
             // 
             // frmMain
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1460, 770);
-            Controls.Add(tabMambo);
-            DrawerShowIconsWhenHidden = true;
-            DrawerTabControl = tabMambo;
-            DrawerWidth = 180;
-            FormStyle = FormStyles.ActionBar_None;
-            Margin = new Padding(4, 3, 4, 3);
-            Name = "frmMain";
-            Padding = new Padding(0, 24, 0, 0);
-            Load += frmMain_Load;
-            Shown += frmMain_Shown;
+            this.AutoScaleDimensions = new SizeF(7F, 15F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.ClientSize = new Size(1460, 770);
+            this.Controls.Add(tabMambo);
+            this.DrawerShowIconsWhenHidden = true;
+            this.DrawerTabControl = tabMambo;
+            this.DrawerWidth = 180;
+            this.FormStyle = FormStyles.ActionBar_None;
+            this.Margin = new Padding(4, 3, 4, 3);
+            this.Name = "frmMain";
+            this.Padding = new Padding(0, 24, 0, 0);
+            this.Load += (this.frmMain_Load);
+            this.Shown += (this.frmMain_Shown);
             tabMambo.ResumeLayout(false);
             tabRadar.ResumeLayout(false);
             mcRadarLootItemViewer.ResumeLayout(false);
@@ -9246,6 +9658,11 @@
             ((System.ComponentModel.ISupportInitialize)picAIBossFollower).EndInit();
             ((System.ComponentModel.ISupportInitialize)picAIBossGuard).EndInit();
             ((System.ComponentModel.ISupportInitialize)picAIBoss).EndInit();
+            tabSettingsFuser.ResumeLayout(false);
+            materialCard1.ResumeLayout(false);
+            materialCard1.PerformLayout();
+            materialCard4.ResumeLayout(false);
+            materialCard4.PerformLayout();
             tabPlayerLoadouts.ResumeLayout(false);
             mcPlayerLoadoutsAI.ResumeLayout(false);
             mcPlayerLoadoutsAI.PerformLayout();
@@ -9273,7 +9690,7 @@
             materialCard2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)nmbrScreenHeight).EndInit();
             ((System.ComponentModel.ISupportInitialize)nmbrScreenWidth).EndInit();
-            ResumeLayout(false);
+            this.ResumeLayout(false);
         }
 
         #endregion
@@ -9575,6 +9992,7 @@
         private MaterialSkin.Controls.MaterialSwitch swMaxHeavyVests;
         private MaterialSkin.Controls.MaterialSwitch swMaxLightVests;
         private MaterialSkin.Controls.MaterialSwitch swMaxMagDrills;
+        private MaterialSkin.Controls.MaterialSwitch swMuleMode;
         private MaterialSkin.Controls.MaterialSwitch swMaxSearch;
         private MaterialSkin.Controls.MaterialSwitch swMaxCovertMovement;
         private MaterialSkin.Controls.MaterialSwitch swMaxSurgery;
@@ -9789,6 +10207,28 @@
         private NumericUpDown nmbrScreenWidth;
         private MaterialSkin.Controls.MaterialLabel lblScreen;
         private Label lblHeight;
+        //Fuser
+        private TabPage tabSettingsFuser;
+        private MaterialSkin.Controls.MaterialLabel lblESP;
+        private MaterialSkin.Controls.MaterialCard materialCard4;
+        private MaterialSkin.Controls.MaterialButton btnReloadBones;
+        private MaterialSkin.Controls.MaterialSlider sldrItemDist;
+        private MaterialSkin.Controls.MaterialSwitch swToggleItems;
+        private MaterialSkin.Controls.MaterialSlider sldrScavDist;
+        private MaterialSkin.Controls.MaterialSlider sldrTeamDist;
+        private MaterialSkin.Controls.MaterialSwitch swToggleScavs;
+        private MaterialSkin.Controls.MaterialSlider sldrPlayerDist;
+        private MaterialSkin.Controls.MaterialSwitch swToggleTeam;
+        private MaterialSkin.Controls.MaterialSwitch swToggleESP;
+        private MaterialSkin.Controls.MaterialSlider sldrBoneDist;
+        private MaterialSkin.Controls.MaterialSlider sldrBossDist;
+        private MaterialSkin.Controls.MaterialSwitch swToggleBosses;
+        private MaterialSkin.Controls.MaterialSwitch swTogglePlayers;      
+        private MaterialSkin.Controls.MaterialSwitch swToggleBones;
+        private MaterialSkin.Controls.MaterialCard materialCard1;
+        private MaterialSkin.Controls.MaterialLabel materialLabel2;
+        private MaterialSkin.Controls.MaterialButton materialButton1;
+        private MaterialSkin.Controls.MaterialListBox materialListBox1;
     }
 }
 

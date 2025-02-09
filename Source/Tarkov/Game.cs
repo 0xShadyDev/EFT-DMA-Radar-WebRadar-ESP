@@ -33,7 +33,7 @@ namespace eft_dma_radar
         private volatile string _mapName = string.Empty;
         private volatile bool _isScav = false;
         //Aimbot
-        private Aimbot _aimbot = new ();
+        private Aimbot _aimbot = new();
 
         public enum GameStatus
         {
@@ -184,9 +184,9 @@ namespace eft_dma_radar
 
                 this._rgtPlayers.UpdateList();
                 this._rgtPlayers.UpdateAllPlayers();
-                
+
                 //aimbot
-                this._aimbot.Initialize();   
+                this._aimbot.Initialize();
 
                 this.UpdateMisc();
             }

@@ -52,17 +52,17 @@ namespace eft_dma_radar
         #endregion
 
         #region Program Entry Point
-    static void Main(string[] args)
-    {
-        try
+        static void Main(string[] args)
         {
-            InitializeRadar();
+            try
+            {
+                InitializeRadar();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Radar initialization failed: " + ex.Message);
+            }
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Radar initialization failed: " + ex.Message);
-        }
-    }
         #endregion
 
         private static void InitializeRadar()
@@ -91,82 +91,82 @@ namespace eft_dma_radar
             }
         }
 
-public static IHostBuilder CreateHostBuilder(string[] args) =>
-    Host.CreateDefaultBuilder(args)
-        .ConfigureWebHostDefaults(webBuilder =>
-        {
-            // Set the content root to the directory of the executable
-            webBuilder.UseContentRoot(AppContext.BaseDirectory);
-
-            webBuilder.UseKestrel(serverOptions =>
-            {
-                // Bind to all IP addresses on port 80
-                serverOptions.ListenAnyIP(8080);
-
-                // Additionally bind to specific hostnames
-                serverOptions.Listen(System.Net.IPAddress.Loopback, 8080); // localhost
-                serverOptions.Listen(System.Net.IPAddress.IPv6Loopback, 8080); // localhost IPv6
-            });
-
-            webBuilder.ConfigureServices(services =>
-            {
-                services.AddCors(options =>
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    options.AddPolicy("AllowAllOrigins",
-                        builder => builder
-                            .AllowAnyOrigin()
-                            .AllowAnyHeader()
-                            .AllowAnyMethod());
-                });
-                services.AddControllers();
-                services.AddWebSockets(options => { options.KeepAliveInterval = TimeSpan.FromSeconds(120); });
-            });
+                    // Set the content root to the directory of the executable
+                    webBuilder.UseContentRoot(AppContext.BaseDirectory);
 
-            webBuilder.Configure((context, app) =>
-            {
-                app.UseDeveloperExceptionPage();
-
-                // Middleware to redirect from / to /index.html
-                app.Use(async (context, next) =>
-                {
-                    if (context.Request.Path == "/")
+                    webBuilder.UseKestrel(serverOptions =>
                     {
-                        context.Response.Redirect("/index.html");
-                        return;
-                    }
-                    await next();
-                });
+                        // Bind to all IP addresses on port 80
+                        serverOptions.ListenAnyIP(8080);
 
-                // Serve static files from the directory where the EXE is located
-                string exePath = AppContext.BaseDirectory;
-                app.UseStaticFiles(new StaticFileOptions
-                {
-                    FileProvider = new PhysicalFileProvider(exePath),
-                    RequestPath = ""
-                });
+                        // Additionally bind to specific hostnames
+                        serverOptions.Listen(System.Net.IPAddress.Loopback, 8080); // localhost
+                        serverOptions.Listen(System.Net.IPAddress.IPv6Loopback, 8080); // localhost IPv6
+                    });
 
-                app.UseRouting();
-                app.UseCors("AllowAllOrigins");
-                app.UseWebSockets();
-
-                app.UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllers();
-                    endpoints.Map("/ws/connect", async context =>
+                    webBuilder.ConfigureServices(services =>
                     {
-                        if (context.WebSockets.IsWebSocketRequest)
+                        services.AddCors(options =>
                         {
-                            var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                            // Handle WebSocket connection here
-                        }
-                        else
+                            options.AddPolicy("AllowAllOrigins",
+                                builder => builder
+                                    .AllowAnyOrigin()
+                                    .AllowAnyHeader()
+                                    .AllowAnyMethod());
+                        });
+                        services.AddControllers();
+                        services.AddWebSockets(options => { options.KeepAliveInterval = TimeSpan.FromSeconds(120); });
+                    });
+
+                    webBuilder.Configure((context, app) =>
+                    {
+                        app.UseDeveloperExceptionPage();
+
+                        // Middleware to redirect from / to /index.html
+                        app.Use(async (context, next) =>
                         {
-                            context.Response.StatusCode = 400;
-                        }
+                            if (context.Request.Path == "/")
+                            {
+                                context.Response.Redirect("/index.html");
+                                return;
+                            }
+                            await next();
+                        });
+
+                        // Serve static files from the directory where the EXE is located
+                        string exePath = AppContext.BaseDirectory;
+                        app.UseStaticFiles(new StaticFileOptions
+                        {
+                            FileProvider = new PhysicalFileProvider(exePath),
+                            RequestPath = ""
+                        });
+
+                        app.UseRouting();
+                        app.UseCors("AllowAllOrigins");
+                        app.UseWebSockets();
+
+                        app.UseEndpoints(endpoints =>
+                        {
+                            endpoints.MapControllers();
+                            endpoints.Map("/ws/connect", async context =>
+                            {
+                                if (context.WebSockets.IsWebSocketRequest)
+                                {
+                                    var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+                                    // Handle WebSocket connection here
+                                }
+                                else
+                                {
+                                    context.Response.StatusCode = 400;
+                                }
+                            });
+                        });
                     });
                 });
-            });
-        });
 
         #region Methods
         public static void Log(string msg)

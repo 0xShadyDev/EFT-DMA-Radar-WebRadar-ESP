@@ -114,7 +114,8 @@ namespace eft_dma_radar
         /// <summary>
         /// Ghetto helper method to get the Color from a PaintColor object by Key & return a new SKColor object based on it
         /// </summary>
-        public static SKColor SKColorFromPaintColor(string key, byte alpha=0) {
+        public static SKColor SKColorFromPaintColor(string key, byte alpha = 0)
+        {
             var col = Extensions.SKColors[key];
 
             if (alpha > 0)
@@ -126,10 +127,12 @@ namespace eft_dma_radar
         /// <summary>
         /// Gets drawing paintbrush based on Player Type
         /// </summary>
-        public static SKPaint GetEntityPaint(this Player player) {
+        public static SKPaint GetEntityPaint(this Player player)
+        {
             var basePaint = SKPaints.PaintBase.Clone();
 
-            basePaint.Color = player.Type switch {
+            basePaint.Color = player.Type switch
+            {
                 // AI
                 PlayerType.Boss => Extensions.SKColorFromPaintColor("Boss"),
                 PlayerType.BossGuard => Extensions.SKColorFromPaintColor("BossGuard"),
@@ -168,7 +171,7 @@ namespace eft_dma_radar
             var g = (float)col.G / 255f;
             var b = (float)col.B / 255f;
             var a = (float)col.A / 255f;
-            return new Vector4(r,g,b,a);
+            return new Vector4(r, g, b, a);
         }
 
         /// <summary>
@@ -443,7 +446,8 @@ namespace eft_dma_radar
         {
             var basePaint = SKPaints.PlayerAimviewPaint.Clone();
 
-            basePaint.Color = player.Type switch {
+            basePaint.Color = player.Type switch
+            {
                 // AI
                 PlayerType.Boss => Extensions.SKColorFromPaintColor("Boss"),
                 PlayerType.BossGuard => Extensions.SKColorFromPaintColor("BossGuard"),

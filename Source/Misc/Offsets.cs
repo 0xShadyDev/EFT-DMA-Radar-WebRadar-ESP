@@ -129,7 +129,8 @@
         public const uint InventoryController = 0x658; // [658] _inventoryController : -.Player.PlayerInventoryController
         public const uint HandsController = 0x660; // [660] _handsController : -.Player.AbstractHandsController
         public const uint IsExtracting = 0x9A2; // [9A2] <ExitTriggerZone>k__BackingField : Boolean
-        public const uint CharacterController = 0x40; // [40] _characterController : UnityEngine.CharacterController            
+        public const uint CharacterController = 0x40; // [40] _characterController : UnityEngine.CharacterController
+        public const uint isLocalPlayer = 0xA06; // [A06] <IsYourPlayer>k_BackingField : Boolean
     }
     public struct CharacterController
     {
@@ -511,6 +512,13 @@
         public const uint WalkOverweight = 0x90; // [90] WalkOverweight : Single
         public const uint WalkSpeedLimit = 0x94; // [94] WalkSpeedLimit : Single
         public const uint PreviousWeight = 0x108; // [108] PreviousWeight : Single
+        public const uint BaseOverweightLimits = 0xE0;
+        public const uint SprintOverweightLimits = 0xF4;
+        public const uint single_0x104 = 0x104; // after WalkSpeedOverweightLimits
+        public const uint SprintAcceleration = 0x114;
+        public const uint PreSprintAcceleration = 0x118;
+        public const uint boolean_0x11C = 0x11C; // IsOverweight , after PreSprintAccel (first of 3 bools)
+        public const uint boolean_0x11D = 0x11D; // IsOverMaxWeight
     }
 
     public struct Stamina

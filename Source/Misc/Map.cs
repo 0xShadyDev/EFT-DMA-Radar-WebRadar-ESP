@@ -362,7 +362,7 @@ namespace eft_dma_radar
             }
 
             var coords = this.GetPoint(7 * UIScale, 3 * UIScale);
-            
+
             canvas.DrawText(label, coords, Extensions.GetTextOutlinePaint());
             canvas.DrawText(label, coords, text);
         }
@@ -427,7 +427,7 @@ namespace eft_dma_radar
 
             var circleRadius = 6 * UIScale;
             var lineHeight = 12 * UIScale;
-            var aboveOffset = circleRadius  - 5 * UIScale;
+            var aboveOffset = circleRadius - 5 * UIScale;
             var belowOffset = circleRadius + 15 * UIScale;
             var sideOffset = circleRadius + 8 * UIScale;
 

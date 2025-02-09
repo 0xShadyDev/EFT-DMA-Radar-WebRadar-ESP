@@ -31,8 +31,7 @@ namespace eft_dma_radar
 {
     public partial class frmMain : MaterialForm
     {
-        private Overlay overlay;       
-        public static bool isOverlayShown;
+        private Overlay overlay = null;
 
         private readonly Config config;
         private readonly Watchlist watchlist;
@@ -292,7 +291,6 @@ namespace eft_dma_radar
             Keys.F2 => this.ZoomOut(5),
             Keys.F4 => swAimview.Checked = !swAimview.Checked,
             Keys.F5 => this.ToggleMap(),
-            Keys.F7 => ToggleOverlay(),
             Keys.Control | Keys.N => swNightVision.Checked = !swNightVision.Checked,
             Keys.Control | Keys.T => swThermalVision.Checked = !swThermalVision.Checked,
             _ => base.ProcessCmdKey(ref msg, keyData),
@@ -831,6 +829,7 @@ namespace eft_dma_radar
             swNightVision.Checked = this.config.NightVision;
             swNoWeaponMalfunctions.Checked = this.config.NoWeaponMalfunctions;
             swJuggernaut.Checked = this.config.Juggernaut;
+            swMuleMode.Checked = this.config.MULEMode;
 
             // Max Skill Buff Management
             mcSettingsMemoryWritingSkillBuffs.Enabled = this.config.MasterSwitch;
@@ -881,6 +880,21 @@ namespace eft_dma_radar
             swChamsCorpses.Checked = this.config.Chams["Corpses"];
             swChamsRevert.Checked = this.config.Chams["RevertOnClose"];
 
+            // ESP Features
+            swToggleESP.Checked = this.config.ToggleESP;
+            swToggleBones.Checked = this.config.BoneESP;
+            swTogglePlayers.Checked = this.config.PlayerESP;
+            swToggleTeam.Checked = this.config.TeamESP;
+            swToggleScavs.Checked = this.config.ScavESP;
+            swToggleBosses.Checked = this.config.BossESP;
+            swToggleItems.Checked = this.config.ItemESP;
+            sldrBoneDist.Value = this.config.BoneLimit;
+            sldrPlayerDist.Value = this.config.PlayerDist;
+            sldrTeamDist.Value = this.config.TeamDist;
+            sldrScavDist.Value = this.config.ScavDist;
+            sldrBossDist.Value = this.config.BossDist;
+            sldrItemDist.Value = this.config.ItemDist;
+
 
             swExfilNames.Checked = this.config.ExfilNames;
             swHoverArmor.Checked = this.config.HoverArmor;
@@ -905,7 +919,7 @@ namespace eft_dma_radar
             nmbrScreenWidth.Value = (int)this.config.ScreenWidth;
             nmbrScreenHeight.Value = (int)this.config.ScreenHeight;
             swAimEnablePred.Checked = this.config.AimbotPrediction;
-            msSAEnableSilentAim.Checked = this.config.SAEnableAimbot;          
+            msSAEnableSilentAim.Checked = this.config.SAEnableAimbot;
             msSAKeyBind.Text = ((Keys)this.config.SASilentAimKey).ToString();
 
 
@@ -1521,6 +1535,7 @@ namespace eft_dma_radar
             this.LoadConfig();
 
             this.LoadMaps();
+            this.ListConnectedMonitors();
 
             this.mapChangeTimer.AutoReset = false;
             this.mapChangeTimer.Elapsed += this.MapChangeTimer_Elapsed;
@@ -1689,25 +1704,105 @@ namespace eft_dma_radar
                 panel.Controls.Add(playerCard);
             }
         }
-
-        // Overlay Method
-        private bool ToggleOverlay()
-        {
-            if (!isOverlayShown)
-            {
-                if (overlay is null || overlay.IsDisposed) overlay = new Overlay();
-
-                overlay.Show();
-                isOverlayShown = true;
-            }
-            else
-            {
-                isOverlayShown = false;
-            }
-
-            return true;
-        }
         #endregion
+
+        private void CreateOverlay()
+        {
+            if (materialListBox1.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a monitor from the list.", "Error");
+                return;
+            }
+
+            // Get the selected item's text which contains our monitor info
+            MaterialListBoxItem selectedItem = (MaterialListBoxItem)materialListBox1.SelectedItem;
+            string selectedMonitorInfo = selectedItem.Text;
+
+            EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, (IntPtr hMonitor, IntPtr hdcMonitor, ref Rect lprcMonitor, IntPtr dwData) =>
+            {
+                MONITORINFOEX monitorInfo = new MONITORINFOEX();
+                monitorInfo.cbSize = Marshal.SizeOf(typeof(MONITORINFOEX));
+
+                if (GetMonitorInfo(hMonitor, ref monitorInfo))
+                {
+                    string monitorName = monitorInfo.szDevice;
+                    int width = monitorInfo.rcMonitor.Right - monitorInfo.rcMonitor.Left;
+                    int height = monitorInfo.rcMonitor.Bottom - monitorInfo.rcMonitor.Top;
+                    string currentMonitorInfo = $"{monitorName} ({width}x{height})";
+
+                    if (currentMonitorInfo == selectedMonitorInfo)
+                    {
+                        Rectangle bounds = new Rectangle(
+                            monitorInfo.rcMonitor.Left,
+                            monitorInfo.rcMonitor.Top,
+                            monitorInfo.rcMonitor.Right - monitorInfo.rcMonitor.Left,
+                            monitorInfo.rcMonitor.Bottom - monitorInfo.rcMonitor.Top
+                        );
+
+                        overlay = new Overlay(bounds);
+                        overlay.FormClosed += (s, args) =>
+                        {
+                            overlay = null;
+                            materialButton1.Text = "Start Overlay";
+                        };
+                        overlay.Show();
+                    }
+                }
+                return true;
+            }, IntPtr.Zero);
+        }
+
+        private void ListConnectedMonitors()
+        {
+            materialListBox1.Items.Clear();
+            EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, (IntPtr hMonitor, IntPtr hdcMonitor, ref Rect lprcMonitor, IntPtr dwData) =>
+            {
+                MONITORINFOEX monitorInfo = new MONITORINFOEX();
+                monitorInfo.cbSize = Marshal.SizeOf(typeof(MONITORINFOEX));
+                if (GetMonitorInfo(hMonitor, ref monitorInfo))
+                {
+                    int width = monitorInfo.rcMonitor.Right - monitorInfo.rcMonitor.Left;
+                    int height = monitorInfo.rcMonitor.Bottom - monitorInfo.rcMonitor.Top;
+                    string monitorName = monitorInfo.szDevice;
+                    string displayText = $"{monitorName} ({width}x{height})";
+
+                    // Create a MaterialListBoxItem directly
+                    MaterialListBoxItem item = new MaterialListBoxItem();
+                    item.Text = displayText;
+                    materialListBox1.Items.Add(item);
+                }
+                return true;
+            }, IntPtr.Zero);
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumProc lpfnEnum, IntPtr dwData);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFOEX lpmi);
+
+        private delegate bool MonitorEnumProc(IntPtr hMonitor, IntPtr hdcMonitor, ref Rect lprcMonitor, IntPtr dwData);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct Rect
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        private struct MONITORINFOEX
+        {
+            public int cbSize;
+            public Rect rcMonitor;
+            public Rect rcWork;
+            public uint dwFlags;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string szDevice;
+        }
 
         #region Radar Tab
         #region Helper Functions
@@ -5109,6 +5204,11 @@ namespace eft_dma_radar
             this.config.InfiniteStamina = swInfiniteStamina.Checked;
         }
 
+        private void swMuleMode_CheckedChanged(object sender, EventArgs e)
+        {
+            this.config.MULEMode = swMuleMode.Checked;
+        }
+
         private void sldrThrowStrength_onValueChanged(object sender, int newValue)
         {
             this.config.ThrowPowerStrength = newValue;
@@ -7098,6 +7198,109 @@ namespace eft_dma_radar
         private void tabSelector_Click(object sender, EventArgs e)
         {
 
+        }
+
+        // Fuser Tab
+        private void btnReloadBones_Click(object sender, EventArgs e)
+        {
+            Memory.Restart();
+        }
+
+        #region ESP Methods
+        private void swToggleESP_CheckedChanged(object sender, EventArgs e)
+        {
+            this.config.ToggleESP = swToggleESP.Checked;
+            Thread.Sleep(10);
+        }
+
+        private void swTogglePlayers_CheckedChanged(object sender, EventArgs e)
+        {
+            this.config.PlayerESP = swTogglePlayers.Checked;
+            Thread.Sleep(10);
+        }
+
+        private void swToggleTeam_CheckedChanged(object sender, EventArgs e)
+        {
+            this.config.TeamESP = swToggleTeam.Checked;
+            Thread.Sleep(10);
+        }
+
+        private void swToggleScavs_CheckedChanged(object sender, EventArgs e)
+        {
+            this.config.ScavESP = swToggleScavs.Checked;
+            Thread.Sleep(10);
+        }
+
+        private void swToggleBosses_CheckedChanged(object sender, EventArgs e)
+        {
+            this.config.BossESP = swToggleBosses.Checked;
+            Thread.Sleep(10);
+        }
+
+        private void swToggleItems_CheckedChanged(object sender, EventArgs e)
+        {
+            this.config.ItemESP = swToggleItems.Checked;
+            Thread.Sleep(10);
+        }
+
+        private void swToggleBones_CheckedChanged(object sender, EventArgs e)
+        {
+            this.config.BoneESP = swToggleBones.Checked;
+            Thread.Sleep(10);
+        }
+
+        private void sldrPlayerDist_onValueChanged(object sender, int newValue)
+        {
+            this.config.PlayerDist = sldrPlayerDist.Value;
+            Config.SaveConfig(this.config);
+        }
+
+        private void sldrTeamDist_onValueChanged(object sender, int newValue)
+        {
+            this.config.TeamDist = sldrTeamDist.Value;
+            Config.SaveConfig(this.config);
+
+        }
+
+        private void sldrBossDist_onValueChanged(object sender, int newValue)
+        {
+            this.config.BossDist = sldrBossDist.Value;
+            Config.SaveConfig(this.config);
+
+        }
+
+        private void sldrScavDist_onValueChanged(object sender, int newValue)
+        {
+            this.config.ScavDist = sldrScavDist.Value;
+            Config.SaveConfig(this.config);
+        }
+
+        private void sldrItemDist_onValueChanged(object sender, int newValue)
+        {
+            this.config.ItemDist = sldrItemDist.Value;
+            Config.SaveConfig(this.config);
+        }
+
+        private void sldrBoneDist_onValueChanged(object sender, int newValue)
+        {
+            this.config.BoneLimit = sldrBoneDist.Value;
+            Config.SaveConfig(this.config);
+        }
+        #endregion
+
+        private void materialButton1_Click(object sender, EventArgs e)
+        {
+            if (overlay != null && !overlay.IsDisposed)
+            {
+                overlay.Close();
+                overlay = null;
+                materialButton1.Text = "Start Overlay";
+            }
+            else
+            {
+                CreateOverlay();
+                materialButton1.Text = "Stop Overlay";
+            }
         }
     }
 }

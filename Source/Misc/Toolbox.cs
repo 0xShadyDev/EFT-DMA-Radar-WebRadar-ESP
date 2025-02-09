@@ -381,11 +381,13 @@ namespace eft_dma_radar
                     }
                     #endregion
 
-                    if (this._config.InfiniteStamina != this.infiniteStamina)
-                    {
-                        this.infiniteStamina = this._config.InfiniteStamina;
+                    // InfiniteStam
+                    if (this._config.InfiniteStamina)
                         this._playerManager.SetInfiniteStamina(ref entries);
-                    }
+
+                    // M.U.L.E. Mode
+                    if (this._config.MULEMode)
+                        this._playerManager.SetUnlimitedWeight(ref entries);
                 }
 
                 // Mono stuff

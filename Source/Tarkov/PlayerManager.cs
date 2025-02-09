@@ -2,6 +2,7 @@
 using Org.BouncyCastle.Math;
 using System.Diagnostics;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace eft_dma_radar
 {
@@ -634,6 +635,103 @@ namespace eft_dma_radar
             catch (Exception ex)
             {
                 Program.Log($"[PlayerManager] - SetInfiniteStamina ({ex.Message})\n{ex.StackTrace}");
+            }
+        }
+
+        public void SetUnlimitedWeight(ref List<IScatterWriteEntry> entries)
+        {
+            try
+            {
+                const float newOverweight = 0f;
+                const float newWalkOverweight = 0f;
+                const float newWalkSpeedLimit = 1f;
+                const float newSingle_0x104 = 0f;
+                const float newSprintAcceleration = 1f;
+                const float newPreSprintAcceleration = 3f;
+
+                var phys = Memory.ReadPtr(this._playerBase + Offsets.Player.Physical);
+
+                var currentOverweight = Memory.ReadValue<float>(phys + Offsets.Physical.Overweight);
+                var currentWalkOverweight = Memory.ReadValue<float>(phys + Offsets.Physical.WalkOverweight);
+                var currentWalkSpeedLimit = Memory.ReadValue<float>(phys + Offsets.Physical.WalkSpeedLimit);
+                var currentSingle_0x104 = Memory.ReadValue<float>(phys + Offsets.Physical.single_0x104); // Overweight Factor?
+                var currentSprintAcceleration = Memory.ReadValue<float>(phys + Offsets.Physical.SprintAcceleration);
+                var currentPreSprintAcceleration = Memory.ReadValue<float>(phys + Offsets.Physical.PreSprintAcceleration);
+                var currentBaseOverweightLimits = Memory.ReadValue<Vector2>(phys + Offsets.Physical.BaseOverweightLimits);
+                var currentSprintOverweightLimits = Memory.ReadValue<Vector2>(phys + Offsets.Physical.SprintOverweightLimits);
+                var currentBoolean_0x11C = Memory.ReadValue<bool>(phys + Offsets.Physical.boolean_0x11C); // IsOverWeight
+                var currentBoolean_0x11D = Memory.ReadValue<bool>(phys + Offsets.Physical.boolean_0x11D); // IsOverMaxWeight
+                var newOverweightLimits = new Vector2(currentBaseOverweightLimits.Y - 1f, currentBaseOverweightLimits.Y);
+
+                if (currentOverweight != newOverweight)
+                {
+                    entries.Add(new ScatterWriteDataEntry<float>(phys + Offsets.Physical.Overweight, newOverweight));
+                    Debug.WriteLine($"SetEnhancedCarryWeight -> Overweight:{currentOverweight}->{newOverweight}");
+                }
+
+                if (currentWalkOverweight != newWalkOverweight)
+                {
+                    entries.Add(new ScatterWriteDataEntry<float>(phys + Offsets.Physical.WalkOverweight, newWalkOverweight));
+                    Debug.WriteLine(
+                        $"SetEnhancedCarryWeight -> WalkOverweight:{currentWalkOverweight}->{newWalkOverweight}");
+                }
+
+                if (currentWalkSpeedLimit != newWalkSpeedLimit)
+                {
+                    entries.Add(new ScatterWriteDataEntry<float>(phys + Offsets.Physical.WalkSpeedLimit, newWalkSpeedLimit));
+                    Debug.WriteLine(
+                        $"SetEnhancedCarryWeight -> WalkSpeedLimit:{currentWalkSpeedLimit}->{newWalkSpeedLimit}");
+                }
+
+                if (currentSingle_0x104 != newSingle_0x104)
+                {
+                    entries.Add(new ScatterWriteDataEntry<float>(phys + Offsets.Physical.single_0x104, newSingle_0x104));
+                    Debug.WriteLine($"SetEnhancedCarryWeight -> float_3:{currentSingle_0x104}->{newSingle_0x104}");
+                }
+
+                if (currentSprintAcceleration != newSprintAcceleration)
+                {
+                    entries.Add(new ScatterWriteDataEntry<float>(phys + Offsets.Physical.SprintAcceleration, newSprintAcceleration));
+                    Debug.WriteLine(
+                        $"SetEnhancedCarryWeight -> SprintAcceleration:{currentSprintAcceleration}->{newSprintAcceleration}");
+                }
+
+                if (currentPreSprintAcceleration != newPreSprintAcceleration)
+                {
+                    entries.Add(new ScatterWriteDataEntry<float>(phys + Offsets.Physical.PreSprintAcceleration, newPreSprintAcceleration));
+                    Debug.WriteLine(
+                        $"SetEnhancedCarryWeight -> PreSprintAcceleration:{currentPreSprintAcceleration}->{newPreSprintAcceleration}");
+                }
+
+                if (currentBaseOverweightLimits != newOverweightLimits)
+                {
+                    entries.Add(new ScatterWriteDataEntry<Vector2>(phys + Offsets.Physical.BaseOverweightLimits, newOverweightLimits));
+                    Debug.WriteLine(
+                        $"SetEnhancedCarryWeight -> BaseOverweightLimits:{currentBaseOverweightLimits}->{newOverweightLimits}");
+                }
+
+                if (currentSprintOverweightLimits != newOverweightLimits)
+                {
+                    entries.Add(new ScatterWriteDataEntry<Vector2>(phys + Offsets.Physical.SprintOverweightLimits, newOverweightLimits));
+                    Debug.WriteLine(
+                        $"SetEnhancedCarryWeight -> SprintOverweightLimits:{currentSprintOverweightLimits}->{newOverweightLimits}");
+                }
+
+                if (currentBoolean_0x11C is not false)
+                {
+                    entries.Add(new ScatterWriteDataEntry<bool>(phys + Offsets.Physical.boolean_0x11C, false));
+                    Debug.WriteLine($"SetEnhancedCarryWeight -> bool_5:{currentBoolean_0x11C}->{false}");
+                }
+
+                if (currentBoolean_0x11D is not false)
+                {
+                    entries.Add(new ScatterWriteDataEntry<bool>(phys + Offsets.Physical.boolean_0x11D, false));
+                    Debug.WriteLine($"SetEnhancedCarryWeight -> bool_6:{currentBoolean_0x11D}->{false}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ERROR Configuring Unlimited Weight: {ex}");
             }
         }
 

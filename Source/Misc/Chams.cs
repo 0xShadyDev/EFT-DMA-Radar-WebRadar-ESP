@@ -7,23 +7,57 @@ namespace eft_dma_radar
 {
     public class Chams
     {
-        private CameraManager _cameraManager => Memory.CameraManager;
-        private ReadOnlyDictionary<string, Player> AllPlayers => Memory.Players;
-        private bool InGame => Memory.InGame;
-        private Config _config => Program.Config;
+        private CameraManager _cameraManager
+        {
+            get => Memory.CameraManager;
+        }
 
-        public int PlayersWithChamsCount => PlayersWithChams.Count;
-        public ulong NVGMaterial => _nvgMaterial;
-        public ulong ThermalMaterial => _thermalMaterial;
+        private ReadOnlyDictionary<string, Player> AllPlayers
+        {
+            get => Memory.Players;
+        }
 
-        private Vector4 _color => Extensions.Vector4FromPaintColor("Chams");
-        private bool safeToWriteChams => (this.InGame && Memory.LocalPlayer is not null && Memory.LocalPlayer.IsActive && Memory.Players.Count > 1);
+        private bool InGame
+        {
+            get => Memory.InGame;
+        }
+
+        private Config _config
+        {
+            get => Program.Config;
+        }
+
+        public int PlayersWithChamsCount
+        {
+            get => PlayersWithChams.Count;
+        }
+
+        public ulong NVGMaterial
+        {
+            get => _nvgMaterial;
+        }
+
+        public ulong ThermalMaterial
+        {
+            get => _thermalMaterial;
+        }
+
+        private Vector4 _color
+        {
+            get => Extensions.Vector4FromPaintColor("Chams");
+        }
+
+        private bool safeToWriteChams
+        {
+            get => (this.InGame && Memory.LocalPlayer is not null && Memory.LocalPlayer.IsActive && Memory.Players.Count > 1);
+        }
 
         private Dictionary<string, Player> PlayersWithChams = new Dictionary<string, Player>();
         private Dictionary<string, List<PointerBackup>> pointerBackups = new Dictionary<string, List<PointerBackup>>();
 
         private ulong _nvgMaterial;
         private ulong _thermalMaterial;
+
         private Vector4 lastColor = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 
         public void ChamsEnable()
@@ -61,19 +95,21 @@ namespace eft_dma_radar
 
             var players = this.AllPlayers
                             .Select(x => x.Value)
-                            ?.Where(x => !this.PlayersWithChams.ContainsKey(x.ProfileID) &&
-                                         x.IsActive &&
-                                         x.ErrorCount == 0 &&
-                                         !x.IsLocalPlayer) // Check if player has exfiltrated
-                            .Where(x => (this._config.Chams["Corpses"] && !x.IsAlive) ||
-                                        (this._config.Chams["PMCs"] && x.IsPMC && x.Type != PlayerType.Teammate && x.IsAlive) ||
-                                        (this._config.Chams["Teammates"] && x.IsPMC && x.Type == PlayerType.Teammate && x.IsAlive) ||
-                                        (this._config.Chams["PlayerScavs"] && x.Type == PlayerType.PlayerScav && x.IsAlive) ||
-                                        (this._config.Chams["Bosses"] && x.Type == PlayerType.Boss && x.IsAlive) ||
-                                        (this._config.Chams["Rogues"] && x.IsRogueRaider && x.IsAlive) ||
-                                        (this._config.Chams["Event"] && x.IsEventAI && x.IsAlive) ||
-                                        (this._config.Chams["Cultists"] && x.Type == PlayerType.Cultist && x.IsAlive) ||
-                                        (this._config.Chams["Scavs"] && x.Type == PlayerType.Scav && x.IsAlive))
+                            ?.Where(x =>
+                                        !this.PlayersWithChams.ContainsKey(x.ProfileID) &&
+                                        x.IsActive &&
+                                        x.ErrorCount == 0 &&
+                                        !x.IsLocalPlayer)
+                            .Where(x =>
+                                    (this._config.Chams["Corpses"] && !x.IsAlive) ||
+                                    (this._config.Chams["PMCs"] && x.IsPMC && x.Type != PlayerType.Teammate && x.IsAlive) ||
+                                    (this._config.Chams["Teammates"] && x.IsPMC && x.Type == PlayerType.Teammate && x.IsAlive) ||
+                                    (this._config.Chams["PlayerScavs"] && x.Type == PlayerType.PlayerScav && x.IsAlive) ||
+                                    (this._config.Chams["Bosses"] && x.Type == PlayerType.Boss && x.IsAlive) ||
+                                    (this._config.Chams["Rogues"] && x.IsRogueRaider && x.IsAlive) ||
+                                    (this._config.Chams["Event"] && x.IsEventAI && x.IsAlive) ||
+                                    (this._config.Chams["Cultists"] && x.Type == PlayerType.Cultist && x.IsAlive) ||
+                                    (this._config.Chams["Scavs"] && x.Type == PlayerType.Scav && x.IsAlive))
                             .ToList();
 
             if (players?.Count > 0 && Memory.LocalPlayer.IsAlive)
@@ -88,10 +124,10 @@ namespace eft_dma_radar
                             break;
                         }
 
-                        var materialToUse = (player.IsHuman || player.Type == PlayerType.Boss) && player.IsAlive ? _nvgMaterial : _thermalMaterial;
+                        var materialTouse = (player.IsHuman || player.Type == PlayerType.Boss) && player.IsAlive ? _nvgMaterial : _thermalMaterial;
 
                         if (this.PlayersWithChams.TryAdd(player.ProfileID, player))
-                            this.SetPlayerBodyChams(player, materialToUse);
+                            this.SetPlayerBodyChams(player, materialTouse);
                     }
                     catch (Exception ex)
                     {
@@ -440,6 +476,7 @@ namespace eft_dma_radar
 
             if (this.PlayersWithChams.Remove(key))
                 Program.Log($"Removed {player.Name} from players w/ chams");
+
         }
 
         public void RemovePointers()

@@ -16,7 +16,7 @@ namespace eft_dma_radar
                 try
                 {
                     var count = Memory.ReadValue<int>(this._grenadeList + Offsets.UnityList.Count);
-                    
+
                     if (count < 0 || count > 32)
                         return 0;
 

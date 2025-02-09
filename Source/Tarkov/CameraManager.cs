@@ -126,7 +126,8 @@ namespace eft_dma_radar
                 {
                     this._fpsCamera = cameraObject;
 
-                    if (!this.visorComponentFound) {
+                    if (!this.visorComponentFound)
+                    {
                         this.visorComponent = this.GetComponentFromGameObject(this._fpsCamera, "VisorEffect");
                         this.visorComponentFound = this.visorComponent != 0;
                     }
@@ -382,7 +383,7 @@ namespace eft_dma_radar
             {
                 var thermalVisionUtilities = Memory.ReadPtr(this.thermalComponent + Offsets.ThermalVision.ThermalVisionUtilities);
                 var valuesCoefs = Memory.ReadPtr(thermalVisionUtilities + Offsets.ThermalVisionUtilities.ValuesCoefs);
-                
+
                 entries.Add(new ScatterWriteDataEntry<bool>(this.thermalComponent + Offsets.ThermalVision.IsNoisy, !state));
                 entries.Add(new ScatterWriteDataEntry<bool>(this.thermalComponent + Offsets.ThermalVision.IsFpsStuck, !state));
                 entries.Add(new ScatterWriteDataEntry<bool>(this.thermalComponent + Offsets.ThermalVision.IsMotionBlurred, !state));

@@ -43,7 +43,7 @@ namespace eft_dma_radar
         public ExfilManager(ulong localGameWorld)
         {
             this.localGameWorld = localGameWorld;
-            
+
             this._isExtracting = false;
             //this._closeExfils = false;
 
@@ -77,7 +77,7 @@ namespace eft_dma_radar
             if (this._isExtracting)
             {
                 var closestExfil = openExfils.OrderBy(x => Vector3.Distance(localPlayer.Position, x.Position)).FirstOrDefault();
-                
+
                 if (closestExfil is null)
                     return;
 
@@ -194,7 +194,7 @@ namespace eft_dma_radar
         {
             //if (Memory.IsTransitMode && this._closeExfils)
             //    return;
-            
+
             //if (Memory.IsTransitMode && !this._closeExfils)
             //{
             //    this.CloseExfils();

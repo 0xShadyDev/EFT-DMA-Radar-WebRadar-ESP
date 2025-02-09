@@ -32,10 +32,10 @@
             // 
             // Overlay
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            //this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            //this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = Color.Black;
-            this.ClientSize = new System.Drawing.Size(512, 512);
+            //this.ClientSize = new System.Drawing.Size(512, 512);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Overlay";
@@ -44,7 +44,7 @@
             this.Text = "Overlay";
             this.TopMost = true;
             //this.TransparencyKey = System.Drawing.Color.Black;
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            //this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ClosedOverlay);
             this.Load += new System.EventHandler(this.LoadOverlay);
             this.ResumeLayout(false);

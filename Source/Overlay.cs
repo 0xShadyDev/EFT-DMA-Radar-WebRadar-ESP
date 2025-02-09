@@ -13,12 +13,14 @@ using SharpDX.Direct3D9;
 using Color = System.Drawing.Color;
 using Vector3 = System.Numerics.Vector3;
 
+
+
 namespace eft_dma_radar
 {
     public partial class Overlay : Form
     {
         // Constants
-        private const int TargetFrameRate = 60;
+        private const int TargetFrameRate = 144;
         private const int TargetFrameTime = 1000 / TargetFrameRate;
 
         // D3D9 Objects
@@ -40,18 +42,9 @@ namespace eft_dma_radar
         private List<Tripwire> _tripwires;
         private List<QuestItem> _questItems = new();
 
-        // ESP Settings
-        public static bool IsESPOn = true;
-        public static bool IsBoneESPOn = true;
-        public static bool IsPMCOn = true;
-        public static bool IsTeamOn = true;
-        public static bool IsScavOn = true;
-        public static bool IsPlayerScavOn = true;
-        public static int BoneLimit = 300;
-        public static int ScavLimit = 300;
-        public static int PlayerLimit = 300;
-        public static int TeamLimit = 300;
-
+        // Config Settings
+        private Config _config { get => Program.Config; }    
+        
         // Loot ESP Settings
         private bool _isLootItemOn = true;
         private float _lootItemLimit = 250f;
@@ -62,6 +55,9 @@ namespace eft_dma_radar
         private bool _isQuestItemOn = true;
         private float _questItemLimit = 150f;
 
+        private List<(string, int, int, Color)> _textBatch = new();
+        private List<(int, int, int, int, Color)> _lineBatch = new();
+
         public struct Vertex
         {
             public SharpDX.Vector3 Position;
@@ -71,8 +67,11 @@ namespace eft_dma_radar
             public static readonly int Stride = Utilities.SizeOf<Vertex>();
         }
 
-        public Overlay()
+        public Overlay(System.Drawing.Rectangle bounds)
         {
+            StartPosition = FormStartPosition.Manual;
+            Location = new System.Drawing.Point(bounds.Left, bounds.Top);
+            Size = new Size(bounds.Width, bounds.Height);
             InitializeComponent();
             InitializeStyles();
         }
@@ -142,17 +141,15 @@ namespace eft_dma_radar
             _device = new Device(new Direct3D(), 0, DeviceType.Hardware, Handle, CreateFlags.HardwareVertexProcessing, presentParams);
             _sprite = new Sprite(_device);
 
-            // Create font description
             var fontDescription = new SharpDX.Direct3D9.FontDescription
             {
-                FaceName = "Tarkov-Regular", 
-                Height = 20,        
-                Weight = SharpDX.Direct3D9.FontWeight.Bold, 
-                MipLevels = 1,      
+                FaceName = "Tarkov-Regular",
+                Height = 20,
+                Weight = SharpDX.Direct3D9.FontWeight.Bold,
+                MipLevels = 1,
                 Quality = SharpDX.Direct3D9.FontQuality.ClearTypeNatural
             };
 
-            // Create the font using the font description
             _font = new SharpDX.Direct3D9.Font(_device, fontDescription);
         }
 
@@ -218,7 +215,6 @@ namespace eft_dma_radar
 
         private void OnMatchEnd()
         {
-            // Clear cached data
             _allPlayers = null;
             _loot = null;
             _exfils = null;
@@ -229,14 +225,15 @@ namespace eft_dma_radar
 
         private void OnMatchStart()
         {
-            // Reinitialize resources if needed
             InitializeDirectXResources();
         }
 
         private void RenderOverlay()
         {
+            _textBatch.Clear();
+            _lineBatch.Clear();
+
             WriteTopLeftText("Tarkov Overlay", Color.White, 13, "Tarkov");
-            WriteTopLeftText("Mem/s: " + Memory.Ticks, Color.White, 13, "Tarkov", 10, 50);
 
             if (_localPlayer is null)
             {
@@ -247,9 +244,17 @@ namespace eft_dma_radar
             if (_isInGame)
             {
                 WriteTopLeftText("IN RAID", Color.LimeGreen, 13, "Tarkov", 10, 30);
-                RenderPlayers(_localPlayer);
-                RenderLoot(_localPlayer);
-                RenderWorldObjects(_localPlayer);
+                WriteTopLeftText("Mem/s: " + Memory.Ticks, Color.White, 13, "Tarkov", 10, 50);
+
+                if (_config.ToggleESP)
+                {
+                    RenderPlayers(_localPlayer);
+                    RenderLoot(_localPlayer);
+                    RenderWorldObjects(_localPlayer);
+
+                    RenderTextBatch();
+                    RenderLineBatch();
+                }
             }
             else
             {
@@ -320,14 +325,12 @@ namespace eft_dma_radar
 
             if (WorldToScreenLootTest(localPlayer, lootItem.Position, out var lootCoords))
             {
-                WriteText(
+                _textBatch.Add((
                     $"{lootItem.GetFormattedValueShortName()}{Environment.NewLine}{Math.Round(lootDist, 0)}m",
                     (int)lootCoords.X + 5,
                     (int)lootCoords.Y - 25,
-                    Color.DeepSkyBlue,
-                    13,
-                    "Tarkov-Regular"
-                );
+                    Color.DeepSkyBlue
+                ));
             }
         }
 
@@ -340,14 +343,12 @@ namespace eft_dma_radar
 
             if (WorldToScreenLootTest(localPlayer, lootContainer.Position, out var lootCoords))
             {
-                WriteText(
+                _textBatch.Add((
                     $"{lootContainer.Name}{Environment.NewLine}{Math.Round(lootDist, 0)}m",
                     (int)lootCoords.X + 5,
                     (int)lootCoords.Y - 25,
-                    Color.Aqua,
-                    13,
-                    "Tarkov-Regular"
-                );
+                    Color.Aqua
+                ));
             }
         }
 
@@ -360,14 +361,12 @@ namespace eft_dma_radar
 
             if (WorldToScreenLootTest(localPlayer, lootCorpse.Position, out var lootCoords))
             {
-                WriteText(
+                _textBatch.Add((
                     $"{lootCorpse.Name}{Environment.NewLine}{Math.Round(lootDist, 0)}m",
                     (int)lootCoords.X + 5,
                     (int)lootCoords.Y - 25,
-                    Color.DeepPink,
-                    13,
-                    "Tarkov-Regular"
-                );
+                    Color.DeepPink
+                ));
             }
         }
 
@@ -381,14 +380,12 @@ namespace eft_dma_radar
 
             if (WorldToScreenLootTest(localPlayer, questItem.Position, out var questItemCoords))
             {
-                WriteText(
+                _textBatch.Add((
                     $"{questItem.Name}{Environment.NewLine}{Math.Round(questDist, 0)}m",
                     (int)questItemCoords.X + 5,
                     (int)questItemCoords.Y - 25,
-                    Color.HotPink,
-                    13,
-                    "Tarkov-Regular"
-                );
+                    Color.HotPink
+                ));
             }
         }
 
@@ -443,7 +440,7 @@ namespace eft_dma_radar
                 var exfilCoords = screenCoords[index++];
                 if (exfilCoords.X > 0 || exfilCoords.Y > 0 || exfilCoords.Z > 0)
                 {
-                    WriteText(exfil.Name, (int)exfilCoords.X + 5, (int)exfilCoords.Y - 25, Color.LimeGreen, 13, "Tarkov-Regular");
+                    _textBatch.Add((exfil.Name, (int)exfilCoords.X + 5, (int)exfilCoords.Y - 25, Color.LimeGreen));
                 }
             }
         }
@@ -458,7 +455,7 @@ namespace eft_dma_radar
                 var grenadeCoords = screenCoords[index++];
                 if (grenadeCoords.X > 0 || grenadeCoords.Y > 0 || grenadeCoords.Z > 0)
                 {
-                    WriteText("Grenade", (int)grenadeCoords.X + 5, (int)grenadeCoords.Y - 25, Color.Red, 13, "Tarkov-Regular");
+                    _textBatch.Add(("Grenade", (int)grenadeCoords.X + 5, (int)grenadeCoords.Y - 25, Color.Red));
                 }
             }
         }
@@ -475,8 +472,8 @@ namespace eft_dma_radar
 
                 if (fromCoords.X > 0 && fromCoords.Y > 0 && toCoords.X > 0 && toCoords.Y > 0)
                 {
-                    DrawLine((int)fromCoords.X, (int)fromCoords.Y, (int)toCoords.X, (int)toCoords.Y, Color.Red);
-                    WriteText("Tripwire", (int)((fromCoords.X + toCoords.X) / 2), (int)((fromCoords.Y + toCoords.Y) / 2 - 25), Color.White, 13, "Tarkov-Regular");
+                    _lineBatch.Add(((int)fromCoords.X, (int)fromCoords.Y, (int)toCoords.X, (int)toCoords.Y, Color.Red));
+                    _textBatch.Add(("Tripwire", (int)((fromCoords.X + toCoords.X) / 2), (int)((fromCoords.Y + toCoords.Y) / 2 - 25), Color.White));
                 }
             }
         }
@@ -486,9 +483,9 @@ namespace eft_dma_radar
             return player.IsAlive &&
                    player.Type is not PlayerType.LocalPlayer &&
                    (
-                       (player.IsHuman && dist <= PlayerLimit && IsESPOn) ||
-                       (!player.IsHuman && dist <= ScavLimit && IsESPOn) ||
-                       (player.Type is PlayerType.Teammate && dist <= TeamLimit && IsESPOn)
+                       (player.IsHuman && dist <= _config.PlayerDist && _config.ToggleESP) ||
+                       (!player.IsHuman && dist <= _config.PlayerDist && _config.ToggleESP) ||
+                       (player.Type is PlayerType.Teammate && dist <= _config.PlayerDist && _config.ToggleESP)
                    );
         }
 
@@ -526,13 +523,11 @@ namespace eft_dma_radar
             string name = "ERROR";
             string distance = "ERROR";
             Color color = Color.White;
-            string fontFamily = "Tarkov-Regular";
-            int fontSize = 13;
 
             switch (player.Type)
             {
-                case PlayerType.BEAR or PlayerType.USEC when IsPMCOn && dist <= PlayerLimit:
-                    if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
+                case PlayerType.BEAR or PlayerType.USEC when _config.PlayerESP && dist <= _config.PlayerDist:
+                    if (_config.ToggleESP && _config.BoneESP && dist <= _config.BoneLimit)
                     {
                         DrawSkeletonLines(coords, Color.Red);
                     }
@@ -541,8 +536,8 @@ namespace eft_dma_radar
                     color = Color.White;
                     break;
 
-                case PlayerType.Scav when IsScavOn && dist <= ScavLimit:
-                    if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
+                case PlayerType.Scav when _config.ScavESP && dist <= _config.ScavDist:
+                    if (_config.ToggleESP && _config.BoneESP && dist <= _config.BoneLimit)
                     {
                         DrawSkeletonLines(coords, Color.Yellow);
                     }
@@ -551,8 +546,8 @@ namespace eft_dma_radar
                     color = Color.Yellow;
                     break;
 
-                case PlayerType.PlayerScav when IsPlayerScavOn && dist <= PlayerLimit:
-                    if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
+                case PlayerType.PlayerScav when _config.PlayerESP && dist <= _config.PlayerDist:
+                    if (_config.ToggleESP && _config.BoneESP && dist <= _config.BoneLimit)
                     {
                         DrawSkeletonLines(coords, Color.Cyan);
                     }
@@ -561,8 +556,8 @@ namespace eft_dma_radar
                     color = Color.Cyan;
                     break;
 
-                case PlayerType.Boss when IsScavOn && dist <= ScavLimit:
-                    if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
+                case PlayerType.Boss when _config.BossESP && dist <= _config.BossDist:
+                    if (_config.ToggleESP && _config.BoneESP && dist <= _config.BoneLimit)
                     {
                         DrawSkeletonLines(coords, Color.DarkOrange);
                     }
@@ -571,8 +566,8 @@ namespace eft_dma_radar
                     color = Color.DarkOrange;
                     break;
 
-                case PlayerType.BossFollower or PlayerType.BossGuard when IsScavOn && dist <= ScavLimit:
-                    if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
+                case PlayerType.BossFollower or PlayerType.BossGuard when _config.ScavESP && dist <= _config.ScavDist:
+                    if (_config.ToggleESP && _config.BoneESP && dist <= _config.BoneLimit)
                     {
                         DrawSkeletonLines(coords, Color.Orange);
                     }
@@ -581,8 +576,8 @@ namespace eft_dma_radar
                     color = Color.Orange;
                     break;
 
-                case PlayerType.Teammate when IsTeamOn && dist <= TeamLimit:
-                    if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
+                case PlayerType.Teammate when _config.TeamESP && dist <= _config.TeamDist:
+                    if (_config.ToggleESP && _config.BoneESP && dist <= _config.BoneLimit)
                     {
                         DrawSkeletonLines(coords, Color.LimeGreen);
                     }
@@ -591,8 +586,8 @@ namespace eft_dma_radar
                     color = Color.LimeGreen;
                     break;
 
-                case PlayerType.Cultist when IsScavOn && dist <= ScavLimit:
-                    if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
+                case PlayerType.Cultist when _config.ScavESP && dist <= _config.ScavDist:
+                    if (_config.ToggleESP && _config.BoneESP && dist <= _config.BoneLimit)
                     {
                         DrawSkeletonLines(coords, Color.Purple);
                     }
@@ -601,8 +596,8 @@ namespace eft_dma_radar
                     color = Color.Purple;
                     break;
 
-                case PlayerType.Raider when IsScavOn && dist <= ScavLimit:
-                    if (IsESPOn && IsBoneESPOn && dist <= BoneLimit)
+                case PlayerType.Raider when _config.ScavESP && dist <= _config.ScavDist:
+                    if (_config.ToggleESP && _config.BoneESP && dist <= _config.BoneLimit)
                     {
                         DrawSkeletonLines(coords, Color.Orange);
                     }
@@ -612,16 +607,14 @@ namespace eft_dma_radar
                     break;
             }
 
-            WriteText(name, (int)(baseCoords.X - (boxWidth / 2)), (int)(baseCoords.Y + boxHeight) - 35, color, fontSize, fontFamily);
-            WriteText(distance, (int)(baseCoords.X - (boxWidth / 2)), (int)(baseCoords.Y + boxHeight) - 20, color, fontSize, fontFamily);
+            _textBatch.Add((name, (int)(baseCoords.X - (boxWidth / 2)), (int)(baseCoords.Y + boxHeight) - 35, color));
+            _textBatch.Add((distance, (int)(baseCoords.X - (boxWidth / 2)), (int)(baseCoords.Y + boxHeight) - 20, color));
         }
 
         private void WriteText(string msg, int x, int y, System.Drawing.Color color, float fontSize = 13, string fontFamily = "Arial")
         {
-            // Convert System.Drawing.Color to SharpDX.Color
             var sharpDxColor = new SharpDX.Color(color.R, color.G, color.B, color.A);
 
-            // Draw the text using SharpDX.Font and SharpDX.Sprite
             _font.DrawText(_sprite, msg, x, y, sharpDxColor);
         }
 
@@ -702,7 +695,7 @@ namespace eft_dma_radar
 
             foreach (var connection in connections)
             {
-                DrawLine((int)coords[connection[0]].X, (int)coords[connection[0]].Y, (int)coords[connection[1]].X, (int)coords[connection[1]].Y, color);
+                _lineBatch.Add(((int)coords[connection[0]].X, (int)coords[connection[0]].Y, (int)coords[connection[1]].X, (int)coords[connection[1]].Y, color));
             }
         }
 
@@ -732,10 +725,11 @@ namespace eft_dma_radar
 
         private bool WorldToScreenCombined(Player player, List<Vector3> enemyPositions, List<Vector3> screenCoords)
         {
-            screenCoords.Clear(); // Clear previous results
+            screenCoords.Clear();
 
-            int width = Screen.PrimaryScreen.Bounds.Width;
-            int height = Screen.PrimaryScreen.Bounds.Height;
+            System.Drawing.Rectangle bounds = this.Bounds;
+            int width = bounds.Width;
+            int height = bounds.Height;
 
             var temp = Matrix4x4.Transpose(Memory.CameraManager.ViewMatrix);
             var translationVector = new Vector3(temp.M41, temp.M42, temp.M43);
@@ -746,9 +740,8 @@ namespace eft_dma_radar
             {
                 var w = D3DXVec3Dot(translationVector, enemyPos) + temp.M44;
                 if (w < 0.098f)
-                {
-                    // Skip points behind the camera
-                    screenCoords.Add(new Vector3(0, 0, 0)); // Or choose an appropriate default or skip
+                {              
+                    screenCoords.Add(new Vector3(0, 0, 0)); 
                     continue;
                 }
 
@@ -757,7 +750,6 @@ namespace eft_dma_radar
                 var screenX = width / 2 * (1f + x / w);
                 var screenY = height / 2 * (1f - y / w);
 
-                // Add the calculated screen coordinates
                 screenCoords.Add(new Vector3(screenX, screenY, w));
             }
             return true;
@@ -767,9 +759,9 @@ namespace eft_dma_radar
         {
             screenPos = new System.Numerics.Vector2(0, 0);
 
-            // Get the primary screen dimensions
-            int width = Screen.PrimaryScreen.Bounds.Width;
-            int height = Screen.PrimaryScreen.Bounds.Height;
+            System.Drawing.Rectangle bounds = this.Bounds;
+            int width = bounds.Width;
+            int height = bounds.Height;
 
             var temp = Matrix4x4.Transpose(Memory.CameraManager.ViewMatrix);
             Vector3 translationVector = new Vector3(temp.M41, temp.M42, temp.M43);
@@ -778,7 +770,6 @@ namespace eft_dma_radar
 
             float w = D3DXVec3Dot(translationVector, itemPos) + temp.M44;
 
-            // Early return if behind camera
             if (w < 0.098f)
                 return false;
 
@@ -794,6 +785,22 @@ namespace eft_dma_radar
         private float D3DXVec3Dot(Vector3 v1, Vector3 v2)
         {
             return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
+        }
+
+        private void RenderTextBatch()
+        {
+            foreach (var (msg, x, y, color) in _textBatch)
+            {
+                WriteText(msg, x, y, color);
+            }
+        }
+
+        private void RenderLineBatch()
+        {
+            foreach (var (x1, y1, x2, y2, color) in _lineBatch)
+            {
+                DrawLine(x1, y1, x2, y2, color);
+            }
         }
     }
 }

@@ -278,7 +278,7 @@ namespace eft_dma_radar
             try
             {
                 this.Position = this._transform.GetPosition();
-                
+
                 if (this._errors > 0)
                     this._errors = 0;
                 return true;
@@ -289,7 +289,7 @@ namespace eft_dma_radar
                 Program.Log($"Bone failed transform.GetPosition, attempting to get new transform");
                 try
                 {
-                    this._transform  = new Transform(this._pointer);
+                    this._transform = new Transform(this._pointer);
                 }
                 catch { }
 

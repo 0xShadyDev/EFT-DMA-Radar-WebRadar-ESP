@@ -5,7 +5,8 @@ namespace eft_dma_radar
     internal static class SKPaints
     {
         #region Radar Paints
-        public static readonly SKPaint PaintBase = new SKPaint() {
+        public static readonly SKPaint PaintBase = new SKPaint()
+        {
             Color = SKColors.WhiteSmoke,
             StrokeWidth = 3,
             Style = SKPaintStyle.Stroke,
@@ -209,11 +210,13 @@ namespace eft_dma_radar
         #endregion
     }
 
-    public class PaintColor {
+    public class PaintColor
+    {
         public Colors Color { get; set; }
         public string Name { get; set; }
 
-        public struct Colors {
+        public struct Colors
+        {
             public byte A { get; set; }
             public byte R { get; set; }
             public byte G { get; set; }

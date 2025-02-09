@@ -580,6 +580,56 @@ namespace eft_dma_radar
             return addr;
         }
 
+        public static ulong[] ReadPtrChainBatch(ulong baseAddress, uint[] offsets, uint finalOffset)
+        {
+            var results = new ulong[offsets.Length];
+
+            var intermediateAddresses = new ulong[offsets.Length];
+            for (int i = 0; i < offsets.Length; i++)
+            {
+                intermediateAddresses[i] = baseAddress + offsets[i];
+            }
+
+            var intermediateResults = ReadMemoryBatch<ulong>(intermediateAddresses);
+
+            var finalAddresses = new ulong[offsets.Length];
+            for (int i = 0; i < offsets.Length; i++)
+            {
+                if (intermediateResults[i] == 0)
+                {
+                    results[i] = 0;
+                    continue;
+                }
+                finalAddresses[i] = intermediateResults[i] + finalOffset;
+            }
+
+            var finalResults = ReadMemoryBatch<ulong>(finalAddresses);
+
+            for (int i = 0; i < offsets.Length; i++)
+            {
+                results[i] = finalResults[i];
+            }
+
+            return results;
+        }
+
+        public static T[] ReadMemoryBatch<T>(ulong[] addresses) where T : struct
+        {
+            try
+            {
+                var results = new T[addresses.Length];
+                for (int i = 0; i < addresses.Length; i++)
+                {
+                    results[i] = ReadValue<T>(addresses[i]);
+                }
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new DMAException($"ERROR during batch read of {typeof(T)} values", ex);
+            }
+        }
+
         /// <summary>
         /// Resolves a pointer and returns the memory address it points to.
         /// </summary>

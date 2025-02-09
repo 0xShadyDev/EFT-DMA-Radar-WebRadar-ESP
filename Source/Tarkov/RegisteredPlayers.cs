@@ -195,7 +195,7 @@ namespace eft_dma_radar
 
                             if (newPlayer.Type == PlayerType.LocalPlayer)
                                 if (this._players.Values.Any(x => x.Type == PlayerType.LocalPlayer))
-                                    return; // Don't allocate more than one LocalPlayer on accident
+                                    return;
 
                             if (this._players.TryAdd(profileID, newPlayer))
                                 Program.Log($"Player '{newPlayer.Name}' allocated.");

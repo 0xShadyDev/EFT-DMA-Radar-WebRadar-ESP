@@ -633,24 +633,43 @@ namespace eft_dma_radar
             return Memory.ReadPtrChain(this.PlayerBody, new uint[] { 0x30, 0x30, 0x10 });
         }
 
-        private ulong GetBonePointer(ulong boneMatrix, PlayerBones bone)
+        private ulong[] GetBonePointers(ulong boneMatrix, PlayerBones[] bones)
         {
-            var boneOffset = 0x20 + ((uint)bone * 0x8);
-            return Memory.ReadPtrChain(boneMatrix, new uint[] { boneOffset, 0x10 });
+            var bonePointers = new ulong[bones.Length];
+            var offsets = new uint[bones.Length];
+
+            for (int i = 0; i < bones.Length; i++)
+            {
+                offsets[i] = 0x20 + ((uint)bones[i] * 0x8);
+            }
+
+            var results = Memory.ReadPtrChainBatch(boneMatrix, offsets, 0x10);
+
+            for (int i = 0; i < bones.Length; i++)
+            {
+                bonePointers[i] = results[i];
+            }
+
+            return bonePointers;
         }
 
-        private void ProcessBone(ulong boneMatrix, PlayerBones bone, bool isRefresh = false)
+        private void ProcessBones(ulong boneMatrix, PlayerBones[] bones, bool isRefresh)
         {
-            var bonePointer = GetBonePointer(boneMatrix, bone);
-            if (bonePointer == 0) return;
+            var bonePointers = GetBonePointers(boneMatrix, bones);
 
-            if (isRefresh && this._bones.TryGetValue(bone, out var boneTransform))
+            for (int i = 0; i < bones.Length; i++)
             {
-                boneTransform.UpdateTransform(bonePointer);
-            }
-            else
-            {
-                this._bones.TryAdd(bone, new Bone(bonePointer));
+                var bonePointer = bonePointers[i];
+                if (bonePointer == 0) continue;
+
+                if (isRefresh && this._bones.TryGetValue(bones[i], out var boneTransform))
+                {
+                    boneTransform.UpdateTransform(bonePointer);
+                }
+                else
+                {
+                    this._bones.TryAdd(bones[i], new Bone(bonePointer));
+                }
             }
         }
 
@@ -661,10 +680,7 @@ namespace eft_dma_radar
                 var boneMatrix = GetBoneMatrix();
                 if (boneMatrix == 0) return;
 
-                foreach (var bone in Player.RequiredBones)
-                {
-                    ProcessBone(boneMatrix, bone, isRefresh);
-                }
+                ProcessBones(boneMatrix, Player.RequiredBones.ToArray(), isRefresh);
             }
             catch (Exception ex)
             {

@@ -39,6 +39,98 @@ namespace eft_dma_radar
         private int HierarchyIndex { get; }
 
         #region GetPos
+        public Vector3 GetPositionNew(object[] obj = null)
+        {
+            try
+            {
+                List<int> indices;
+                List<Vector128<float>> vertices;
+                if (obj is null) // standalone constructor
+                {
+                    indices = ReadIndices(IndicesAddr, HierarchyIndex + 1); // address, count
+                    vertices = ReadVertices128(VerticesAddr, 3 * HierarchyIndex + 3); // Reference v9/v10 in IDA
+                }
+                else // construct via scatter read
+                {
+                    indices = (List<int>)obj[0];
+                    vertices = (List<Vector128<float>>)obj[1];
+                }
+
+                if (indices is null || vertices is null)
+                    throw new Exception("Invalid Position!");
+
+                var index = indices[HierarchyIndex]; // Indices + 4 * capacity   (was index_relation)
+                if (_isPlayerTransform && index != 0)
+                    throw new Exception("Invalid index!");
+
+                var result = vertices[3 * HierarchyIndex]; // Vertices + 0x30 * capacity
+
+                int iterations = 0;
+                while (index >= 0)
+                {
+                    // perform validations....
+                    if (_isPlayerTransform)
+                    {
+                        if (index > 1)
+                            throw new Exception("Invalid index!");
+                    }
+                    else
+                    {
+                        if (index >= vertices.Count / 3)
+                            break;
+                    }
+
+                    if (iterations++ >= 100)
+                        throw new Exception("Max SIMD Iterations! Invalid state.");
+
+                    // begin iteration...
+                    var v9 = vertices[3 * index + 1].AsInt32(); // Vertices + 0x30 * index + 0x10
+
+                    var v10 = Sse.Multiply(vertices[3 * index + 2], result); // Vertices + 0x30 * index + 0x20
+
+                    var v11 = Sse2.Shuffle(v9, 0).AsSingle();
+                    var v12 = Sse2.Shuffle(v9, 0x71).AsSingle();
+                    var v13 = Sse2.Shuffle(v9, 0x8E).AsSingle();
+                    var v14 = Sse2.Shuffle(v9, 0x55).AsSingle();
+                    var v15 = Sse2.Shuffle(v9, 0xAA).AsSingle();
+                    var v16 = Sse2.Shuffle(v9, 0xDB).AsSingle();
+
+                    result = Sse.Add(
+                                Sse.Add(
+                                    Sse.Add(
+                                        Sse.Multiply(
+                                            Sse.Subtract(
+                                                Sse.Multiply(Sse.Multiply(v11, Xmm330), v13),
+                                                Sse.Multiply(Sse.Multiply(v14, Xmm300), v16)),
+                                            Sse2.Shuffle(v10.AsInt32(), 0xAA).AsSingle()),
+                                        Sse.Multiply(
+                                            Sse.Subtract(
+                                                Sse.Multiply(Sse.Multiply(v15, Xmm300), v16),
+                                                Sse.Multiply(Sse.Multiply(v11, Xmm320), v12)),
+                                            Sse2.Shuffle(v10.AsInt32(), 0x55).AsSingle())),
+                                    Sse.Add(
+                                        Sse.Multiply(
+                                            Sse.Subtract(
+                                                Sse.Multiply(Sse.Multiply(v14, Xmm320), v12),
+                                                Sse.Multiply(Sse.Multiply(v15, Xmm330), v13)),
+                                            Sse2.Shuffle(v10.AsInt32(), 0).AsSingle()),
+                                    v10)),
+                                vertices[3 * index]); // Vertices + 0x30 * index
+
+                    index = indices[index]; // Indices + 4 * index
+                }
+                // return result
+                var pos = result.AsVector3();
+                if (pos.X == 0 && pos.Y == 0 && pos.Z == 0)
+                    throw new Exception("Invalid Position!");
+
+                return new Vector3(pos.X, pos.Y, pos.Z); // Z & Y flipped
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Invalid Position!");
+            }
+        }
         public Vector3 GetPosition(object[] obj = null)
         {
             try
@@ -142,7 +234,6 @@ namespace eft_dma_radar
         {
             return new Tuple<ulong, int, ulong, int>(IndicesAddr, HierarchyIndex + 1, VerticesAddr, 3 * HierarchyIndex + 3);
         }
-
         /// <summary>
         /// Standalone Indices Read.
         /// </summary>
@@ -166,6 +257,7 @@ namespace eft_dma_radar
             for (int i = 0; i < count; i++)
             {
                 scatterReadMap.Results[0][i].TryGetResult<int>(out int result);
+
                 list.Add(result);
             }
 

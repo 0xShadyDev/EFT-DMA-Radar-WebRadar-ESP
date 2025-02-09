@@ -117,6 +117,9 @@ namespace eft_dma_radar
         [JsonPropertyName("infiniteStamina")]
         public bool InfiniteStamina { get; set; }
 
+        [JsonPropertyName("muleMode")]
+        public bool MULEMode { get; set; }
+
         [JsonPropertyName("instantADS")]
         public bool InstantADS { get; set; }
 
@@ -296,6 +299,53 @@ namespace eft_dma_radar
 
         [JsonPropertyName("zoomSensitivity")]
         public int ZoomSensitivity { get; set; }
+        #endregion
+
+        #region Overlay
+        [JsonPropertyName("toggleESP")]
+        public bool ToggleESP { get; set; }
+
+        [JsonPropertyName("boneESP")]
+        public bool BoneESP { get; set; }
+
+        [JsonPropertyName("playerESP")]
+        public bool PlayerESP { get; set; }
+
+        [JsonPropertyName("teamESP")]
+        public bool TeamESP { get; set; }
+
+        [JsonPropertyName("scavESP")]
+        public bool ScavESP { get; set; }
+
+        [JsonPropertyName("bossESP")]
+        public bool BossESP { get; set; }
+
+        [JsonPropertyName("itemESP")]
+        public bool ItemESP { get; set; }
+
+        [JsonPropertyName("showFOV")]
+        public bool ShowFOV { get; set; }
+
+        [JsonPropertyName("boneDist")]
+        public int BoneLimit { get; set; }
+
+        [JsonPropertyName("playerDist")]
+        public int PlayerDist { get; set; }
+
+        [JsonPropertyName("teamDist")]
+        public int TeamDist { get; set; }
+
+        [JsonPropertyName("scavDist")]
+        public int ScavDist { get; set; }
+
+        [JsonPropertyName("bossDist")]
+        public int BossDist { get; set; }
+
+        [JsonPropertyName("itemDist")]
+        public int ItemDist { get; set; }
+
+        [JsonPropertyName("crosshairLength")]
+        public float CrosshairLength { get; set; }
         #endregion
 
         #region Json Ignore
@@ -556,6 +606,7 @@ namespace eft_dma_radar
             HoverArmor = false;
             ImportantLootOnly = false;
             InfiniteStamina = false;
+            MULEMode = false;
             InstantADS = false;
             InventoryBlur = false;
             Juggernaut = false;
@@ -635,7 +686,23 @@ namespace eft_dma_radar
             ScreenWidth = 1920;
             ScreenHeight = 1080;
             AimbotPrediction = false;
-            Hostname = "localhost";            
+            Hostname = "localhost";
+            // Fuser
+            ToggleESP = true;
+            BoneESP = true;
+            PlayerESP = true;
+            TeamESP = true;
+            ScavESP = true;
+            BossESP = true;
+            ItemESP = true;
+            ShowFOV = false;
+            BoneLimit = 300;
+            PlayerDist = 300;
+            TeamDist = 300;
+            ScavDist = 300;
+            BossDist = 300;
+            ItemDist = 300;
+            CrosshairLength = 4f;
         }
 
         /// <summary>
