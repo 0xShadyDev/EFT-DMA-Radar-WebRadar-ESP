@@ -635,9 +635,41 @@ namespace eft_dma_radar
         /// </summary>
         public static ulong ReadPtr(ulong ptr)
         {
-            var addr = ReadValue<ulong>(ptr);
-            if (addr == 0x0) throw new NullPtrException();
-            else return addr;
+            // Validate the pointer itself
+            if (ptr == 0x0)
+                throw new NullPtrException("The provided pointer is null.");
+
+            try
+            {
+                // Read the value at the pointer's address
+                var addr = ReadValue<ulong>(ptr);
+
+                // Ensure the dereferenced value is valid
+                if (addr == 0x0)
+                    throw new NullPtrException("The dereferenced pointer returned a null address.");
+
+                return addr;
+            }
+            catch (AccessViolationException ex)
+            {
+                // Wrap and rethrow as a DMA-specific exception
+                throw new DMAException($"Access violation at address 0x{ptr:X}.", ex);
+            }
+            catch (Exception ex)
+            {
+                // Wrap other unexpected exceptions
+                throw new DMAException($"An unexpected error occurred while reading memory at address 0x{ptr:X}.", ex);
+            }
+        }
+
+        public class NullPtrException : Exception
+        {
+            public NullPtrException(string message) : base(message) { }
+        }
+
+        public class MemoryReadException : Exception
+        {
+            public MemoryReadException(string message, Exception innerException) : base(message, innerException) { }
         }
 
         /// <summary>

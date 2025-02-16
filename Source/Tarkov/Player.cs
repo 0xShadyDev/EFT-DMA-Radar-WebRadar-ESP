@@ -33,7 +33,7 @@ namespace eft_dma_radar
 
         #region PlayerProperties
         public bool IsPMC { get; set; }
-        public bool IsLocalPlayer { get; set; }
+        public bool IsLocalPlayer { get; private set; }
         public volatile bool IsAlive = true;
         public volatile bool IsActive = true;
         public string AccountID { get; set; }
@@ -203,6 +203,20 @@ namespace eft_dma_radar
         #endregion
 
         #region Setters
+        public bool SetLocalPlayer()
+        {
+            try
+            {
+                this.IsLocalPlayer = Memory.ReadValue<bool>(this.Base + Offsets.Player.isLocalPlayer);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Program.Log($"ERROR setting Player '{this.Name}' as LocalPlayer: {ex}");
+                return false;
+            }
+        }
+
         public bool SetHealth(int eTagStatus)
         {
             try

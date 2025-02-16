@@ -156,7 +156,7 @@
         public const uint ObservedPlayerController = 0x88; // [88] gClass24AC_0x88 : -.GClass24AC
         public const uint VoiceName = 0x98; // [98] string_0x98 : String
         public const uint PlayerSide = 0x100; // [100] int32_0x100 : System.Int32
-        public const uint IsAI = 0x110; // [110] boolean_0x110 : Boolean
+        public const uint IsAI = 0x111; // [110] boolean_0x110 : Boolean
         public static readonly uint[] To_MovementContext = new uint[] { ObservedPlayerController, 0xC8, 0x10 }; // to MovementContext
         public static readonly uint[] To_TransformInternal = new uint[] { PlayerBody, 0x30, 0x30, 0x10, 0x20, 0x10 }; // to TransformInternal
         public static readonly uint[] To_InventoryController = new uint[] { ObservedPlayerController, 0x118 }; // to InventoryController

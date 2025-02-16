@@ -99,7 +99,8 @@ namespace eft_dma_radar
                                         !this.PlayersWithChams.ContainsKey(x.ProfileID) &&
                                         x.IsActive &&
                                         x.ErrorCount == 0 &&
-                                        !x.IsLocalPlayer)
+                                        !x.IsLocalPlayer &&
+                                         !x.HasExfild)
                             .Where(x =>
                                     (this._config.Chams["Corpses"] && !x.IsAlive) ||
                                     (this._config.Chams["PMCs"] && x.IsPMC && x.Type != PlayerType.Teammate && x.IsAlive) ||
